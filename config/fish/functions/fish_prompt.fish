@@ -1,0 +1,1 @@
+/Users/kyo/.config/fisherman/pure/fish_prompt.fish

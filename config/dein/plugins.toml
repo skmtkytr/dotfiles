@@ -1,0 +1,285 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'Shougo/vimproc'
+build = 'make'
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+on_event = 'InsertCharPre'
+hook_add = '''
+  let g:deoplete#enable_at_startup = 1
+  let g:deoplete#auto_complete_delay = 0
+  let g:deoplete#auto_complete_start_length = 1
+  let g:deoplete#enable_camel_case = 0
+  let g:deoplete#enable_ignore_case = 0
+  let g:deoplete#enable_refresh_always = 0
+  let g:deoplete#enable_smart_case = 1
+  let g:deoplete#file#enable_buffer_path = 1
+'''
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+
+[[plugins]] # ステータスライン
+repo = 'itchyny/lightline.vim'
+
+[[plugins]]
+repo = 'nixprime/cpsm'
+build = 'env PY3=ON ./install.sh'
+
+[[plugins]]
+repo = 'edkolev/tmuxline.vim'
+hook_add = '''
+  let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'c'    : ['#(whoami)', '#(uptime | cud -d " " -f 1,2,3)'],
+      \'win'  : ['#I', '#W'],
+      \'cwin' : ['#I', '#W', '#F'],
+      \'x'    : '#(date)',
+      \'y'    : ['%R', '%a', '%Y'],
+      \'z'    : '#H'}
+'''
+
+#
+[[plugins]]
+repo = 'xolox/vim-session'
+[[plugins]]
+repo = 'xolox/vim-misc'
+
+[[plugins]] 
+repo = 'majutsushi/tagbar'
+[[plugins]]
+repo = 'szw/vim-tags'
+
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+
+[[plugins]]
+repo = 'thinca/vim-ref'
+
+[[plugins]]
+repo = 'yuku-t/vim-ref-ri'
+
+[[plugins]]
+repo = 'scrooloose/nerdcommenter'
+hook_add = '''
+  let NERDSpaceDelims = 1
+  nmap ,, <Plug>NERDCommenterToggle
+  vmap ,, <Plug>NERDCommenterToggle
+'''
+
+[[plugins]]
+repo = 'AndrewRadev/splitjoin.vim'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'lambdalisue/gina.vim'
+
+# ctrlp
+#[[plugins]]
+#repo = 'ctrlpvim/ctrlp.vim'
+#hook_add = '''
+#  let g:ctrlp_custom_ignore = 'log\|tags\|node_modules\|plugins\|platforms\|\.git'
+#  let g:ctrlp_map = '<c-p>'
+#  let g:ctrlp_cmd = 'CtrlPLastMode'
+#  let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir', 'tmux']
+#'''
+
+[[plugins]]
+repo = 'lucidstack/ctrlp-tmux.vim'
+
+# git
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+
+# Lang
+[[plugins]] # yajs (ES6 syntax)
+repo = 'othree/yajs.vim'
+
+[[plugins]] # Elixir
+repo = 'elixir-lang/vim-elixir'
+#[[plugins]]
+#repo = 'archSeer/elixir.nvim'
+
+[[plugins]] # Elixir-mix
+repo = 'mattreduce/vim-mix'
+
+[[plugins]] # Elixir-extest,Amitra
+repo = 'BjRo/vim-extest'
+
+[[plugins]] # Elixir-phoenix
+repo = 'avdgaag/vim-phoenix'
+
+[[plugins]] # Alchemist.vim (Elixir)
+repo = 'slashmili/alchemist.vim'
+hook_add = '''
+  let g:alchemist#elixir_erlang_src = "/usr/local/share/src"
+  let g:alchemist_tag_map = '<C-]>'
+  let g:alchemist_iex_term_size = 15
+  let g:alchemist_iex_term_split = 'split'
+'''
+
+
+[[plugins]] # watchdods
+repo = 'osyo-manga/vim-watchdogs'
+
+[[plugins]] # yaml
+repo = 'avakhov/vim-yaml'
+
+
+[[plugins]] # ctags
+repo = 'soramugi/auto-ctags.vim'
+
+[[plugins]] # Haml
+repo  = 'tpope/vim-haml'
+on_ft = 'haml'
+
+# html/css
+[[plugins]] # Html5
+repo  = 'othree/html5.vim'
+on_ft = 'html'
+
+[[plugins]] 
+repo = 'hail2u/vim-css3-syntax'
+
+[[plugins]]
+repo = 'lambdatoast/elm.vim'
+
+[[plugins]]
+repo = 'isRuslan/vim-es6'
+
+[[plugins]]
+repo = 'ap/vim-css-color'
+[[plugins]] # color check hexadecimal
+repo = "gko/vim-coloresque"
+
+[[plugins]] # json
+repo = 'elzr/vim-json'
+
+[[plugins]] # indenthighlight
+repo = 'Yggdroot/indentLine'
+
+[[plugins]] # Toml
+repo  = 'cespare/vim-toml'
+on_ft = 'toml'
+
+[[plugins]] # Markdown
+repo = 'rcmdnk/vim-markdown'
+on_ft = ['markdown','mkd']
+hook_add = '''
+    let g:vim_markdown_frontmatter = 1
+    let g:vim_markdown_math = 1
+'''
+
+[[plugins]] # previm
+repo = 'kannokanno/previm'
+
+[[plugins]] # open-browser
+repo = 'tyru/open-browser.vim'
+
+[[plugins]] # Golang
+repo = 'fatih/vim-go'
+on_ft = 'go'
+
+[[plugins]]
+repo = 'nsf/gocode'
+
+[[plugins]] # Japanese doc
+repo = 'vim-jp/vimdoc-ja'
+on_ft = 'help'
+hook_add = '''
+    set helplang=ja,en
+'''
+[[plugins]] #ruby
+repo = 'vim-ruby/vim-ruby'
+[[plugins]]
+repo = 'tpope/vim-rails.git'
+[[plugins]]
+repo = 'mattn/webapi-vim'
+#[[plugins]]
+#repo = 'fishbullet/deoplete-ruby'
+[[plugins]]
+repo = 'Shougo/deoplete-rct'
+
+[[plugins]]
+repo = 'tpope/vim-endwise'
+
+[[plugins]]
+repo = 'terryma/vim-multiple-cursors'
+
+# syntax
+[[plugins]] # pathogen
+repo = 'tpope/vim-pathogen'
+
+[[plugins]]
+repo = 'w0rp/ale'
+hook_add= '''
+  let g:ale_sign_column_always = 1
+  let g:ale_linters = {
+      \ 'html': [],
+      \ 'css': ['stylelint'],
+      \ 'javascript': ['eslint'],
+      \ 'vue': ['eslint']
+      \ }
+  let g:ale_linter_aliases = {'vue': 'css'}
+  let g:ale_fixers = {
+  \   'javascript': ['eslint'],
+  \}
+  let g:ale_fix_on_save = 1
+  let g:ale_completion_enabled = 1
+  let g:airline#extensions#ale#enabled = 1
+'''
+
+#[[plugins]] #syntastic
+#repo = 'vim-syntastic/syntastic'
+#hook_add = '''
+#  let g:syntastic_mode_map = { 'mode': 'passive',
+#            \ 'active_filetypes': ['ruby'] }
+#  let g:syntastic_ruby_checkers = ['rubocop']
+#'''
+
+# tree
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+
+[[plugins]]
+repo = 'mortonfox/nerdtree-iterm'
+hook_add = '''
+  let g:nerdtree_iterm_iterm_version = 3
+'''
+
+[[plugins]]
+repo = 'Xuyuanp/nerdtree-git-plugin'
+
+[[plugins]] # run commands quickly
+repo = 'thinca/vim-quickrun'
+
+[[plugins]]
+repo = 'easymotion/vim-easymotion'
+hook_add = '''
+
+'''
+
+[[plugins]]
+repo = 'haya14busa/vim-asterisk'
+hook_add = '''
+
+'''
+
+# Colors
+
+[[plugins]] # hybrid
+repo = 'w0ng/vim-hybrid'
+
+[[plugins]] # solarized
+repo = 'altercation/vim-colors-solarized'
+[[plugins]] # monokai
+repo = 'sickill/vim-monokai'
+

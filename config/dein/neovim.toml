@@ -1,0 +1,108 @@
+[[plugins]] # context_filetype.vim
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]] # 補完
+repo = 'Shougo/deoplete.nvim'
+if = 'has("python3")'
+depends = 'context_filetype.vim'
+on_event = 'InsertEnter'
+hook_source = '''
+    let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_ignore_case = 1
+    let g:deoplete#enable_smart_case = 1
+
+    " <TAB>: completion.
+    imap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : deoplete#mappings#manual_complete()
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction
+
+    " <S-TAB>: completion back.
+    inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
+'''
+
+[[plugins]] # unite.vim 後継
+repo = 'Shougo/denite.nvim'
+if = 'has("python3")'
+on_cmd = 'Denite'
+hook_post_source = '''
+  call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
+      \ [
+      \ '.git/', 'build/', '__pycache__/', 'Cache/', '~/Library/Caches/',
+      \ 'images/', '*.o', '*.make',
+      \ '*.min.*', 'log/',
+      \ 'img/', 'fonts/'])
+
+	" Change sorters.
+	call denite#custom#source(
+	\ 'file_rec', 'sorters', ['sorter_sublime'])
+
+  if executable('rg')
+    call denite#custom#var('file_rec', 'command',
+        \ ['rg', '--files', '--glob', '!.git'])
+    call denite#custom#var('grep', 'command', ['rg', '--threads', '1'])
+    call denite#custom#var('grep', 'recursive_opts', [])
+    call denite#custom#var('grep', 'final_opts', [])
+    call denite#custom#var('grep', 'separator', ['--'])
+    call denite#custom#var('grep', 'default_opts',
+        \ ['--vimgrep', '--no-heading'])
+  endif
+
+  call denite#custom#source('file_old', 'matchers',
+      \ ['matcher_fuzzy', 'matcher_project_files'])
+  call denite#custom#source('tag', 'matchers', ['matcher_substring'])
+
+  if has('nvim')
+    call denite#custom#source('file_rec,grep', 'matchers',
+        "\ ['matcher_cpsm'])
+        \ ['matcher_fuzzy'])
+  endif
+
+  call denite#custom#alias('source', 'file_rec/git', 'file_rec')
+  call denite#custom#var('file_rec/git', 'command',
+      \ ['git', 'ls-files', '-co', '--exclude-standard'])
+
+  call denite#custom#option('default', {
+      \ 'auto_accel': v:true,
+      \ 'prompt': '>',
+      \ 'short_source_names': v:true
+      \ })
+
+  let s:menus = {}
+  let s:menus.vim = {
+    \ 'description': 'Vim',
+    \ }
+  let s:menus.vim.file_candidates = [
+    \ ['    > Edit configuation file (init.vim)', '~/.config/nvim/init.vim']
+    \ ]
+  " deniteの起動位置をtopに変更
+  "call denite#custom#option('default', 'direction', 'top')
+'''
+hook_add = '''
+nmap <silent> ;cb :<C-u>Denite file_mru<CR>
+nmap <silent> ;cf :<C-u>Denite file_rec<CR>
+
+" カーソル以下の単語を開いてるファイルからgrep
+nnoremap <silent> ;c/ :<C-u>DeniteCursorWord grep -buffer-name=search line<CR><C-R><C-W><CR>
+" 普通にgrep
+nnoremap <silent> ;g :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
+" カーソル以下の単語を普通にgrep
+nnoremap <silent> ;cg :<C-u>DeniteCursorWord grep -buffer-name=search-buffer-denite<CR>
+" search
+nnoremap <silent> / :<C-u>Denite -buffer-name=search -auto-resize line<CR>
+'''
+
+[[plugins]]
+repo = 'nixprime/cpsm'
+build = 'env PY3=ON ./install.sh'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+depends = 'denite.nvim'
+on_path = '.*'
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+depends = 'denite.nvim'
+on_event = 'TextYankPost'

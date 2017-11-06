@@ -1,0 +1,10 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+i	/Users/kyo/workspaces/pocketmenu/pokeme_rails/vendor/bundle/ruby/2.1.0/gems/brakeman-3.4.0/bundle/ruby/2.3.0/gems/erubis-2.7.0/test/data/users-guide/example11.php	/^        <?php $i = 0; ?>$/;"	v
+i	/Users/kyo/workspaces/pocketmenu/pokeme_rails/vendor/bundle/ruby/2.1.0/gems/brakeman-3.4.0/bundle/ruby/2.3.0/gems/erubis-2.7.0/test/data/users-guide/notext-example.php	/^        <?php $i = 0; ?>$/;"	v
+i	/Users/kyo/workspaces/pocketmenu/pokeme_rails/vendor/bundle/ruby/2.1.0/gems/erubis-2.7.0/test/data/users-guide/example11.php	/^        <?php $i = 0; ?>$/;"	v
+i	/Users/kyo/workspaces/pocketmenu/pokeme_rails/vendor/bundle/ruby/2.1.0/gems/erubis-2.7.0/test/data/users-guide/notext-example.php	/^        <?php $i = 0; ?>$/;"	v

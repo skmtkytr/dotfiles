@@ -1,0 +1,1 @@
+/Users/kyo/.config/fisherman/bass/functions/bass.fish

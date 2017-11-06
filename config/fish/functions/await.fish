@@ -1,0 +1,1 @@
+/Users/kyo/.config/fisherman/await/functions/await.fish

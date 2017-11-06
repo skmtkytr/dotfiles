@@ -1,0 +1,1 @@
+/Users/kyo/.config/fisherman/get/completions/get.fish
