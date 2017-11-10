@@ -5,4 +5,5 @@ logs/*
 config/gcloud/logs/*
 config/gcloud/legacy_credentials
 config/hub
+*_tags
 

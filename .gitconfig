@@ -24,3 +24,5 @@
 	prune = true
 [ghq]
 	root = /Users/kyo/.ghq
+[push]
+	default = upstream

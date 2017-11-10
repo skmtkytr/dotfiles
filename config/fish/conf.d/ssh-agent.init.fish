@@ -1,0 +1,1 @@
+/Users/kyo/.config/fisherman/ssh-agent/init.fish

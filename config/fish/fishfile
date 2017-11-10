@@ -13,4 +13,5 @@ rafaelrinaldi/pure
 oh-my-fish/plugin-pyenv
 oh-my-fish/plugin-rbenv
 fisherman/spin
+tuvistavie/fish-ssh-agent
 fisherman/z

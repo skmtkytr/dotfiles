@@ -39,10 +39,10 @@ set -x PATH $HOME/.rbenv/shims $PATH
 #source /usr/local/Bluemix/bx/zsh_autocomplete
 
 ### ssh agent
-#ssh-add -K ~/.ssh/gitlab
-ssh-add -K ~/.ssh/github
-ssh-add -K ~/.ssh/id_rsa
-ssh-add -K ~/.ssh/pokeme_rsa
+# ssh-add -K ~/.ssh/gitlab
+# ssh-add -K ~/.ssh/github
+# ssh-add -K ~/.ssh/id_rsa
+# ssh-add -K ~/.ssh/pokeme_rsa
 set -x PYENV_ROOT $HOME/.pyenv
 
 # 初回シェル時のみ tmux実行
