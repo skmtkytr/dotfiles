@@ -26,3 +26,11 @@
 	root = /Users/kyo/.ghq
 [push]
 	default = upstream
+[merge]
+  tool = vimdiff
+[mergetool]
+  path = nvim
+[diff]
+  tool = vimdiff
+[difftool]
+  path = nvim

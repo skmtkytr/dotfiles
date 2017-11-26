@@ -29,6 +29,7 @@ function fish_mode_prompt
 end
 
 # *env init 
+goenv init - | source
 docker-machine env | source
 set -gx EXENV_ROOT #path
 set -gx RBENV_ROOT #path

@@ -56,8 +56,8 @@ repo = 'majutsushi/tagbar'
 [[plugins]]
 repo = 'szw/vim-tags'
 
-[[plugins]]
-repo = 'tomtom/tcomment_vim'
+#[[plugins]]
+#repo = 'tomtom/tcomment_vim'
 
 [[plugins]]
 repo = 'thinca/vim-ref'
