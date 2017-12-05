@@ -1,7 +1,8 @@
 set KEYTIMEOUT 0
 ########################################
 # 環境変数
-set -x LANG ja_JP.UTF-8
+set -x LANG en_US.UTF-8
+set -x LC_ALL en_US.UTF-8
 
 set -x PATH /usr/local/bin $PATH
 set -x PATH /usr/local $PATH 
@@ -41,9 +42,9 @@ set -x PATH $HOME/.rbenv/shims $PATH
 
 ### ssh agent
 # ssh-add -K ~/.ssh/gitlab
-# ssh-add -K ~/.ssh/github
-# ssh-add -K ~/.ssh/id_rsa
-# ssh-add -K ~/.ssh/pokeme_rsa
+ssh-add -K ~/.ssh/github
+ssh-add -K ~/.ssh/id_rsa
+ssh-add -K ~/.ssh/pokeme_rsa
 set -x PYENV_ROOT $HOME/.pyenv
 
 # 初回シェル時のみ tmux実行

@@ -178,10 +178,10 @@ function! ReadTags(type)
     endtry
 endfunction
 
-augroup TagsAutoCmd
-    autocmd!
-    autocmd BufEnter * :call ReadTags(&filetype)
-augroup END
+"augroup TagsAutoCmd
+"    autocmd!
+"    autocmd BufEnter * :call ReadTags(&filetype)
+"augroup END
 " }}}
 
 " Indent Width
@@ -191,7 +191,7 @@ set tabstop=2
 augroup indent
   autocmd! FileType python setlocal shiftwidth=4 tabstop=4
   autocmd! FileType ruby setlocal tabstop=2 softtabstop=2 shiftwidth=2
-  autocmd! FileType javascript setlocal tabstop=4 softtabstop=4 shiftwidth=4
+  autocmd! FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
 set autoindent

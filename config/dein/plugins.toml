@@ -55,6 +55,9 @@ repo = 'xolox/vim-misc'
 repo = 'majutsushi/tagbar'
 [[plugins]]
 repo = 'szw/vim-tags'
+hook_add = '''
+  let g:vim_tags_auto_generate = 1
+'''
 
 #[[plugins]]
 #repo = 'tomtom/tcomment_vim'
