@@ -194,6 +194,9 @@ augroup indent
   autocmd! FileType javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 
+" erb HTML5 indentation Enable from html5.vim 
+autocmd BufRead,BufNewFile *.erb set filetype=eruby.html
+
 set autoindent
 set expandtab
 
