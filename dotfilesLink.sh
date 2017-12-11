@@ -6,4 +6,4 @@ ln -sf ~/dotfiles/.gitignore ~/.gitignore
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 ln -sf ~/dotfiles/config ~/.config
 ln -sf ~/dotfiles/.ctags ~/.ctags
-
+ln -sf ~/dotfiles/.alacritty.yml ~/.alacritty.yml
