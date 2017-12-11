@@ -12,7 +12,7 @@ set -x PATH $HOME/.cargo/bin $PATH
 set -x GOPATH $HOME/go
 set -x GOROOT /usr/local/opt/go/libexec
 set -x PATH $GOROOT/bin $GOPATH/bin $PATH
-set -x PKG_CONFIG_PATH /opt/ImageMagick/lib/pkgconfig
+set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
 set -x PATH $HOME/.local/bin $PATH
 
 #nvim conf

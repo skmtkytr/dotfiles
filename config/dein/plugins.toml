@@ -51,7 +51,7 @@ repo = 'xolox/vim-session'
 [[plugins]]
 repo = 'xolox/vim-misc'
 
-[[plugins]] 
+[[plugins]]
 repo = 'majutsushi/tagbar'
 [[plugins]]
 repo = 'szw/vim-tags'
@@ -154,7 +154,7 @@ hook_add = '''
   let g:html5_aria_attributes_complete = 1
 '''
 
-[[plugins]] 
+[[plugins]]
 repo = 'hail2u/vim-css3-syntax'
 
 [[plugins]]
@@ -199,12 +199,6 @@ on_ft = 'go'
 [[plugins]]
 repo = 'nsf/gocode'
 
-[[plugins]] # Japanese doc
-repo = 'vim-jp/vimdoc-ja'
-on_ft = 'help'
-hook_add = '''
-    set helplang=ja,en
-'''
 [[plugins]] #ruby
 repo = 'vim-ruby/vim-ruby'
 [[plugins]]
@@ -281,6 +275,16 @@ hook_add = '''
 
 '''
 
+# SKK
+[[plugins]]
+repo = 'tyru/eskk.vim'
+hook_add = '''
+  let g:eskk#directory = "~/.eskk"
+  let g:eskk#dictionary = { 'path': "~/.skk-jisyo", 'sorted': 0, 'encoding': 'utf-8', }
+  let g:eskk#large_dictionary = { 'path': "~/.eskk/SKK-JISYO.L", 'sorted': 1, 'encoding': 'euc-jp', }
+  let g:eskk#enable_completion = 1
+'''
+
 # Colors
 
 [[plugins]] # hybrid
@@ -290,4 +294,3 @@ repo = 'w0ng/vim-hybrid'
 repo = 'altercation/vim-colors-solarized'
 [[plugins]] # monokai
 repo = 'sickill/vim-monokai'
-
