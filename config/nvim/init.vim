@@ -202,6 +202,8 @@ set expandtab
 
 " visual setting
 syntax enable
+autocmd ColorScheme * highlight Normal ctermbg=none
+autocmd ColorScheme * highlight LineNr ctermbg=none
 colorscheme solarized
 "colorscheme monokai
 set background=dark

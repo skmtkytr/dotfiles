@@ -1,6 +1,7 @@
 [user]
 	name = skmtkytr
 	email = skmtkytr@gmail.com
+	signingkey = 88EF01124
 [core]
 	excludesfile = /Users/kyo/.gitignore_global
 	autoCRLF = false
@@ -34,3 +35,7 @@
   tool = vimdiff
 [difftool]
   path = nvim
+[gpg]
+	program = /usr/local/bin/gpg
+#[commit]
+#	gpgsign = true

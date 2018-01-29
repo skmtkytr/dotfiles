@@ -1,4 +1,5 @@
 fisherman/await
+oh-my-fish/plugin-balias
 edc/bass
 oh-my-fish/plugin-exenv
 fisherman/fzf
@@ -9,9 +10,10 @@ fisherman/last_job_id
 oh-my-fish/plugin-ndenv
 oh-my-fish/plugin-nodenv
 oh-my-fish/plugin-peco
+ka2n/fish-peco_todoist
 rafaelrinaldi/pure
 oh-my-fish/plugin-pyenv
-oh-my-fish/plugin-rbenv
+fisherman/rbenv
 fisherman/spin
 tuvistavie/fish-ssh-agent
 fisherman/z

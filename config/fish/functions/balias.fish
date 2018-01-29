@@ -1,0 +1,1 @@
+/Users/kyo/.config/fisherman/balias/functions/balias.fish

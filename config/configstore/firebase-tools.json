@@ -1,0 +1,38 @@
+{
+	"analytics-uuid": "0230b438-d78a-4a4f-8724-329a8599833d",
+	"motd": {
+		"minVersion": "3.0.5"
+	},
+	"motd.fetched": 1512556114716,
+	"usage": true,
+	"user": {
+		"azp": "563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com",
+		"aud": "563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com",
+		"sub": "105287539435042056949",
+		"hd": "pocket-menu.jp",
+		"email": "k.sakamoto@pocket-menu.jp",
+		"email_verified": true,
+		"at_hash": "PwKErzKJ7tASdXl7Hmr1sw",
+		"iss": "accounts.google.com",
+		"iat": 1512556126,
+		"exp": 1512559726
+	},
+	"tokens": {
+		"expires_at": 1512560642416,
+		"refresh_token": "1/cNHDA4lNgg27J8PZbjR2NgJ48c3ULrILZB_uxgFVzjs",
+		"scopes": [
+			"email",
+			"https://www.googleapis.com/auth/cloud-platform",
+			"https://www.googleapis.com/auth/cloudplatformprojects.readonly",
+			"https://www.googleapis.com/auth/firebase",
+			"openid"
+		],
+		"access_token": "ya29.GlsaBR92Ha8GUJD1pQlrqEBmHOLYVs5t6Hmnu0Nd6PZBz-r8Gkr-c8vx8oiAYeW0d55ZHvdOVvYBs-I4qbCx1WpAjEFQC_P3PTecZcvM9281lOd7NzKhOxGDq7Qy",
+		"token_type": "Bearer",
+		"expires_in": 3600,
+		"id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjkzMWNhNzRmZDFkYWYxYzEzZGRkODBhMWEwNmQwN2U5NWY1NWYzMTYifQ.eyJhenAiOiI1NjM1ODQzMzU4NjktZmdyaGdtZDQ3YnFuZWtpajVpOGI1cHIwM2hvODQ5ZTYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI1NjM1ODQzMzU4NjktZmdyaGdtZDQ3YnFuZWtpajVpOGI1cHIwM2hvODQ5ZTYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDUyODc1Mzk0MzUwNDIwNTY5NDkiLCJoZCI6InBvY2tldC1tZW51LmpwIiwiZW1haWwiOiJrLnNha2Ftb3RvQHBvY2tldC1tZW51LmpwIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJRUHpBOHNTNkZfVXlUSVh2UGt4ZXpnIiwiaXNzIjoiYWNjb3VudHMuZ29vZ2xlLmNvbSIsImlhdCI6MTUxMjU1NzA0MiwiZXhwIjoxNTEyNTYwNjQyfQ.EEYDGaagYxb92aam5p6Ll9H4uGbBeRwe__oKnLDggTDYMFoU6IOgDRapuKJfboxjwdLw-ADxHkmEscAMTLybGP3NuErxyQcSkc4b9lH2YP5s6BuoUwrTXSHEQE02_BYEpOyAlrIA6nOjmWLUVHezHjjWBXA-4aYCZg464MdJqjaIGatm8KlE-zfq-1QClhMDNSBeS-bQZtSUMbFlOIjXFwh2N6YurqCXeZgYKHSVQEZGGAaBC-iHylFip-ruyxnFSx-W8COoyWBgBaM8DymxosFRyi-YvR-iDw3vRkXU53DGV4RzskgzgVdbZuDFPWK7ScoKV-GMuFGYdq1iY2QiZQ"
+	},
+	"activeProjects": {
+		"/Users/kyo/workspaces/vue-go-firebase": "staging"
+	}
+}

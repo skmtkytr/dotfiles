@@ -1,4 +1,21 @@
 function fish_user_key_bindings
+
+    bind \ctt 'peco_todoist_item'
+    bind \ctp 'peco_todoist_project'
+    bind \ctl 'peco_todoist_labels'
+    bind \ctc 'peco_todoist_close'
+    bind \ctd 'peco_todoist_delete'
+    bind \cr 'peco_select_history (commandline -b)'
+    if bind -M insert >/dev/null ^/dev/null
+        bind -M insert \cr 'peco_select_history (commandline -b)'
+
+        bind -M insert \ctt 'peco_todoist_item'
+        bind -M insert \ctp 'peco_todoist_project'
+        bind -M insert \ctl 'peco_todoist_labels'
+        bind -M insert \ctc 'peco_todoist_close'
+        bind -M insert \ctd 'peco_todoist_delete'
+    end
+
     ### fzf ###
     set -q FZF_LEGACY_KEYBINDINGS
     or set -l FZF_LEGACY_KEYBINDINGS 1
@@ -36,9 +53,4 @@ function fish_user_key_bindings
         bind -M insert \cg '__ghq_crtl_g'
     end
     ### ghq ###
-
-    bind \cr 'peco_select_history (commandline -b)'
-    if bind -M insert >/dev/null ^/dev/null
-        bind -M insert \cr 'peco_select_history (commandline -b)'
-    end
 end

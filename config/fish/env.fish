@@ -6,7 +6,8 @@ set -x LC_ALL en_US.UTF-8
 
 set -x PATH /usr/local/bin $PATH
 set -x PATH /usr/local $PATH 
-set -x PATH $HOME/.erlenv/bin $PATH
+set -x PATH $HOME/.anyenv/bin $PATH
+set -x PATH $HOME/.exenv/bin $PATH
 set -x PATH $HOME/.gem/bin $PATH
 set -x PATH $HOME/.cargo/bin $PATH
 set -x GOPATH $HOME/go
@@ -30,12 +31,12 @@ function fish_mode_prompt
 end
 
 # *env init 
+status --is-interactive; and source (anyenv init -|psub)
 goenv init - | source
-docker-machine env | source
-set -gx EXENV_ROOT #path
-set -gx RBENV_ROOT #path
-
 set -x PATH $HOME/.rbenv/shims $PATH
+rbenv rehash >/dev/null ^&1
+# (rbenv init - | psub)
+set -gx EXENV_ROOT #path
 
 ### Added by the Bluemix CLI
 #source /usr/local/Bluemix/bx/zsh_autocomplete

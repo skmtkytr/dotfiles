@@ -14,7 +14,14 @@ alias mkdir='mkdir -p'
 alias sudo='sudo '
 
 alias ctags="`brew --prefix`/bin/ctags"
-alias tmux-copy='tmux save-buffer - | reattach-to-user-namespace pbcopy'
+
+# git alias
+balias gpl 'git pull '
+balias gco 'git checkout '
+balias gcm 'git commit '
+balias glog 'git log '
+balias gst 'git status '
+
 
 ######################################
 ## peco
