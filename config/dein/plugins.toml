@@ -9,6 +9,49 @@ build = 'make'
 repo = 'Shougo/denite.nvim'
 
 [[plugins]]
+repo = 'Shougo/defx.nvim'
+hook_add = '''
+autocmd FileType defx call s:defx_my_settings()
+	function! s:defx_my_settings() abort
+	  " Define mappings
+	  nnoremap <silent><buffer><expr> <CR>
+	  \ defx#do_action('open')
+	  nnoremap <silent><buffer><expr> l
+	  \ defx#do_action('open')
+	  nnoremap <silent><buffer><expr> E
+	  \ defx#do_action('open', 'vsplit')
+	  nnoremap <silent><buffer><expr> P
+	  \ defx#do_action('open', 'pedit')
+	  nnoremap <silent><buffer><expr> K
+	  \ defx#do_action('new_directory')
+	  nnoremap <silent><buffer><expr> N
+	  \ defx#do_action('new_file')
+	  nnoremap <silent><buffer><expr> d
+	  \ defx#do_action('remove')
+	  nnoremap <silent><buffer><expr> r
+	  \ defx#do_action('rename')
+	  nnoremap <silent><buffer><expr> h
+	  \ defx#do_action('cd', ['..'])
+	  nnoremap <silent><buffer><expr> ~
+	  \ defx#do_action('cd')
+	  nnoremap <silent><buffer><expr> q
+	  \ defx#do_action('quit')
+	  nnoremap <silent><buffer><expr> <Space>
+	  \ defx#do_action('toggle_select') . 'j'
+	  nnoremap <silent><buffer><expr> *
+	  \ defx#do_action('toggle_select_all')
+	  nnoremap <silent><buffer><expr> j
+	  \ line('.') == line('$') ? 'gg' : 'j'
+	  nnoremap <silent><buffer><expr> k
+	  \ line('.') == 1 ? 'G' : 'k'
+	  nnoremap <silent><buffer><expr> <C-l>
+	  \ defx#do_action('redraw')
+	  nnoremap <silent><buffer><expr> <C-g>
+	  \ defx#do_action('print')
+endfunction
+'''
+
+[[plugins]]
 repo = '5t111111/denite-rails'
 
 [[plugins]]
@@ -24,6 +67,12 @@ hook_add = '''
   let g:deoplete#enable_smart_case = 1
   let g:deoplete#file#enable_buffer_path = 1
 '''
+
+[[plugins]]
+repo = 'Shougo/neco-vim'
+
+[[plugins]]
+repo = 'Shougo/neco-syntax'
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
@@ -64,6 +113,17 @@ hook_add = '''
 
 [[plugins]]
 repo = 'tomtom/tcomment_vim'
+
+[[plugins]]
+repo = 'tyru/caw.vim'
+hook_add = '''
+" 行の最初の文字の前にコメント文字をトグル
+nmap <Leader>c <Plug>(caw:hatpos:toggle)
+vmap <Leader>c <Plug>(caw:hatpos:toggle)
+" 行頭にコメントをトグル
+nmap <Leader>, <Plug>(caw:zeropos:toggle)
+vmap <Leader>, <Plug>(caw:zeropos:toggle)
+'''
 
 [[plugins]]
 repo = 'thinca/vim-ref'
@@ -122,6 +182,9 @@ repo = 'BjRo/vim-extest'
 
 [[plugins]] # Elixir-phoenix
 repo = 'avdgaag/vim-phoenix'
+
+[[plugins]]
+repo = 'slim-template/vim-slim'
 
 [[plugins]] # Alchemist.vim (Elixir)
 repo = 'slashmili/alchemist.vim'
@@ -210,8 +273,9 @@ repo = 'tpope/vim-rails.git'
 repo = 'mattn/webapi-vim'
 #[[plugins]]
 #repo = 'fishbullet/deoplete-ruby'
+
 [[plugins]]
-repo = 'Shougo/deoplete-rct'
+repo = 'uplus/deoplete-solargraph'
 
 [[plugins]]
 repo = 'tpope/vim-endwise'
@@ -222,6 +286,9 @@ repo = 'terryma/vim-multiple-cursors'
 # syntax
 [[plugins]]
 repo = 'posva/vim-vue'
+
+[[plugins]]
+repo = 'kchmck/vim-coffee-script'
 
 [[plugins]] # pathogen
 repo = 'tpope/vim-pathogen'
@@ -273,6 +340,11 @@ repo = 'thinca/vim-quickrun'
 repo = 'easymotion/vim-easymotion'
 hook_add = '''
 
+'''
+
+[[plugins]]
+repo = 'ruby-formatter/rufo-vim'
+hook_add = '''
 '''
 
 [[plugins]]

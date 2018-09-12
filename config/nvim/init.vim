@@ -245,5 +245,10 @@ unlet s:local_session_directory
 "" vim-ref config
 let g:ref_refe_cmd = $HOME.'/.rbenv/shims/refe' "vim-ref command path
 
+"" neovim python support
+let g:python_host_prog=$PYENV_ROOT.'/versions/neovim-2/bin/python'
+let g:python3_host_prog=$PYENV_ROOT.'/versions/neovim-3/bin/python'
+
+
 
 " }}}

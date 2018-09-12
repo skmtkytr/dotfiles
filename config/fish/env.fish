@@ -4,17 +4,23 @@ set KEYTIMEOUT 0
 set -x LANG en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
 
+set -x GCLOUD_SDK $HOME/google-cloud-sdk
 set -x PATH /usr/local/bin $PATH
 set -x PATH /usr/local $PATH 
 set -x PATH $HOME/.anyenv/bin $PATH
 set -x PATH $HOME/.exenv/bin $PATH
 set -x PATH $HOME/.gem/bin $PATH
 set -x PATH $HOME/.cargo/bin $PATH
+set -x PATH $GCLOUD_SDK/bin $PATH
+set -x PATH $GCLOUD_SDK/platform/google_appengine $PATH
+
 set -x GOPATH $HOME/go
 set -x GOROOT /usr/local/opt/go/libexec
 set -x PATH $GOROOT/bin $GOPATH/bin $PATH
 set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
 set -x PATH $HOME/.local/bin $PATH
+
+eval (direnv hook fish)
 
 #nvim conf
 set -x XDG_CONFIG_HOME $HOME/.config
@@ -47,6 +53,7 @@ ssh-add -K ~/.ssh/github
 ssh-add -K ~/.ssh/id_rsa
 ssh-add -K ~/.ssh/pokeme_rsa
 set -x PYENV_ROOT $HOME/.pyenv
+set -x PGDATA /usr/local/var/postgres
 
 # 初回シェル時のみ tmux実行
 bass ~/.config/fish/functions/tmux.bash.sh
