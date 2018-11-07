@@ -56,7 +56,8 @@ hook_post_source = '''
   if has('nvim')
     call denite#custom#source('file_rec,grep', 'matchers',
         "\ ['matcher_cpsm'])
-        \ ['matcher_fuzzy'])
+        "\ ['matcher_fuzzy'])
+        \ ['matcher/fruzzy'])
   endif
 
   call denite#custom#alias('source', 'file_rec/git', 'file_rec')
@@ -83,6 +84,13 @@ hook_add = '''
 nmap <silent> ;cb :<C-u>Denite file_mru<CR>
 nmap <silent> ;cf :<C-u>Denite file_rec<CR>
 
+" denite gitstatus
+nmap <silent> ;cs :<C-u>Denite gitstatus<CR>
+" denite gitchanged
+nmap <silent> ;cc :<C-u>Denite gitchanged<CR>
+" denite 
+
+nmap <silent> ;cs :<C-u>Denite gitstatus<CR>
 " カーソル以下の単語を開いてるファイルからgrep
 nnoremap <silent> ;c/ :<C-u>DeniteCursorWord grep -buffer-name=search line<CR><C-R><C-W><CR>
 " 普通にgrep
@@ -106,3 +114,12 @@ on_path = '.*'
 repo = 'Shougo/neoyank.vim'
 depends = 'denite.nvim'
 on_event = 'TextYankPost'
+
+[[plugins]]
+repo = 'raghur/fruzzy'
+on_source = ['denite.nvim']
+hook_source = '''
+let g:fruzzy#sortonempty = 0
+let g:fruzzy#usenative = 1
+'''
+hook_post_update = 'call fruzzy#install()'
