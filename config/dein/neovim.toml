@@ -10,7 +10,11 @@ hook_source = '''
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#enable_ignore_case = 1
     let g:deoplete#enable_smart_case = 1
-
+    let g:deoplete#auto_complete_delay = 0
+    
+    call deoplete#custom#source('_', 'matchers',
+      \ ['matcher_fuzzy', 'matcher_length'])
+    
     " <TAB>: completion.
     imap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : deoplete#mappings#manual_complete()
     function! s:check_back_space() abort
@@ -50,11 +54,11 @@ hook_post_source = '''
   endif
 
   call denite#custom#source('file_old', 'matchers',
-      \ ['matcher_fuzzy', 'matcher_project_files'])
+      \ ['matcher_fruzzy', 'matcher_project_files'])
   call denite#custom#source('tag', 'matchers', ['matcher_substring'])
 
   if has('nvim')
-    call denite#custom#source('file_rec,grep', 'matchers',
+    call denite#custom#source('_', 'matchers',
         "\ ['matcher_cpsm'])
         "\ ['matcher_fuzzy'])
         \ ['matcher/fruzzy'])

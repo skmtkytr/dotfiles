@@ -209,17 +209,18 @@ colorscheme solarized
 set background=dark
 set number
 set ruler
+set relativenumber
 
 " keymap {{{
 nmap <F8> :TagbarToggle<CR>
-
+nnoremap <F3> :<C-u>setlocal relativenumber!<CR>
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
 inoremap [<Enter> []<Left><CR><ESC><S-o>
 inoremap (<Enter> ()<Left><CR><ESC><S-o>
 " }}}
 
 " previm {{{
-let g:previm_open_cmd = 'open -a Vivaldi'
+let g:previm_open_cmd = 'open -a Chrome'
 " }}}
 
 " vim-misc settings {{{
