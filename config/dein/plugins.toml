@@ -355,7 +355,8 @@ repo = 'thinca/vim-quickrun'
 [[plugins]]
 repo = 'easymotion/vim-easymotion'
 hook_add = '''
-
+  let g:EasyMotion_do_mapping = 0 "Disable default mappings
+  nmap s <Plug>(easymotion-s2)
 '''
 
 [[plugins]]

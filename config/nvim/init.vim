@@ -209,6 +209,7 @@ colorscheme solarized
 set background=dark
 set number
 set ruler
+set cursorline
 set relativenumber
 
 " keymap {{{
