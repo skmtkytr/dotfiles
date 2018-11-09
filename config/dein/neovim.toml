@@ -102,7 +102,13 @@ nnoremap <silent> ;g :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
 " カーソル以下の単語を普通にgrep
 nnoremap <silent> ;cg :<C-u>DeniteCursorWord grep -buffer-name=search-buffer-denite<CR>
 " search
-nnoremap <silent> / :<C-u>Denite -buffer-name=search -auto-resize line<CR>
+" nnoremap <silent> / :<C-u>Denite -buffer-name=search -auto-resize line<CR>
+
+"" Denite rails
+nnoremap <silent> ;rs :<C-u>Denite rails:spec<CR>
+nnoremap <silent> ;rm :<C-u>Denite rails:model<CR>
+nnoremap <silent> ;rc :<C-u>Denite rails:controller<CR>
+nnoremap <silent> ;rd :<C-u>Denite rails:dwim<CR>
 '''
 
 [[plugins]]

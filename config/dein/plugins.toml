@@ -356,7 +356,20 @@ repo = 'thinca/vim-quickrun'
 repo = 'easymotion/vim-easymotion'
 hook_add = '''
   let g:EasyMotion_do_mapping = 0 "Disable default mappings
-  nmap s <Plug>(easymotion-s2)
+  let g:EasyMotion_use_migemo = 1
+  let g:EasyMotion_smartcase = 1
+  " let g:EasyMotion_move_highlight = 0
+
+  map s <Plug>(easymotion-overwin-f2)
+
+  map <silent> / <Plug>(easymotion-sn)
+  omap / <Plug>(easymotion-tn)
+
+  " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+  " Without these mappings, `n` & `N` works fine. (These mappings just provide
+  " different highlight method and have some other features )
+  map  n <Plug>(easymotion-next)
+  map  N <Plug>(easymotion-prev)
 '''
 
 [[plugins]]
