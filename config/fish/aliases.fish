@@ -1,4 +1,6 @@
 ########################################
+# VIM
+alias vim='nvim'
 # aliases
  
 alias la='ls -a'
