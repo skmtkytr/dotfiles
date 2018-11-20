@@ -1,1 +1,1 @@
-/Users/kyo/.config/fisherman/nodenv/init.fish
+/Users/kyotaro.sakamoto/.config/fisherman/nodenv/init.fish

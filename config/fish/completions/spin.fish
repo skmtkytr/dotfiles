@@ -1,1 +1,1 @@
-/Users/kyo/.config/fisherman/spin/completions/spin.fish
+/Users/kyotaro.sakamoto/.config/fisherman/spin/completions/spin.fish

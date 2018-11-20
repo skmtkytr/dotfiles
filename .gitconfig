@@ -3,7 +3,7 @@
 	email = skmtkytr@gmail.com
 	signingkey = 88EF01124
 [core]
-	excludesfile = /Users/kyo/.gitignore_global
+	excludesfile = /Users/kyotaro.sakamoto/.gitignore_global
 	autoCRLF = false
 	safecrlf = true
 	editor = "nvim "
@@ -24,7 +24,7 @@
 [fetch]
 	prune = true
 [ghq]
-	root = /Users/kyo/.ghq
+	root = /Users/kyotaro.sakamoto/.ghq
 [push]
 	default = upstream
 [merge]
@@ -39,3 +39,5 @@
 	program = /usr/local/bin/gpg
 #[commit]
 #	gpgsign = true
+[credential]
+	helper = osxkeychain

@@ -1,1 +1,1 @@
-/Users/kyo/.config/fisherman/fzf/functions/__fzf_cd.fish
+/Users/kyotaro.sakamoto/.config/fisherman/fzf/functions/__fzf_cd.fish
