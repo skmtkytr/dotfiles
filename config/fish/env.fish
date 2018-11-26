@@ -35,9 +35,9 @@ function fish_default_mode_prompt
 end
 
 # *env init 
-status --is-interactive; and source (anyenv init -|psub)
+# status --is-interactive; and source (anyenv init -|psub)
 status --is-interactive; and source (pyenv init -|psub)
-goenv init - | source
+status --is-interactive; and source (goenv init -|psub)
 set -x PATH $HOME/.rbenv/shims $PATH
 rbenv rehash >/dev/null ^&1
 # (rbenv init - | psub)
@@ -46,9 +46,9 @@ rbenv rehash >/dev/null ^&1
 #source /usr/local/Bluemix/bx/zsh_autocomplete
 
 ### ssh agent
-# ssh-add -K ~/.ssh/gitlab
-# ssh-add -K ~/.ssh/github
-# ssh-add -K ~/.ssh/id_rsa
+ssh-add -K ~/.ssh/gitlab > /dev/null ^&1
+ssh-add -K ~/.ssh/github > /dev/null ^&1
+ssh-add -K ~/.ssh/id_rsa > /dev/null ^&1
 # ssh-add -K ~/.ssh/pokeme_rsa
 set -x PYENV_ROOT $HOME/.pyenv
 # set -x PGDATA /usr/local/var/postgres
