@@ -1,4 +1,10 @@
 ########################################
+# VIM
+if [ -e $HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim' ]
+  alias nvim=$HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim'
+end
+
+alias vim='nvim'
 # aliases
  
 alias la='ls -a'
