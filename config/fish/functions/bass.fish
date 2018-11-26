@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/bass/functions/bass.fish
+/Users/kyo/.config/fisherman/bass/functions/bass.fish

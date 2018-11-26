@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/fzf/functions/__fzf_reverse_isearch.fish
+/Users/kyo/.config/fisherman/fzf/functions/__fzf_reverse_isearch.fish

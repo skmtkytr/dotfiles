@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/pure/functions/__parse_current_folder.fish
+/Users/kyo/.config/fisherman/pure/__parse_current_folder.fish

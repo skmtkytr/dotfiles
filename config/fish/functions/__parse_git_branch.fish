@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/pure/functions/__parse_git_branch.fish
+/Users/kyo/.config/fisherman/pure/__parse_git_branch.fish

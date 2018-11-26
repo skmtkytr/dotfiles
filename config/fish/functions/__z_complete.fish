@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/z/functions/__z_complete.fish
+/Users/kyo/.config/fisherman/z/functions/__z_complete.fish

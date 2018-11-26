@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/rbenv/conf.d/rbenv.fish
+/Users/kyo/.config/fisherman/rbenv/conf.d/rbenv.fish

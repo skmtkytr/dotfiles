@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/get/completions/get.fish
+/Users/kyo/.config/fisherman/get/completions/get.fish

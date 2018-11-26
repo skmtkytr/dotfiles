@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/pyenv/init.fish
+/Users/kyo/.config/fisherman/pyenv/init.fish

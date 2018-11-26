@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/pure/functions/__format_time.fish
+/Users/kyo/.config/fisherman/pure/__format_time.fish

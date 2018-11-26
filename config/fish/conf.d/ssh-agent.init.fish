@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/ssh-agent/init.fish
+/Users/kyo/.config/fisherman/ssh-agent/init.fish

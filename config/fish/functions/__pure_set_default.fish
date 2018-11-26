@@ -1,1 +1,1 @@
-/Users/kyotaro.sakamoto/.config/fisherman/pure/functions/__pure_set_default.fish
+/Users/kyo/.config/fisherman/pure/__pure_set_default.fish
