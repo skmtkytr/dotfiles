@@ -1,1 +1,1 @@
-/Users/kyo/.config/fisherman/peco_todoist/functions/peco_todoist_delete.fish
+/Users/kyotaro.sakamoto/.config/fisherman/peco_todoist/functions/peco_todoist_delete.fish

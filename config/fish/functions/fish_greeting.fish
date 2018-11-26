@@ -1,1 +1,1 @@
-/Users/kyo/.config/fisherman/pure/fish_greeting.fish
+/Users/kyotaro.sakamoto/.config/fisherman/pure/fish_greeting.fish

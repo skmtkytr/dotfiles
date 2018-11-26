@@ -1,0 +1,1 @@
+/Users/kyotaro.sakamoto/.config/fisherman/pure/conf.d/pure.fish

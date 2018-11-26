@@ -4,15 +4,11 @@ set KEYTIMEOUT 0
 set -x LANG en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
 
-set -x GCLOUD_SDK $HOME/google-cloud-sdk
 set -x PATH /usr/local/bin $PATH
 set -x PATH /usr/local $PATH 
 set -x PATH $HOME/.anyenv/bin $PATH
-set -x PATH $HOME/.exenv/bin $PATH
 set -x PATH $HOME/.gem/bin $PATH
 set -x PATH $HOME/.cargo/bin $PATH
-set -x PATH $GCLOUD_SDK/bin $PATH
-set -x PATH $GCLOUD_SDK/platform/google_appengine $PATH
 
 set -x GOPATH $HOME/go
 set -x GOROOT /usr/local/opt/go/libexec
@@ -35,25 +31,27 @@ fish_vi_key_bindings
 # vi modeではなんか[I]みたいなの出るからオーバーライド
 function fish_mode_prompt 
 end
+function fish_default_mode_prompt
+end
 
 # *env init 
 status --is-interactive; and source (anyenv init -|psub)
+status --is-interactive; and source (pyenv init -|psub)
 goenv init - | source
 set -x PATH $HOME/.rbenv/shims $PATH
 rbenv rehash >/dev/null ^&1
 # (rbenv init - | psub)
-set -gx EXENV_ROOT #path
 
 ### Added by the Bluemix CLI
 #source /usr/local/Bluemix/bx/zsh_autocomplete
 
 ### ssh agent
 # ssh-add -K ~/.ssh/gitlab
-ssh-add -K ~/.ssh/github
-ssh-add -K ~/.ssh/id_rsa
-ssh-add -K ~/.ssh/pokeme_rsa
+# ssh-add -K ~/.ssh/github
+# ssh-add -K ~/.ssh/id_rsa
+# ssh-add -K ~/.ssh/pokeme_rsa
 set -x PYENV_ROOT $HOME/.pyenv
-set -x PGDATA /usr/local/var/postgres
+# set -x PGDATA /usr/local/var/postgres
 
 # 初回シェル時のみ tmux実行
 bass ~/.config/fish/functions/tmux.bash.sh

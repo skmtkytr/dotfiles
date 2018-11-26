@@ -1,1 +1,1 @@
-/Users/kyo/.config/fisherman/getopts/getopts.fish
+/Users/kyotaro.sakamoto/.config/fisherman/getopts/getopts.fish
