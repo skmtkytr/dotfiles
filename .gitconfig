@@ -3,7 +3,7 @@
 	email = skmtkytr@gmail.com
 	signingkey = 88EF01124
 [core]
-	excludesfile = /Users/kyotaro.sakamoto/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	autoCRLF = false
 	safecrlf = true
 	editor = "nvim "
@@ -24,7 +24,7 @@
 [fetch]
 	prune = true
 [ghq]
-	root = /Users/kyotaro.sakamoto/.ghq
+	root = ~/.ghq
 [push]
 	default = upstream
 [merge]
