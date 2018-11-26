@@ -13,6 +13,31 @@ set noshowcmd
 
 set mouse=a
 
+"" Spell Check
+set spelllang=en,cjk
+fun! s:SpellConf()
+  redir! => syntax
+  silent syntax
+  redir END
+
+  set spell
+
+  if syntax =~? '/<comment\>'
+    syntax spell default
+    syntax match SpellMaybeCode /\<\h\l*[_A-Z]\h\{-}\>/ contains=@NoSpell transparent containedin=Comment contained
+  else
+    syntax spell toplevel
+    syntax match SpellMaybeCode /\<\h\l*[_A-Z]\h\{-}\>/ contains=@NoSpell transparent
+  endif
+
+  syntax cluster Spell add=SpellNotAscii,SpellMaybeCode
+endfunc
+
+augroup spell_check
+  autocmd!
+  autocmd BufReadPost,BufNewFile,Syntax * call s:SpellConf()
+augroup END
+
 " vimlog
 "set verbosefile=~/vim.log
 "set verbose=20
@@ -209,8 +234,8 @@ colorscheme solarized
 set background=dark
 set number
 set ruler
-set cursorline
-set relativenumber
+" set cursorline
+" set relativenumber
 
 " keymap {{{
 nmap <F8> :TagbarToggle<CR>
