@@ -16,5 +16,10 @@ if status --is-interactive
   end
 end
 
+if test $SHLVL = 1
+  tmux
+end
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/kyo/google-cloud-sdk/path.fish.inc' ]; if type source > /dev/null; source '/Users/kyo/google-cloud-sdk/path.fish.inc'; else; . '/Users/kyo/google-cloud-sdk/path.fish.inc'; end; end
+set -g fish_user_paths "/usr/local/opt/openssl/bin" $fish_user_paths

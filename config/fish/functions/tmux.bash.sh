@@ -2,8 +2,6 @@ if [ $SHLVL = 1 ]; then
   tmux
 fi
 
-echo $SHLVL
-echo "tmuxed"
 # if [[ ! -n $TMUX && $- == *l* ]]; then
 #   # get the IDs
 #   ID="`tmux list-sessions`"

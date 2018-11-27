@@ -188,15 +188,31 @@ hook_add = '''
 '''
 
 
-[[plugins]] # watchdods
-repo = 'osyo-manga/vim-watchdogs'
+# [[plugins]] # watchdogs
+# repo = 'osyo-manga/vim-watchdogs'
 
 [[plugins]] # yaml
 repo = 'avakhov/vim-yaml'
 
 
-[[plugins]] # ctags
-repo = 'soramugi/auto-ctags.vim'
+# [[plugins]] # ctags
+# repo = 'soramugi/auto-ctags.vim'
+[[plugins]]
+repo = 'jsfaint/gen_tags.vim'
+hook_add = '''
+let g:gen_tags#ctags_auto_gen = 1
+let g:gen_tags#gtags_auto_gen = 1
+'''
+[[plugins]]
+repo = 'ozelentok/denite-gtags'
+hook_add = '''
+    " Prefix key
+    nmap [denite] <Nop>
+    map <C-j> [denite]
+    " Keymap
+    nmap <silent> [denite]<C-D> :Denite -buffer-name=gtags_completion gtags_completion<cr>
+'''
+
 
 [[plugins]] # Haml
 repo  = 'tpope/vim-haml'
@@ -322,10 +338,12 @@ hook_add= '''
   let g:ale_linter_aliases = {'vue': 'css'}
   let g:ale_fixers = {
   \   'javascript': ['eslint'],
+  \   'ruby': ['rubocop'],
   \}
   let g:ale_fix_on_save = 1
   let g:ale_completion_enabled = 1
   let g:airline#extensions#ale#enabled = 1
+  let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 '''
 
 #[[plugins]] #syntastic
@@ -406,10 +424,13 @@ hook_add = '''
 '''
 
 # Colors
+[[plugins]] # Template engine vim color scheme
+repo = 'cocopon/pgmnt.vim'
 
+[[plugins]] # iceberg
+repo = 'cocopon/iceberg.vim'
 [[plugins]] # hybrid
 repo = 'w0ng/vim-hybrid'
-
 [[plugins]] # solarized
 repo = 'altercation/vim-colors-solarized'
 [[plugins]] # monokai

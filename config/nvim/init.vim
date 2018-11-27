@@ -13,30 +13,33 @@ set noshowcmd
 
 set mouse=a
 
+"" incsubstitution
+set inccommand=split
+
 "" Spell Check
 set spelllang=en,cjk
-fun! s:SpellConf()
-  redir! => syntax
-  silent syntax
-  redir END
-
-  set spell
-
-  if syntax =~? '/<comment\>'
-    syntax spell default
-    syntax match SpellMaybeCode /\<\h\l*[_A-Z]\h\{-}\>/ contains=@NoSpell transparent containedin=Comment contained
-  else
-    syntax spell toplevel
-    syntax match SpellMaybeCode /\<\h\l*[_A-Z]\h\{-}\>/ contains=@NoSpell transparent
-  endif
-
-  syntax cluster Spell add=SpellNotAscii,SpellMaybeCode
-endfunc
-
-augroup spell_check
-  autocmd!
-  autocmd BufReadPost,BufNewFile,Syntax * call s:SpellConf()
-augroup END
+" fun! s:SpellConf()
+"   redir! => syntax
+"   silent syntax
+"   redir END
+"
+"   set spell
+"
+"   if syntax =~? '/<comment\>'
+"     syntax spell default
+"     syntax match SpellMaybeCode /\<\h\l*[_A-Z]\h\{-}\>/ contains=@NoSpell transparent containedin=Comment contained
+"   else
+"     syntax spell toplevel
+"     syntax match SpellMaybeCode /\<\h\l*[_A-Z]\h\{-}\>/ contains=@NoSpell transparent
+"   endif
+"
+"   syntax cluster Spell add=SpellNotAscii,SpellMaybeCode
+" endfunc
+"
+" augroup spell_check
+"   autocmd!
+"   autocmd BufReadPost,BufNewFile,Syntax * call s:SpellConf()
+" augroup END
 
 " vimlog
 "set verbosefile=~/vim.log
@@ -108,18 +111,19 @@ let g:syntastic_check_on_wq = 0
 
 "" lightline {{{
 let g:lightline = {
-      \ 'colorscheme': 'solarized',
+      \ 'colorscheme': 'iceberg',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'filename' ],
-      \             ['ale'],
+      \             ['readonly', 'filename', 'modified', 'ale'],
       \           ]
       \ },
       \ 'component_function': {
       \   'fugitive': 'LightlineFugitive',
       \   'readonly': 'LightlineReadonly',
       \   'modified': 'LightlineModified',
-      \   'filename': 'LightlineFilename'
+      \   'filename': 'LightlineFilename',
+      \   'ale': 'ALEGetStatusLine'
       \ },
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
@@ -227,14 +231,20 @@ set expandtab
 
 " visual setting
 syntax enable
-autocmd ColorScheme * highlight Normal ctermbg=none
-autocmd ColorScheme * highlight LineNr ctermbg=none
-colorscheme solarized
+" autocmd ColorScheme * highlight Normal ctermbg=none
+" autocmd ColorScheme * highlight LineNr ctermbg=none
+" colorscheme solarized
 "colorscheme monokai
-set background=dark
+colorscheme iceberg
+set termguicolors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+
+" set background=dark
 set number
 set ruler
-" set cursorline
+set cursorline
 " set relativenumber
 
 " keymap {{{
@@ -243,6 +253,11 @@ nnoremap <F3> :<C-u>setlocal relativenumber!<CR>
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
 inoremap [<Enter> []<Left><CR><ESC><S-o>
 inoremap (<Enter> ()<Left><CR><ESC><S-o>
+
+nnoremap <silent> <Space>f :Gtags -f %<CR>
+nnoremap <silent> <Space>j :GtagsCursor<CR>
+nnoremap <silent> <Space>d :<C-u>exe('Gtags '.expand('<cword>'))<CR>
+nnoremap <silent> <Space>r :<C-u>exe('Gtags -r '.expand('<cword>'))<CR>
 " }}}
 
 " previm {{{
