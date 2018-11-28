@@ -25,6 +25,7 @@
 	prune = true
 [ghq]
 	root = ~/.ghq
+  root = ~/.go/src
 [push]
 	default = upstream
 [merge]
