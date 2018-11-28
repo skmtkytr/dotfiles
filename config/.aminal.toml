@@ -1,0 +1,33 @@
+debug = false
+slomo = false
+shell = "/usr/local/bin/fish"
+
+[colours]
+  cursor = "#e8dfd6"
+  foreground = "#e8dfd6"
+  background = "#021b21"
+  black = "#032c36"
+  red = "#c2454e"
+  green = "#7cbf9e"
+  yellow = "#8a7a63"
+  blue = "#065f73"
+  magenta = "#ff5879"
+  cyan = "#44b5b1"
+  light_grey = "#f2f1b9"
+  dark_grey = "#3e4360"
+  light_red = "#ef5847"
+  light_green = "#a2db91"
+  light_yellow = "#beb090"
+  light_blue = "#61778d"
+  light_magenta = "#ff99a1"
+  light_cyan = "#9ed9d8"
+  white = "#f6f6c9"
+  selection = "#333366"
+
+[keys]
+  copy = "super + c"
+  debug = "super + d"
+  google = "super + g"
+  paste = "super + v"
+  report = "super + r"
+  slomo = "super + ;"
