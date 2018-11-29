@@ -10,7 +10,7 @@ set -x PATH $HOME/.anyenv/bin $PATH
 set -x PATH $HOME/.gem/bin $PATH
 set -x PATH $HOME/.cargo/bin $PATH
 
-set -x GOPATH $HOME/go
+set -x GOPATH $HOME/.go
 set -x GOROOT /usr/local/opt/go/libexec
 set -x PATH $GOROOT/bin $GOPATH/bin $PATH
 set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
