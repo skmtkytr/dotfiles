@@ -97,10 +97,11 @@ repo = 'xolox/vim-misc'
 
 [[plugins]]
 repo = 'majutsushi/tagbar'
+
 [[plugins]]
 repo = 'szw/vim-tags'
 hook_add = '''
-  let g:vim_tags_auto_generate = 1
+  " let g:vim_tags_auto_generate = 1
 '''
 
 [[plugins]]
@@ -203,6 +204,7 @@ hook_add = '''
 let g:gen_tags#ctags_auto_gen = 1
 let g:gen_tags#gtags_auto_gen = 1
 '''
+
 [[plugins]]
 repo = 'ozelentok/denite-gtags'
 hook_add = '''
@@ -281,6 +283,9 @@ repo = 'tpope/vim-rails.git'
 repo = 'mattn/webapi-vim'
 #[[plugins]]
 #repo = 'fishbullet/deoplete-ruby'
+
+[[plugins]]
+repo = 'taku-o/vim-copypath'
 
 # [[plugins]]
 # repo = 'uplus/deoplete-solargraph'
