@@ -1,0 +1,335 @@
+tap:
+- cjbassi/gotop
+- eugenmayer/dockersync
+- greymd/tools
+- homebrew/bundle
+- homebrew/cask
+- homebrew/cask-fonts
+- homebrew/cask-versions
+- homebrew/core
+- homebrew/services
+- mackerelio/mackerel-agent
+- minamijoyo/myaws
+- mscharley/homebrew
+- telemachus/brew
+- universal-ctags/universal-ctags
+brew:
+  install:
+  - name: ansible
+    args: []
+  - name: atk
+    args: []
+  - name: autoconf
+    args: []
+  - name: automake
+    args: []
+  - name: boost
+    args: []
+  - name: c-ares
+    args: []
+  - name: cairo
+    args: []
+  - name: cmake
+    args: []
+  - name: cmigemo
+    args: []
+  - name: colordiff
+    args: []
+  - name: coreutils
+    args: []
+  - name: ctags
+    args: []
+  - name: direnv
+    args: []
+  - name: docker
+    args: []
+  - name: docker-machine
+    args: []
+  - name: echo-meme
+    args: []
+  - name: exa
+    args: []
+  - name: exenv
+    args: []
+  - name: fd
+    args: []
+  - name: fish
+    args: []
+  - name: fontconfig
+    args: []
+  - name: fontforge
+    args: []
+  - name: freetype
+    args: []
+  - name: fribidi
+    args: []
+  - name: fsevent_watch
+    args: []
+  - name: fswatch
+    args: []
+  - name: fzf
+    args: []
+  - name: gd
+    args: []
+  - name: gdbm
+    args: []
+  - name: gdk-pixbuf
+    args: []
+  - name: gettext
+    args: []
+  - name: ghostscript
+    args: []
+  - name: ghq
+    args: []
+  - name: giflib
+    args: []
+  - name: git
+    args: []
+  - name: git-flow
+    args: []
+  - name: glib
+    args: []
+  - name: global
+    args: []
+  - name: gnu-barcode
+    args: []
+  - name: gnu-sed
+    args: []
+  - name: go
+    args: []
+  - name: gobject-introspection
+    args: []
+  - name: goenv
+    args: []
+  - name: gotop
+    args: []
+  - name: graphite2
+    args: []
+  - name: graphviz
+    args: []
+  - name: gsettings-desktop-schemas
+    args: []
+  - name: gtk+
+    args: []
+  - name: gtk+3
+    args: []
+  - name: harfbuzz
+    args: []
+  - name: hicolor-icon-theme
+    args: []
+  - name: httpie
+    args: []
+  - name: hub
+    args: []
+  - name: icu4c
+    args: []
+  - name: ilmbase
+    args: []
+  - name: imagemagick
+    args: []
+  - name: jansson
+    args: []
+  - name: jemalloc
+    args: []
+  - name: jpeg
+    args: []
+  - name: jpegoptim
+    args: []
+  - name: jq
+    args: []
+  - name: kerl
+    args: []
+  - name: libde265
+    args: []
+  - name: libepoxy
+    args: []
+  - name: libev
+    args: []
+  - name: libevent
+    args: []
+  - name: libffi
+    args: []
+  - name: libheif
+    args: []
+  - name: libiconv
+    args: []
+  - name: libidn
+    args: []
+  - name: libidn2
+    args: []
+  - name: libomp
+    args: []
+  - name: libpng
+    args: []
+  - name: libspiro
+    args: []
+  - name: libssh2
+    args: []
+  - name: libtermkey
+    args: []
+  - name: libtiff
+    args: []
+  - name: libtool
+    args: []
+  - name: libuninameslist
+    args: []
+  - name: libunistring
+    args: []
+  - name: libuv
+    args: []
+  - name: libvterm
+    args: []
+  - name: libxml2
+    args: []
+  - name: libxslt
+    args: []
+  - name: libyaml
+    args: []
+  - name: little-cms2
+    args: []
+  - name: lua
+    args: []
+  - name: luajit
+    args: []
+  - name: lynx
+    args: []
+  - name: mecab
+    args: []
+  - name: memcached
+    args: []
+  - name: mercurial
+    args: []
+  - name: mikutter
+    args: []
+  - name: mkr
+    args: []
+  - name: msgpack
+    args: []
+  - name: myaws
+    args: []
+  - name: mysql
+    args: []
+  - name: ncurses
+    args: []
+  - name: neovim
+    args: []
+  - name: nghttp2
+    args: []
+  - name: ninja
+    args: []
+  - name: nkf
+    args: []
+  - name: node
+    args: []
+  - name: node-build
+    args: []
+  - name: nodenv
+    args: []
+  - name: oniguruma
+    args: []
+  - name: openexr
+    args: []
+  - name: openjpeg
+    args: []
+  - name: openshift-cli
+    args: []
+  - name: openssl
+    args: []
+  - name: openssl@1.1
+    args: []
+  - name: pango
+    args: []
+  - name: pcre
+    args: []
+  - name: pcre2
+    args: []
+  - name: peco
+    args: []
+  - name: pidof
+    args: []
+  - name: pixman
+    args: []
+  - name: pkg-config
+    args: []
+  - name: pngquant
+    args: []
+  - name: postgresql
+    args: []
+  - name: pyenv
+    args: []
+  - name: pyenv-virtualenv
+    args: []
+  - name: python
+    args: []
+  - name: python@2
+    args: []
+  - name: qt
+    args: []
+  - name: rbenv
+    args: []
+  - name: readline
+    args: []
+  - name: reattach-to-user-namespace
+    args: []
+  - name: redis
+    args: []
+  - name: ripgrep
+    args: []
+  - name: rsync
+    args: []
+  - name: ruby-build
+    args: []
+  - name: scons
+    args: []
+  - name: shared-mime-info
+    args: []
+  - name: socat
+    args: []
+  - name: source-to-image
+    args: []
+  - name: sqlite
+    args: []
+  - name: terminal-notifier
+    args: []
+  - name: tmux
+    args: []
+  - name: tmux-mem-cpu-load
+    args: []
+  - name: tree
+    args: []
+  - name: unibilium
+    args: []
+  - name: unison
+    args: []
+  - name: universal-ctags
+    args: []
+  - name: unixodbc
+    args: []
+  - name: unox
+    args: []
+  - name: v8@3.15
+    args: []
+  - name: webp
+    args: []
+  - name: wget
+    args: []
+  - name: wxmac
+    args: []
+  - name: x265
+    args: []
+  - name: xz
+    args: []
+  - name: yarn
+    args: []
+  - name: zlib
+    args: []
+  - name: zplug
+    args: []
+  - name: zsh
+    args: []
+  - name: zsh-autosuggestions
+    args: []
+  - name: zsh-completions
+    args: []
+  - name: zsh-syntax-highlighting
+    args: []
