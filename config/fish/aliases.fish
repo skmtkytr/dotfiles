@@ -1,12 +1,14 @@
 ########################################
 # VIM
-if [ -e $HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim' ]
+if test -f $HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim'
   alias nvim=$HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim'
 end
 
 alias vim='nvim'
 # aliases
- 
+
+alias find='fd '
+alias ls='exa '
 alias la='ls -a'
 alias ll='ls -l'
  

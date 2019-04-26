@@ -1,4 +1,5 @@
 set KEYTIMEOUT 0
+set -x SHELL /usr/local/bin/fish
 ########################################
 # 環境変数
 set -x LANG en_US.UTF-8
