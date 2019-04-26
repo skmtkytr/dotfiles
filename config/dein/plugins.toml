@@ -74,9 +74,6 @@ repo = 'nixprime/cpsm'
 build = 'env PY3=ON ./install.sh'
 
 [[plugins]]
-repo = 'raghur/fruzzy'
-
-[[plugins]]
 repo = 'edkolev/tmuxline.vim'
 hook_add = '''
   let g:tmuxline_preset = {

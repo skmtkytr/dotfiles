@@ -54,9 +54,14 @@ hook_post_source = '''
         \ ['--vimgrep', '--no-heading'])
   endif
 
-  call denite#custom#source('file_old', 'matchers',
-      \ ['matcher_fruzzy', 'matcher_project_files'])
-  call denite#custom#source('tag', 'matchers', ['matcher_substring'])
+  call denite#custom#source('file/old', 'matchers',
+      \ ['matcher/fruzzy', 'matcher/project_files'])
+  call denite#custom#source('tag', 'matchers', ['matcher/substring'])
+  call denite#custom#source('file/rec', 'matchers',
+      \ ['matcher/fruzzy'])
+  call denite#custom#source('file/old', 'converters',
+      \ ['converter/relative_word'])
+
 
   if has('nvim')
     call denite#custom#source('_', 'matchers',
@@ -69,10 +74,12 @@ hook_post_source = '''
   call denite#custom#var('file_rec/git', 'command',
       \ ['git', 'ls-files', '-co', '--exclude-standard'])
 
+" call denite#custom#option('default', 'prompt', '>')
+" call denite#custom#option('default', 'short_source_names', v:true)
   call denite#custom#option('default', {
       \ 'auto_accel': v:true,
       \ 'prompt': '>',
-      \ 'short_source_names': v:true
+      \ 'source_names': 'short',
       \ })
 
   let s:menus = {}
@@ -113,10 +120,6 @@ nnoremap <silent> ;rd :<C-u>Denite rails:dwim<CR>
 '''
 
 [[plugins]]
-repo = 'nixprime/cpsm'
-build = 'env PY3=ON ./install.sh'
-
-[[plugins]]
 repo = 'Shougo/neomru.vim'
 depends = 'denite.nvim'
 on_path = '.*'
@@ -130,7 +133,8 @@ on_event = 'TextYankPost'
 repo = 'raghur/fruzzy'
 on_source = ['denite.nvim']
 hook_source = '''
-let g:fruzzy#sortonempty = 0
-let g:fruzzy#usenative = 1
+  let g:fruzzy#sortonempty = 0
+  let g:fruzzy#usenative = 1
 '''
 hook_post_update = 'call fruzzy#install()'
+
