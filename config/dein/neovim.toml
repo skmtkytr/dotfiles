@@ -27,74 +27,61 @@ hook_source = '''
     inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
 '''
 
+[[plugins]]
+repo      = 'delphinus/dwm.vim'
+rev       = 'feature/disable'
+on_map    = ['<Plug>DWM']
+hook_add  = ''' "{{{
+  function! s:dwm_reset_pane_width() abort
+    if !exists('*DWM_ResizeMasterPaneWidth')
+      return
+    endif
+    let half = &columns / 2
+    let min_width = get(g:, 'dwm_min_master_pane_width', 9999)
+    let g:dwm_master_pane_width = min([min_width, half])
+    call DWM_ResizeMasterPaneWidth()
+  endfunction
+  function! s:dwm_disable() abort
+    autocmd! dwm BufWinEnter
+    augroup! dwm
+  endfunction
+  function! s:dwm_enable() abort
+    augroup dwm
+      autocmd!
+      autocmd! BufWinEnter * if &buflisted || &filetype ==# 'help' | call DWM_AutoEnter() | endif
+    augroup END
+  endfunction
+  nnoremap <C-J> <C-W>w
+  nnoremap <C-K> <C-W>W
+  nmap <C-S> <Plug>DWMRotateClockwise
+  nmap <C-Q> <Plug>DWMRotateCounterclockwise
+  nmap <C-N> <Plug>DWMNew
+  "nmap <C-C> <Plug>DWMClose
+  nmap <C-Space> <Plug>DWMFocus
+  nmap <C-@> <Plug>DWMFocus
+  nmap <C-L> <Plug>DWMGrowMaster
+  command! DWMResetPaneWidth call <SID>dwm_reset_pane_width()
+  command! DWMDisable call <SID>dwm_disable()
+  command! DWMEnable call <SID>dwm_enable()
+"}}} '''
+hook_source = 'let g:dwm_min_master_pane_width = 86'
+
+# rev = '2.1'
 [[plugins]] # unite.vim 後継
 repo = 'Shougo/denite.nvim'
 if = 'has("python3")'
-on_cmd = 'Denite'
-hook_post_source = '''
-  call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-      \ [
-      \ '.git/', 'build/', '__pycache__/', 'Cache/', '~/Library/Caches/',
-      \ 'images/', '*.o', '*.make',
-      \ '*.min.*', 'log/',
-      \ 'img/', 'fonts/'])
-
-	" Change sorters.
-	call denite#custom#source(
-	\ 'file_rec', 'sorters', ['sorter_sublime'])
-
-  if executable('rg')
-    call denite#custom#var('file_rec', 'command',
-        \ ['rg', '--files', '--glob', '!.git'])
-    call denite#custom#var('grep', 'command', ['rg', '--threads', '1'])
-    call denite#custom#var('grep', 'recursive_opts', [])
-    call denite#custom#var('grep', 'final_opts', [])
-    call denite#custom#var('grep', 'separator', ['--'])
-    call denite#custom#var('grep', 'default_opts',
-        \ ['--vimgrep', '--no-heading'])
-  endif
-
-  call denite#custom#source('file/old', 'matchers',
-      \ ['matcher/fruzzy', 'matcher/project_files'])
-  call denite#custom#source('tag', 'matchers', ['matcher/substring'])
-  call denite#custom#source('file/rec', 'matchers',
-      \ ['matcher/fruzzy'])
-  call denite#custom#source('file/old', 'converters',
-      \ ['converter/relative_word'])
-
-
-  if has('nvim')
-    call denite#custom#source('_', 'matchers',
-        "\ ['matcher_cpsm'])
-        "\ ['matcher_fuzzy'])
-        \ ['matcher/fruzzy'])
-  endif
-
-  call denite#custom#alias('source', 'file_rec/git', 'file_rec')
-  call denite#custom#var('file_rec/git', 'command',
-      \ ['git', 'ls-files', '-co', '--exclude-standard'])
-
-" call denite#custom#option('default', 'prompt', '>')
-" call denite#custom#option('default', 'short_source_names', v:true)
-  call denite#custom#option('default', {
-      \ 'auto_accel': v:true,
-      \ 'prompt': '>',
-      \ 'source_names': 'short',
-      \ })
-
-  let s:menus = {}
-  let s:menus.vim = {
-    \ 'description': 'Vim',
-    \ }
-  let s:menus.vim.file_candidates = [
-    \ ['    > Edit configuation file (init.vim)', '~/.config/nvim/init.vim']
-    \ ]
-  " deniteの起動位置をtopに変更
-  "call denite#custom#option('default', 'direction', 'top')
-'''
+on_cmd   = ['Denite', 'DeniteBufferDir', 'DeniteCursorWord']
+hook_source = 'source ~/.config/dein/plugins/denite.rc.vim'
 hook_add = '''
+
+nnoremap <silent> [Window]s :<C-u>Denite file/point file/old
+        \ -sorters=sorter/rank
+        \ `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`
+        \ file file:new<CR>
+
 nmap <silent> ;cb :<C-u>Denite file_mru<CR>
-nmap <silent> ;cf :<C-u>Denite file_rec<CR>
+nmap <silent> ;cf :<C-u>Denite file/rec<CR>
+nmap <silent> ;cm :<C-u>Denite menu<CR>
 
 " denite gitstatus
 nmap <silent> ;cs :<C-u>Denite gitstatus<CR>
@@ -104,9 +91,10 @@ nmap <silent> ;cc :<C-u>Denite gitchanged<CR>
 
 nmap <silent> ;cs :<C-u>Denite gitstatus<CR>
 " カーソル以下の単語を開いてるファイルからgrep
-nnoremap <silent> ;c/ :<C-u>DeniteCursorWord grep -buffer-name=search line<CR><C-R><C-W><CR>
+nnoremap <silent> ;c/ :<C-u>DeniteCursorWord grep line -buffer-name=search<CR><C-R><C-W><CR>
 " 普通にgrep
-nnoremap <silent> ;g :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
+nnoremap <silent> ;g :<C-u>Denite grep <CR>
+" nnoremap <silent> ;g :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
 " カーソル以下の単語を普通にgrep
 nnoremap <silent> ;cg :<C-u>DeniteCursorWord grep -buffer-name=search-buffer-denite<CR>
 " search
@@ -117,7 +105,75 @@ nnoremap <silent> ;rs :<C-u>Denite rails:spec<CR>
 nnoremap <silent> ;rm :<C-u>Denite rails:model<CR>
 nnoremap <silent> ;rc :<C-u>Denite rails:controller<CR>
 nnoremap <silent> ;rd :<C-u>Denite rails:dwim<CR>
+
+nnoremap <silent> ;;
+        \ :<C-u>Denite command command_history<CR>
+
 '''
+
+  # nnoremap <silent> ;r
+  #       \ :<C-u>Denite -buffer-name=register
+  #       \ register neoyank<CR>
+  # xnoremap <silent> ;r
+  #       \ :<C-u>Denite -default-action=replace -buffer-name=register
+  #       \ register neoyank<CR>
+  # nnoremap <silent> [Window]<Space>
+  #       \ :<C-u>Denite file/rec:~/.vim/rc<CR>
+  # nnoremap <expr> / line('$') > 10000 ? '/' :
+  # \ ":\<C-u>Denite -buffer-name=search -start-filter line\<CR>"
+  # nnoremap <expr> n line('$') > 10000 ? 'n' :
+  # \ ":\<C-u>Denite -buffer-name=search -resume -refresh -no-start-filter\<CR>"
+  # nnoremap <expr> * line('$') > 10000 ? '*' :
+  # \ ":\<C-u>DeniteCursorWord -buffer-name=search line\<CR>"
+  # nnoremap <silent> [Window]s :<C-u>Denite file/point file/old
+  #       \ -sorters=sorter/rank
+  #       \ `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`
+  #       \ file file:new<CR>
+  # nnoremap <silent><expr> tt  &filetype == 'help' ?  "g\<C-]>" :
+  #       \ ":\<C-u>DeniteCursorWord -buffer-name=tag -immediately
+  #       \  tag:include\<CR>"
+  # nnoremap <silent><expr> tp  &filetype == 'help' ?
+  #       \ ":\<C-u>pop\<CR>" : ":\<C-u>Denite jump\<CR>"
+  # nnoremap <silent> [Window]n :<C-u>Denite dein<CR>
+  # nnoremap <silent> [Window]g :<C-u>Denite ghq<CR>
+  # nnoremap <silent> ;g :<C-u>Denite -buffer-name=search
+  #       \ -no-empty grep<CR>
+  # nnoremap <silent> ft :<C-u>Denite filetype<CR>
+  # nnoremap <silent> <C-t> :<C-u>Denite
+  #       \ -cursor-pos=`tabpagenr()-1` deol:zsh<CR>
+  # nnoremap <silent> <C-k> :<C-u>Denite change jump<CR>
+  # nnoremap <silent> <C-h> :<C-u>DeniteCursorWord help<CR>
+  # nnoremap <silent> [Space]gs :<C-u>Denite gitstatus<CR>
+  # nnoremap <silent> ;;
+  #       \ :<C-u>Denite command command_history<CR>
+
+[plugins.ftplugin]
+denite = '''
+" Define mappings
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> sp
+  \ denite#do_map('do_action', 'split')
+  nnoremap <silent><buffer><expr> vs
+  \ denite#do_map('do_action', 'vsplit')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> <C-C>
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
+endfunction
+'''
+
+[[plugins]]
+repo = 'Jagua/vim-denite-ghq'
+
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
