@@ -427,7 +427,18 @@ hook_add = '''
 # '''
 
 # Howm
+[[plugins]]
 repo = 'fuenor/qfixhowm'
+hook_add = '''
+" キーマップリーダー
+let QFixHowm_Key = 'g'
+
+" howm_dirはファイルを保存したいディレクトリを設定
+let howm_dir             = '~/howm'
+let howm_filename        = '%Y/%m/%Y-%m-%d-%H%M%S.txt'
+let howm_fileencoding    = 'utf-8'
+let howm_fileformat      = 'unix'
+'''
 
 # SKK
 [[plugins]]
