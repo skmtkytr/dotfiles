@@ -8,7 +8,6 @@ set -x LC_ALL en_US.UTF-8
 set -x PATH /usr/local/bin $PATH
 set -x PATH /usr/local $PATH 
 set -x PATH $HOME/.anyenv/bin $PATH
-set -x PATH $HOME/.gem/bin $PATH
 set -x PATH $HOME/.cargo/bin $PATH
 
 set -x GOPATH $HOME/.go
@@ -16,6 +15,13 @@ set -x GOROOT /usr/local/opt/go/libexec
 set -x PATH $GOROOT/bin $GOPATH/bin $PATH
 set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
 set -x PATH $HOME/.local/bin $PATH
+#set -x SDKROOT (xcrun --sdk macosx --show-sdk-path)
+
+set -x PATH $HOME/.rvm/bin $PATH
+#set -x PATH (brew --prefix)/opt/openssl/bin $PATH
+#set -x LDFLAGS /usr/local/opt/openssl/lib $LDFLAGS
+#set -x CPPFLAGS /usr/local/opt/openssl/include $CPPFLAGS
+#set -x PKG_CONFIG_PATH /usr/local/opt/openssl/lib/pkgconfig $PKG_CONFIG_PATH
 
 eval (direnv hook fish)
 
@@ -24,7 +30,7 @@ set -x XDG_CONFIG_HOME $HOME/.config
 set -x EDITOR nvim
 
 # gem home 
-set -x GEM_HOME ~/.gem
+#set -x GEM_HOME ~/.gem
 
 set -x JAVA_HOME '/usr/libexec/java_home -v 1.8' 
 # vi 風キーバインドにする
@@ -39,8 +45,8 @@ end
 # status --is-interactive; and source (anyenv init -|psub)
 status --is-interactive; and source (pyenv init -|psub)
 status --is-interactive; and source (goenv init -|psub)
-set -x PATH $HOME/.rbenv/shims $PATH
-rbenv rehash >/dev/null ^&1
+# set -x PATH $HOME/.rbenv/shims $PATH
+# rbenv rehash >/dev/null ^&1
 # (rbenv init - | psub)
 
 ### Added by the Bluemix CLI
@@ -61,3 +67,4 @@ bass ~/.config/fish/functions/tmux.bash.sh
 if [ -f '/Users/kyo/Downloads/google-cloud-sdk/path.fish.inc' ]
   source '/Users/kyo/Downloads/google-cloud-sdk/path.fish.inc'
 end
+

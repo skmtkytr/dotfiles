@@ -16,7 +16,9 @@ if status --is-interactive
   end
 end
 
-if test $SHLVL = 1
+if test $SHLVL -eq 0
+  tmux a
+elsif test (tmux has) -eq 1
   tmux
 end
 
