@@ -1,6 +1,12 @@
 [[plugins]] # context_filetype.vim
 repo = 'Shougo/context_filetype.vim'
 
+[[plugins]]
+repo = 'liuchengxu/vim-clap'
+hook_source = '''
+  nnoremap <silent> <C-p> :Clap gfiles<CR>
+'''
+
 [[plugins]] # 補完
 repo = 'Shougo/deoplete.nvim'
 if = 'has("python3")'
@@ -10,8 +16,8 @@ hook_source = '''
     let g:deoplete#enable_at_startup = 1
     " let g:deoplete#enable_at_startup = 0
     let g:deoplete#enable_ignore_case = 1
-    let g:deoplete#enable_smart_case = 1
-    let g:deoplete#auto_complete_delay = 0
+    call deoplete#custom#option('auto_complete_delay', 0)
+    call deoplete#custom#option('enable_smart_case', 1)
     
     call deoplete#custom#source('_', 'matchers',
       \ ['matcher_fuzzy', 'matcher_length'])
@@ -26,6 +32,46 @@ hook_source = '''
     " <S-TAB>: completion back.
     inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
 '''
+
+#[[plugins]]
+#repo = 'fishbullet/deoplete-ruby'
+[[plugins]]
+repo = 'tbodt/deoplete-tabnine'
+on_ft = 'ruby,go,perl,python'
+on_event = ['InsertEnter']
+build = './install.sh'
+
+[[plugins]]
+repo = 'taku-o/vim-copypath'
+
+# [[plugins]]
+# repo = 'uplus/deoplete-solargraph'
+#[[plugins]]
+#repo = 'zchee/deoplete-go'
+#on_event = 'InsertEnter'
+#on_ft = 'go'
+#
+#[[plugins]]
+#repo = 'zchee/deoplete-jedi'
+#on_ft = 'python'
+#hook_source = '''
+#let g:deoplete#sources#jedi#enable_typeinfo = 0
+#'''
+
+
+[[plugins]]
+repo = 'ozelentok/denite-gtags'
+hook_add = '''
+    " Prefix key
+    nmap [denite] <Nop>
+    map <C-j> [denite]
+    " Keymap
+    " nmap <silent> [denite]<C-D> :Denite -buffer-name=gtags_completion gtags_completion<cr>
+'''
+[[plugins]]
+repo = 'iyuuya/denite-rails'
+[[plugins]]
+repo = 'neoclide/denite-git'
 
 [[plugins]]
 repo      = 'delphinus/dwm.vim'
@@ -66,7 +112,6 @@ hook_add  = ''' "{{{
 "}}} '''
 hook_source = 'let g:dwm_min_master_pane_width = 86'
 
-# rev = '2.1'
 [[plugins]] # unite.vim 後継
 repo = 'Shougo/denite.nvim'
 if = 'has("python3")'
@@ -96,7 +141,8 @@ nnoremap <silent> ;c/ :<C-u>DeniteCursorWord grep line -buffer-name=search<CR><C
 nnoremap <silent> ;g :<C-u>Denite grep <CR>
 " nnoremap <silent> ;g :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
 " カーソル以下の単語を普通にgrep
-nnoremap <silent> ;cg :<C-u>DeniteCursorWord grep -buffer-name=search-buffer-denite<CR>
+nnoremap <silent> ;cg :<C-u>DeniteCursorWord grep<CR>
+" nnoremap <silent> ;cg :<C-u>DeniteCursorWord grep -buffer-name=search-buffer-denite<CR>
 " search
 " nnoremap <silent> / :<C-u>Denite -buffer-name=search -auto-resize line<CR>
 
@@ -109,49 +155,9 @@ nnoremap <silent> ;rd :<C-u>Denite rails:dwim<CR>
 nnoremap <silent> ;;
         \ :<C-u>Denite command command_history<CR>
 
-'''
-
-  # nnoremap <silent> ;r
-  #       \ :<C-u>Denite -buffer-name=register
-  #       \ register neoyank<CR>
-  # xnoremap <silent> ;r
-  #       \ :<C-u>Denite -default-action=replace -buffer-name=register
-  #       \ register neoyank<CR>
-  # nnoremap <silent> [Window]<Space>
-  #       \ :<C-u>Denite file/rec:~/.vim/rc<CR>
-  # nnoremap <expr> / line('$') > 10000 ? '/' :
-  # \ ":\<C-u>Denite -buffer-name=search -start-filter line\<CR>"
-  # nnoremap <expr> n line('$') > 10000 ? 'n' :
-  # \ ":\<C-u>Denite -buffer-name=search -resume -refresh -no-start-filter\<CR>"
-  # nnoremap <expr> * line('$') > 10000 ? '*' :
-  # \ ":\<C-u>DeniteCursorWord -buffer-name=search line\<CR>"
-  # nnoremap <silent> [Window]s :<C-u>Denite file/point file/old
-  #       \ -sorters=sorter/rank
-  #       \ `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`
-  #       \ file file:new<CR>
-  # nnoremap <silent><expr> tt  &filetype == 'help' ?  "g\<C-]>" :
-  #       \ ":\<C-u>DeniteCursorWord -buffer-name=tag -immediately
-  #       \  tag:include\<CR>"
-  # nnoremap <silent><expr> tp  &filetype == 'help' ?
-  #       \ ":\<C-u>pop\<CR>" : ":\<C-u>Denite jump\<CR>"
-  # nnoremap <silent> [Window]n :<C-u>Denite dein<CR>
-  # nnoremap <silent> [Window]g :<C-u>Denite ghq<CR>
-  # nnoremap <silent> ;g :<C-u>Denite -buffer-name=search
-  #       \ -no-empty grep<CR>
-  # nnoremap <silent> ft :<C-u>Denite filetype<CR>
-  # nnoremap <silent> <C-t> :<C-u>Denite
-  #       \ -cursor-pos=`tabpagenr()-1` deol:zsh<CR>
-  # nnoremap <silent> <C-k> :<C-u>Denite change jump<CR>
-  # nnoremap <silent> <C-h> :<C-u>DeniteCursorWord help<CR>
-  # nnoremap <silent> [Space]gs :<C-u>Denite gitstatus<CR>
-  # nnoremap <silent> ;;
-  #       \ :<C-u>Denite command command_history<CR>
-
-[plugins.ftplugin]
-denite = '''
-" Define mappings
 autocmd FileType denite call s:denite_my_settings()
 function! s:denite_my_settings() abort
+" Define mappings
   nnoremap <silent><buffer><expr> <CR>
   \ denite#do_map('do_action')
   nnoremap <silent><buffer><expr> a

@@ -1,5 +1,15 @@
-source ~/.zplug/init.zsh
+# zplugの設定
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
 
+source ~/.zplug/init.zsh
+# プライベートリポジトリのプラグインも使うのでzplugのgitをssh経由にする
+ZPLUG_PROTOCOL=ssh
+
+# peco/percol/fzfなどでフィルタ絞込するためのフレームワーク
+zplug "mollifier/anyframe"
+# CWべんりスクリプト
+zplug "crowdworksjp/cw-cli-tools"
 # Make sure to use double quotes
 zplug "zsh-users/zsh-history-substring-search"
 
@@ -324,6 +334,38 @@ bindkey '^R' peco-history-selection
 if [ $SHLVL = 1 ]; then
   tmux
 fi
+
+# cw-cli-toolsの設定
+## sshのOSユーザ名を指定して下さい。
+## crowdworksjp/chef-repoに投げたプルリのユーザー名と同じです。基本的には `tarou-suzuki` のような形式です。
+CW_CLI_TOOLS_SSH_USER=kyotaro-sakamoto
+
+## 認証にaws-vaultを使用する場合は"assumeRole"を指定してください
+CW_CLI_TOOLS_AWS_AUTH_TYPE=assumeRole
+
+## aws-vault認証時にYubiKeyでMFAコードを自動挿入したい場合はTokenを一意に抽出できるクエリを指定してください
+## YubiKeyに入っているTokenは $ ykman oath list で一覧できます
+#CW_CLI_TOOLS_AWS_AUTH_YUBIKEY_QUERY="Amazon Web Services:TarouSUZUKI@cw-custodian"
+
+## AWSのプロファイル名をデフォルトから変更する場合は指定して下さい。
+#CW_CLI_TOOLS_AWS_PROFILE_MAIN=main
+#CW_CLI_TOOLS_AWS_PROFILE_DEV=dev
+
+## functionを適当なショートカットキーにバインドする場合は以下のように設定します。
+zle -N cw-ssh-main-without-proxy
+zle -N cw-ssh-dev-without-proxy
+zle -N cw-ssh-prod-with-proxy
+zle -N cw-ssh-stg-with-proxy
+zle -N cw-ssh-dev-with-proxy
+zle -N cw-aws-ssm-main
+zle -N cw-aws-ssm-dev
+bindkey '^rm' cw-ssh-main-without-proxy
+bindkey '^re' cw-ssh-dev-without-proxy
+bindkey '^rp' cw-ssh-prod-with-proxy
+bindkey '^rs' cw-ssh-stg-with-proxy
+bindkey '^rd' cw-ssh-dev-with-proxy
+bindkey '^ra' cw-aws-ssm-main
+bindkey '^rw' cw-aws-ssm-dev
 
 
 # The next line updates PATH for the Google Cloud SDK.

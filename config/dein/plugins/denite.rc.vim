@@ -2,49 +2,121 @@
 " denite.nvim
 "
 
-call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
-    \ [
-    \ '.git/', 'build/', '__pycache__/', 'Cache/', '~/Library/Caches/',
-    \ 'images/', '*.o', '*.make',
-    \ '*.min.*', 'log/',
-    \ 'img/', 'fonts/'])
-
-     " Change sorters.
-     call denite#custom#source(
-     \ 'file/rec', 'sorters', ['sorter_sublime'])
-
 if executable('rg')
   call denite#custom#var('file/rec', 'command',
-      \ ['rg', '--files', '--glob', '!.git'])
-  call denite#custom#var('grep', 'command', ['rg', '--threads', '1'])
-  call denite#custom#var('grep', 'recursive_opts', [])
-  call denite#custom#var('grep', 'final_opts', [])
-  call denite#custom#var('grep', 'separator', ['--'])
-  call denite#custom#var('grep', 'default_opts',
-      \ ['-i', '--vimgrep', '--no-heading'])
+        \ ['rg', '--files', '--glob', '!.git', '--color', 'never'])
+  call denite#custom#var('grep', {
+        \ 'command': ['rg', '--threads', '1'],
+        \ 'recursive_opts': [],
+        \ 'final_opts': [],
+        \ 'separator': ['--'],
+        \ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
+        \ })
+else
+  call denite#custom#var('file/rec', 'command',
+        \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
 endif
 
-call denite#custom#source('file/old', 'matchers',
-    \ ['matcher/fruzzy', 'matcher/project_files'])
+call denite#custom#source('file/old', 'matchers', [
+      \ 'matcher/clap', 'matcher/project_files', 'matcher/ignore_globs',
+      \ ])
 call denite#custom#source('tag', 'matchers', ['matcher/substring'])
-call denite#custom#source('file/rec', 'matchers',
-    \ ['matcher/fruzzy'])
-call denite#custom#source('file/old', 'converters',
-    \ ['converter/relative_word'])
+call denite#custom#source('file/old,ghq', 'converters',
+      \ ['converter/relative_word', 'converter/relative_abbr'])
 
+call denite#custom#alias('source', 'file/git', 'file/rec')
+call denite#custom#var('file/git', 'command',
+      \ ['git', 'ls-files', '-co', '--exclude-standard'])
 
-" if has('nvim')
-call denite#custom#source('_', 'matchers',
-    \ ['matcher/fruzzy'])
-" endif
+let s:clap_path = dein#get('vim-clap')['path']
+call denite#custom#filter('matcher/clap', 'clap_path', s:clap_path)
+call denite#custom#source('file/rec,grep,jump,buffer,file_mru,tag',
+			\ 'matchers', [ 'matcher/clap' ])
 
-call denite#custom#alias('source', 'file/rec/git', 'file/rec')
-call denite#custom#var('file/rec/git', 'command',
-    \ ['git', 'lsfiles', '-co', '--exclude-standard'])
+call denite#custom#alias('source', 'file/dirty', 'file/rec')
+call denite#custom#var('file/dirty', 'command',
+      \ ['git', 'ls-files', '-mo',
+      \  '--directory', '--no-empty-directory', '--exclude-standard'])
 
-let s:denite_win_width_percent = 0.85
-let s:denite_win_height_percent = 0.7
 " call denite#custom#option('default', 'prompt', '>')
+" call denite#custom#option('default', 'short_source_names', v:true)
+if has('nvim')
+  call denite#custom#option('default', {
+        \ 'highlight_filter_background': 'CursorLine',
+        \ 'source_names': 'short',
+        \ 'split': 'floating',
+        \ 'filter_split_direction': 'floating',
+        \ 'vertical_preview': v:true,
+        \ 'floating_preview': v:true,
+        \ })
+else
+  call denite#custom#option('default', {
+        \ 'highlight_filter_background': 'CursorLine',
+        \ 'source_names': 'short',
+        \ 'vertical_preview': v:true,
+        \ })
+endif
+call denite#custom#option('search', {
+      \ 'highlight_filter_background': 'CursorLine',
+      \ 'source_names': 'short',
+      \ 'filter_split_direction': 'floating',
+      \ })
+
+let s:menus = {}
+let s:menus.vim = {
+    \ 'description': 'Vim',
+    \ }
+let s:menus.vim.file_candidates = [
+    \ ['    > Edit configuation file (init.vim)', '~/.config/nvim/init.vim']
+    \ ]
+call denite#custom#var('menu', 'menus', s:menus)
+
+call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+      \ [ '.git/', '.ropeproject/', '__pycache__/',
+      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+" call denite#custom#filter('matcher_ignore_globs', 'ignore_globs',
+"    \ [
+"    \ '.git/', 'build/', '__pycache__/', 'Cache/', '~/Library/Caches/',
+"    \ 'images/', '*.o', '*.make',
+"    \ '*.min.*', 'log/',
+"    \ 'img/', 'fonts/'])
+" 
+"      " Change sorters.
+"      call denite#custom#source(
+"     \ 'file/rec', 'sorters', ['sorter_sublime'])
+" 
+" if executable('rg')
+"   call denite#custom#var('file/rec', 'command',
+"      \ ['rg', '--files', '--glob', '!.git'])
+"   call denite#custom#var('grep', 'command', ['rg', '--threads', '1'])
+"   call denite#custom#var('grep', 'recursive_opts', [])
+"   call denite#custom#var('grep', 'final_opts', [])
+"   call denite#custom#var('grep', 'separator', ['--'])
+"   call denite#custom#var('grep', 'default_opts',
+"      \ ['-i', '--vimgrep', '--no-heading'])
+" endif
+" 
+" call denite#custom#source('file/old', 'matchers',
+   "\ ['matcher/fruzzy', 'matcher/project_files'])
+" call denite#custom#source('tag', 'matchers', ['matcher/substring'])
+" call denite#custom#source('file/rec', 'matchers',
+"    \ ['matcher/fruzzy'])
+" call denite#custom#source('file/old', 'converters',
+"    \ ['converter/relative_word'])
+" 
+" 
+" " if has('nvim')
+" call denite#custom#source('_', 'matchers',
+"   \ ['matcher/fruzzy'])
+" " endif
+" 
+" call denite#custom#alias('source', 'file/rec/git', 'file/rec')
+" call denite#custom#var('file/rec/git', 'command',
+"    \ ['git', 'lsfiles', '-co', '--exclude-standard'])
+" 
+" let s:denite_win_width_percent = 0.85
+" let s:denite_win_height_percent = 0.7
+" " call denite#custom#option('default', 'prompt', '>')
 " call denite#custom#option('default', 'short_source_names', v:true)
 " call denite#custom#option('default', {
 "    \ 'auto_accel': v:true,

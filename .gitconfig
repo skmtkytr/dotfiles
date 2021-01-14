@@ -25,7 +25,7 @@
 	prune = true
 [ghq]
 	root = ~/.ghq
-  root = ~/.go/src
+#  root = ~/.go/src
 [push]
 	default = upstream
 [merge]
@@ -46,3 +46,5 @@
   cmd = "nvim -R -d -c \"wincmd l\" -d \"$LOCAL\" \"$REMOTE\""
 [mergetool "nvimdiff"]
   cmd = "nvim -d -c \"4wincmd w | wincmd J\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"  \"$MERGED\""
+[pull]
+	rebase = false

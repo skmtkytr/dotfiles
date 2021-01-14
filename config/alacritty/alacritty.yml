@@ -94,7 +94,7 @@ scrolling:
 # Some applications, like Emacs, rely on knowing about the width of a tab.
 # To prevent unexpected behavior in these applications, it's also required to
 # change the `it` value in terminfo when altering this setting.
-tabspaces: 2
+# tabspaces: 2
 
 # Font configuration
 font:
@@ -309,7 +309,7 @@ colors:
 #   - Linear
 #
 # Specifying a `duration` of `0` will disable the visual bell.
-visual_bell:
+bell:
   animation: EaseOutExpo
   duration: 0
   color: '0xffffff'
@@ -327,7 +327,7 @@ selection:
   save_to_clipboard: false
 
 # Allow terminal applications to change Alacritty's window title.
-dynamic_title: true
+window.dynamic_title: true
 
 #cursor:
   # Cursor style
@@ -685,7 +685,7 @@ key_bindings:
   # (macOS only)
    - { key: Key0,   mods: Command,         action: ResetFontSize    }
    - { key: Equals, mods: Command,         action: IncreaseFontSize }
-   - { key: Add,    mods: Command,         action: IncreaseFontSize }
+   # - { key: Add,    mods: Command,         action: IncreaseFontSize }
    - { key: Minus,  mods: Command,         action: DecreaseFontSize }
    - { key: K,      mods: Command,         action: ClearHistory     }
    - { key: K,      mods: Command,         chars: "\x0c"            }
