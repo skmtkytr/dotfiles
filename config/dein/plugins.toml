@@ -143,14 +143,14 @@ repo = 'tpope/vim-fugitive'
 repo = 'lambdalisue/gina.vim'
 
 # ctrlp
-#[[plugins]]
-#repo = 'ctrlpvim/ctrlp.vim'
-#hook_add = '''
-#  let g:ctrlp_custom_ignore = 'log\|tags\|node_modules\|plugins\|platforms\|\.git'
-#  let g:ctrlp_map = '<c-p>'
-#  let g:ctrlp_cmd = 'CtrlPLastMode'
-#  let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir', 'tmux']
-#'''
+[[plugins]]
+repo = 'ctrlpvim/ctrlp.vim'
+hook_add = '''
+ let g:ctrlp_custom_ignore = 'log\|tags\|node_modules\|plugins\|platforms\|\.git'
+ let g:ctrlp_map = '<c-p>'
+ let g:ctrlp_cmd = 'CtrlPLastMode'
+ let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir', 'tmux']
+'''
 
 [[plugins]]
 repo = 'lucidstack/ctrlp-tmux.vim'

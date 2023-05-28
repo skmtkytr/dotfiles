@@ -29,11 +29,11 @@ alias sudo='sudo '
 alias ctags="`brew --prefix`/bin/ctags"
 
 # git alias
-balias gpl 'git pull '
-balias gco 'git checkout '
-balias gcm 'git commit '
-balias glog 'git log '
-balias gst 'git status '
+alias gpl='git pull '
+alias gco='git checkout '
+alias gcm='git commit '
+alias glog='git log '
+alias gst='git status '
 
 
 ######################################

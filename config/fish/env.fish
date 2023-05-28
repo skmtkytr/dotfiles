@@ -46,9 +46,9 @@ end
 # status --is-interactive; and source (anyenv init -|psub)
 status --is-interactive; and source (pyenv init -|psub)
 status --is-interactive; and source (goenv init -|psub)
-# set -x PATH $HOME/.rbenv/shims $PATH
-# rbenv rehash >/dev/null ^&1
-# (rbenv init - | psub)
+ set -x PATH $HOME/.rbenv/shims $PATH
+ rbenv rehash >/dev/null ^&1
+eval rbenv init - | psub
 
 ### Added by the Bluemix CLI
 #source /usr/local/Bluemix/bx/zsh_autocomplete
