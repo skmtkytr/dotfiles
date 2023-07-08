@@ -46,13 +46,18 @@ set spelllang=en,cjk
 "set verbosefile=~/vim.log
 "set verbose=20
 
-" dein {{{
-let s:dein_cache_dir = g:cache_home . '/dein'
-
 " reset augroup
 augroup MyAutoCmd
     autocmd!
 augroup END
+
+" dein {{{
+let s:dein_cache_dir = g:cache_home . '/dein'
+
+let $CACHE = expand('~/.cache')
+if !isdirectory($CACHE)
+  call mkdir($CACHE, 'p')
+endif
 
 if &runtimepath !~# '/dein.vim'
     let s:dein_repo_dir = s:dein_cache_dir . '/repos/github.com/Shougo/dein.vim'
@@ -83,6 +88,14 @@ if dein#load_state(s:dein_cache_dir)
         call dein#load_toml(s:toml_dir . '/neovim.toml', {'lazy': 0})
     endif
 
+    if exists('g:vscode')
+      " vscodeの場合こちらのプラグインを利用
+      call dein#add('asvetliakov/vim-easymotion')
+      " sで任意の２文字から始まる場所へジャンプ
+      nmap s <Plug>(easymotion-s2)
+    else
+    endif
+
     call dein#end()
     call dein#save_state()
 endif
@@ -98,6 +111,23 @@ let g:neocomplete#enable_at_startup = 1
 let g:deoplete#enable_at_startup = 1
 
 execute pathogen#infect()
+
+" hop {{{
+local hop = require('hop')
+local directions = require('hop.hint').HintDirection
+vim.keymap.set('', 'f', function()
+  hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true })
+end, {remap=true})
+vim.keymap.set('', 'F', function()
+  hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true })
+end, {remap=true})
+vim.keymap.set('', 't', function()
+  hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
+end, {remap=true})
+vim.keymap.set('', 'T', function()
+  hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
+end, {remap=true})
+
 
 " syntastic {{{
 set statusline+=%#warningmsg#
