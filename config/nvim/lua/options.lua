@@ -39,6 +39,8 @@ local options = {
 	scrolloff = 8,
 	sidescrolloff = 8,
 	guifont = "monospace:h17",
+  list = true, -- 不可視文字の可視化
+  listchars = { tab = '>>', trail = '-', nbsp = '+' }, 
 	splitbelow = false, -- オンのとき、ウィンドウを横分割すると新しいウィンドウはカレントウィンドウの下に開かれる
 	splitright = false, -- オンのとき、ウィンドウを縦分割すると新しいウィンドウはカレントウィンドウの右に開かれる
 }

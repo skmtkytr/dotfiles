@@ -1,4 +1,5 @@
-vim.cmd [[
+--[[
+--vim.cmd [[
 try
   colorscheme iceberg
 catch /^Vim\%((\a\+)\)\=:E185/
@@ -6,3 +7,5 @@ catch /^Vim\%((\a\+)\)\=:E185/
   set background=dark
 endtry
 ]]
+
+vim.cmd([[colorscheme monokai-pro]])
