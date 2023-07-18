@@ -1,17 +1,21 @@
 set KEYTIMEOUT 0
-set -x SHELL /usr/local/bin/fish
+set -x SHELL /opt/homebrew/bin/fish
 ########################################
 # 環境変数
 set -x LANG en_US.UTF-8
 set -x LC_ALL en_US.UTF-8
 
+
+if status is-interactive
+    eval (/opt/homebrew/bin/brew shellenv)
+end
 set -x PATH /usr/local/bin $PATH
 set -x PATH /usr/local $PATH 
 set -x PATH $HOME/.anyenv/bin $PATH
 set -x PATH $HOME/.cargo/bin $PATH
 
 set -x GOPATH $HOME/.go
-set -x GOROOT /usr/local/opt/go/libexec
+set -x GOROOT (brew --prefix golang)/libexec
 set -x PATH $GOROOT/bin $GOPATH/bin $PATH
 set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
 set -x PATH $HOME/.local/bin $PATH
@@ -54,9 +58,17 @@ eval rbenv init - | psub
 #source /usr/local/Bluemix/bx/zsh_autocomplete
 
 ### ssh agent
-ssh-add -K ~/.ssh/gitlab > /dev/null ^&1
-ssh-add -K ~/.ssh/github > /dev/null ^&1
-ssh-add -K ~/.ssh/id_rsa > /dev/null ^&1
+if test -b ~/.ssh/gitlab 
+  ssh-add ~/.ssh/gitlab > /dev/null ^&1
+end
+
+if test -b ~/.ssh/id_rsa 
+  ssh-add  ~/.ssh/id_rsa > /dev/null ^&1
+end
+
+if test -b ~/.ssh/id_ed25519
+  ssh-add --apple-use-keychain ~/.ssh/id_ed25519 > /dev/null ^&1
+end
 # ssh-add -K ~/.ssh/pokeme_rsa
 set -x PYENV_ROOT $HOME/.pyenv
 # set -x PGDATA /usr/local/var/postgres
