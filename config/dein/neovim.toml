@@ -1,6 +1,13 @@
 [[plugins]] # context_filetype.vim
 repo = 'Shougo/context_filetype.vim'
 
+# [[plugins]]
+# repo = 'brglng/vim-im-select'
+# hook_source = '''
+# let g:im_select_get_im_cmd = ['im-select']
+# let g:im_select_default = 'com.google.inputmethod.Japanese.Roman'
+# '''
+
 [[plugins]]
 repo = 'liuchengxu/vim-clap'
 hook_source = '''
@@ -18,10 +25,10 @@ hook_source = '''
     let g:deoplete#enable_ignore_case = 1
     call deoplete#custom#option('auto_complete_delay', 0)
     call deoplete#custom#option('enable_smart_case', 1)
-    
+
     call deoplete#custom#source('_', 'matchers',
       \ ['matcher_fuzzy', 'matcher_length'])
-    
+
     " <TAB>: completion.
     imap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : deoplete#mappings#manual_complete()
     function! s:check_back_space() abort
@@ -132,7 +139,7 @@ nmap <silent> ;cm :<C-u>Denite menu<CR>
 nmap <silent> ;cs :<C-u>Denite gitstatus<CR>
 " denite gitchanged
 nmap <silent> ;cc :<C-u>Denite gitchanged<CR>
-" denite 
+" denite
 
 nmap <silent> ;cs :<C-u>Denite gitstatus<CR>
 " カーソル以下の単語を開いてるファイルからgrep
@@ -203,4 +210,3 @@ hook_source = '''
   let g:fruzzy#usenative = 1
 '''
 hook_post_update = 'call fruzzy#install()'
-
