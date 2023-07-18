@@ -3,7 +3,6 @@
 	email = skmtkytr@gmail.com
 	signingkey = 88EF01124
 [core]
-	excludesfile = ~/.gitignore_global
 	autoCRLF = false
 	safecrlf = true
 	editor = "nvim "
