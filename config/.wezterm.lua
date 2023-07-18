@@ -29,8 +29,10 @@ config.keys = {
 
 config.font = wezterm.font {
 --   -- family = 'JetBrains Mono',
-   family = 'Fira Code',
-   harfbuzz_features = { 'zero', 'calt=0', 'clig=0', 'liga=0' },
+   -- family = 'FiraCode Nerd Font Mono',
+   family = 'UDEV Gothic 35NFLG',
+   harfbuzz_features = {"zero" , "ss01", "cv05"},
+   -- harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
  }
 
 

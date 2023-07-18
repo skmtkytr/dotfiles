@@ -704,7 +704,7 @@ return packer.startup(function(use)
       vim.keymap.set("n", "<Space>f", builtin "live_grep" {})
 
       vim.keymap.set("n", "<Leader>fG", builtin "grep_string" {})
-      vim.keymap.set("n", "<C-O>", builtin "help_tags" { lang = "jp" })
+      vim.keymap.set("n", "<C-O>", builtin "lsp_document_symbols" {})
     end,
     config = function()
       require('telescope').setup {
@@ -959,7 +959,9 @@ return packer.startup(function(use)
       local bufferline = require('bufferline')
       bufferline.setup {
         options = {
-          mode = "buffers",                               -- set to "tabs" to only show tabpages instead
+          mode = "tabs",                               -- set to "tabs" to only show tabpages instead
+          separator_style = 'slant',
+          always_show_bufferline = false,
           style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
           max_name_length = 18,
           tab_size = 18,

@@ -11,3 +11,4 @@ config/fish/fishd*
 config/fisherman
 *_tags
 
+config/fish/functions/_*

@@ -9,7 +9,7 @@ alias view='nvim -R'
 # aliases
 
 alias find='fd '
-alias ls='exa '
+alias ls='exa --icons'
 alias la='ls -a'
 alias ll='ls -l'
  

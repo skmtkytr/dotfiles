@@ -6,32 +6,58 @@ duration = 0
 [colors]
 draw_bold_text_with_bright_colors = true
 
-[colors.bright]
-black = "0x6b7089"
-blue = "0x91acd1"
-cyan = "0x95c4ce"
-green = "0xc0ca8e"
-magenta = "0xada0d3"
-red = "0xe98989"
-white = "0xd2d4de"
-yellow = "0xe9b189"
+# color
+# [colors.bright]
+# black = "0x6b7089"
+# blue = "0x91acd1"
+# cyan = "0x95c4ce"
+# green = "0xc0ca8e"
+# magenta = "0xada0d3"
+# red = "0xe98989"
+# white = "0xd2d4de"
+# yellow = "0xe9b189"
+# 
+# [colors.normal]
+# black = "0x1e2132"
+# blue = "0x84a0c6"
+# cyan = "0x89b8c2"
+# green = "0xb4be82"
+# magenta = "0xa093c7"
+# red = "0xe27878"
+# white = "0xc6c8d1"
+# yellow = "0xe2a478"
+# 
+# [colors.primary]
+# background = "0x161821"
+# foreground = "0x839496"
+
+# monokai Pro
+[colors.primary]
+    background = '0x2D2A2E'
+    foreground = '0xfff1f3'
 
 [colors.normal]
-black = "0x1e2132"
-blue = "0x84a0c6"
-cyan = "0x89b8c2"
-green = "0xb4be82"
-magenta = "0xa093c7"
-red = "0xe27878"
-white = "0xc6c8d1"
-yellow = "0xe2a478"
+    black =   '0x2c2525'
+    red =     '0xfd6883'
+    green =   '0xadda78'
+    yellow =  '0xf9cc6c'
+    blue =    '0xf38d70'
+    magenta = '0xa8a9eb'
+    cyan =    '0x85dacc'
+    white =   '0xfff1f3'
 
-[colors.primary]
-background = "0x161821"
-foreground = "0x839496"
+[colors.bright]
+    black =   '0x72696a'
+    red =     '0xfd6883'
+    green =   '0xadda78'
+    yellow =  '0xf9cc6c'
+    blue =    '0xf38d70'
+    magenta = '0xa8a9eb'
+    cyan =    '0x85dacc'
+    white =   '0xfff1f3'
 
 [env]
-TERM = "xterm-256color"
+TERM = "alacritty"
 
 [font]
 size = 14.0
@@ -48,65 +74,20 @@ family = "Fira Code"
 [font.normal]
 family = "Fira Code"
 
-[[keyboard.bindings]]
-action = "ResetFontSize"
-key = "Key0"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "IncreaseFontSize"
-key = "Equals"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "DecreaseFontSize"
-key = "Minus"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "ClearHistory"
-key = "K"
-mods = "Command"
-
-[[keyboard.bindings]]
-chars = "\f"
-key = "K"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "Paste"
-key = "V"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "Copy"
-key = "C"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "Hide"
-key = "H"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "Minimize"
-key = "M"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "Quit"
-key = "Q"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "Quit"
-key = "W"
-mods = "Command"
-
-[[keyboard.bindings]]
-action = "ToggleFullscreen"
-key = "F"
-mods = "Command|Control"
+[keyboard]
+bindings = [
+  { action = "ResetFontSize",  key = "Key0",  mods = "Super" },
+  { action = "IncreaseFontSize",  key = "=",  mods = "Super" },
+  { action = "DecreaseFontSize",  key = "-",  mods = "Super"},
+  { action = "ClearHistory",  key = "K",  mods = "Super" },
+  { action = "Paste",  key = "V",  mods = "Super" },
+  { action = "Copy",  key = "C",  mods = "Super" },
+  { action = "Hide",  key = "H",  mods = "Super" },
+  { action = "Minimize",  key = "M",  mods = "Super" },
+  { action = "Quit",  key = "Q",  mods = "Super" },
+  { action = "Quit",  key = "W",  mods = "Super" },
+  { action = "ToggleFullscreen",  key = "F",  mods = "Command|Control" },
+]
 
 [mouse]
 hide_when_typing = false
@@ -121,7 +102,7 @@ multiplier = 3
 
 [selection]
 save_to_clipboard = false
-semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+semantic_escape_chars = ",│`| =\"' ()[]{}<>\t"
 
 [shell]
 # program = "/bin/zsh"
@@ -131,8 +112,7 @@ program = "/opt/homebrew/bin/fish"
 decorations = "full"
 dynamic_padding = false
 startup_mode = "Windowed"
-title = "Alacritty"
-background_opacity = 0.91
+opacity = 0.91
 dynamic_title = true
 
 [window.class]
