@@ -1,0 +1,152 @@
+[bell]
+animation = "EaseOutExpo"
+color = "0xffffff"
+duration = 0
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.bright]
+black = "0x6b7089"
+blue = "0x91acd1"
+cyan = "0x95c4ce"
+green = "0xc0ca8e"
+magenta = "0xada0d3"
+red = "0xe98989"
+white = "0xd2d4de"
+yellow = "0xe9b189"
+
+[colors.normal]
+black = "0x1e2132"
+blue = "0x84a0c6"
+cyan = "0x89b8c2"
+green = "0xb4be82"
+magenta = "0xa093c7"
+red = "0xe27878"
+white = "0xc6c8d1"
+yellow = "0xe2a478"
+
+[colors.primary]
+background = "0x161821"
+foreground = "0x839496"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 14.0
+
+[font.bold]
+family = "Fira Code"
+
+[font.bold_italic]
+family = "Fira Code"
+
+[font.italic]
+family = "Fira Code"
+
+[font.normal]
+family = "Fira Code"
+
+[[keyboard.bindings]]
+action = "ResetFontSize"
+key = "Key0"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Equals"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "Minus"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ClearHistory"
+key = "K"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\f"
+key = "K"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "Hide"
+key = "H"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "Minimize"
+key = "M"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "Quit"
+key = "Q"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "Quit"
+key = "W"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ToggleFullscreen"
+key = "F"
+mods = "Command|Control"
+
+[mouse]
+hide_when_typing = false
+
+[[mouse.bindings]]
+action = "PasteSelection"
+mouse = "Middle"
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[selection]
+save_to_clipboard = false
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+[shell]
+# program = "/bin/zsh"
+program = "/opt/homebrew/bin/fish"
+
+[window]
+decorations = "full"
+dynamic_padding = false
+startup_mode = "Windowed"
+title = "Alacritty"
+background_opacity = 0.91
+dynamic_title = true
+
+[window.class]
+general = "Alacritty"
+instance = "Alacritty"
+
+[window.dimensions]
+columns = 0
+lines = 0
+
+[window.padding]
+x = 0
+y = 0
+
+[window.position]
+x = 0
+y = 0
