@@ -60,18 +60,18 @@ return packer.startup(function(use)
         options = {
           -- Compiled file's destination location
           compile_path = vim.fn.stdpath("cache") .. "/nightfox",
-          compile_file_suffix = "_compiled", -- Compiled file suffix
-          transparent = false,               -- Disable setting background
-          terminal_colors = true,            -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
-          dim_inactive = false,              -- Non focused panes set to alternative background
-          module_default = true,             -- Default enable value for modules
+          compile_file_suffix = "_compiled",       -- Compiled file suffix
+          transparent = vim.g.transparent_enabled, -- Disable setting background
+          terminal_colors = true,                  -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+          dim_inactive = false,                    -- Non focused panes set to alternative background
+          module_default = true,                   -- Default enable value for modules
           colorblind = {
-            enable = false,                  -- Enable colorblind support
-            simulate_only = false,           -- Only show simulated colorblind colors and not diff shifted
+            enable = false,                        -- Enable colorblind support
+            simulate_only = false,                 -- Only show simulated colorblind colors and not diff shifted
             severity = {
-              protan = 0,                    -- Severity [0,1] for protan (red)
-              deutan = 0,                    -- Severity [0,1] for deutan (green)
-              tritan = 0,                    -- Severity [0,1] for tritan (blue)
+              protan = 0,                          -- Severity [0,1] for protan (red)
+              deutan = 0,                          -- Severity [0,1] for deutan (green)
+              tritan = 0,                          -- Severity [0,1] for tritan (blue)
             },
           },
           styles = {             -- Style to be applied to different syntax groups
@@ -111,7 +111,7 @@ return packer.startup(function(use)
     "loctvl842/monokai-pro.nvim",
     config = function()
       require("monokai-pro").setup({
-        transparent_background = false,
+        transparent_background = true,
         terminal_colors = false,
         devicons = true, -- highlight the icons of `nvim-web-devicons`
         styles = {
@@ -139,7 +139,7 @@ return packer.startup(function(use)
           -- "which-key",
           -- "renamer",
           -- "notify",
-          -- "nvim-tree",
+          "nvim-tree",
           -- "neo-tree",
           "bufferline", -- better used if background of `neo-tree` or `nvim-tree` is cleared
         },              -- "float_win","toggleterm", "telescope", "which-key", "renamer", "neo-tree", "nvim-tree", "bufferline"
@@ -179,7 +179,7 @@ return packer.startup(function(use)
     "nvim-lualine/lualine.nvim",
     event = { "InsertEnter", "CursorHold", "FocusLost", "BufRead", "BufNewFile" },
     requires = {
-      { "kyazdani42/nvim-web-devicons", module = { "nvim-web-devicons" } },
+      { "nvim-tree/nvim-web-devicons" },
     },
     setup = function()
       vim.opt.laststatus = 0
@@ -198,7 +198,7 @@ return packer.startup(function(use)
           },
           ignore_focus = {},
           always_divide_middle = true,
-          globalstatus = false,
+          globalstatus = true,
           refresh = {
             statusline = 1000,
             tabline = 1000,
@@ -229,9 +229,58 @@ return packer.startup(function(use)
     end
   }
 
-  use({ "windwp/nvim-autopairs" })        -- Autopairs,integrates with both cmp and treesitter
-  use({ "kyazdani42/nvim-web-devicons" }) -- File icons
-  use({ "mattn/vim-lsp-icons" })          -- File icons
+  use({
+    "windwp/nvim-autopairs",
+    config = function() require("nvim-autopairs").setup {} end
+  }) -- Autopairs,integrates with both cmp and treesitter
+  use({
+    "nvim-tree/nvim-web-devicons",
+    config = function()
+      require 'nvim-web-devicons'.setup {
+        -- your personnal icons can go here (to override)
+        -- you can specify color or cterm_color instead of specifying both of them
+        -- DevIcon will be appended to `name`
+        override = {
+          zsh = {
+            icon = "",
+            color = "#428850",
+            cterm_color = "65",
+            name = "Zsh"
+          }
+        },
+        -- globally enable different highlight colors per icon (default to true)
+        -- if set to false all icons will have the default icon's color
+        color_icons = true,
+        -- globally enable default icons (default to false)
+        -- will get overriden by `get_icons` option
+        default = true,
+        -- globally enable "strict" selection of icons - icon will be looked up in
+        -- different tables, first by filename, and if not found by extension; this
+        -- prevents cases when file doesn't have any extension but still gets some icon
+        -- because its name happened to match some extension (default to false)
+        strict = true,
+        -- same as `override` but specifically for overrides by filename
+        -- takes effect when `strict` is true
+        override_by_filename = {
+          [".gitignore"] = {
+            icon = "",
+            color = "#f1502f",
+            name = "Gitignore"
+          }
+        },
+        -- same as `override` but specifically for overrides by extension
+        -- takes effect when `strict` is true
+        override_by_extension = {
+          ["log"] = {
+            icon = "",
+            color = "#81e043",
+            name = "Log"
+          }
+        },
+      }
+    end
+  })                             -- File icons
+  use({ "mattn/vim-lsp-icons" }) -- File icons
 
   -- cmp plugins
   use({
@@ -259,7 +308,7 @@ return packer.startup(function(use)
         }),
         snippet = {
           expand = function(args)
-            luasnip.lsp_expand(args.body)
+            require('luasnip').lsp_expand(args.body)
           end,
         },
         mapping = cmp.mapping.preset.insert({
@@ -435,7 +484,7 @@ return packer.startup(function(use)
 
   use({
     "folke/trouble.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
+    requires = "nvim-tree/nvim-web-devicons",
     config = function()
       require("trouble").setup({
         auto_close = true,
@@ -695,6 +744,7 @@ return packer.startup(function(use)
   -- Treesitter
   use({
     "nvim-treesitter/nvim-treesitter",
+    requires = { "RRethy/nvim-treesitter-endwise" },
     config = function()
       require 'nvim-treesitter.configs'.setup {
         -- A list of parser names, or "all" (the five listed parsers should always be installed)
@@ -773,6 +823,7 @@ return packer.startup(function(use)
     { run = ":TSUpdate" }
   })
   use({ "windwp/nvim-ts-autotag" })
+  use { "RRethy/nvim-treesitter-endwise" }
 
   -- comment outer
   use {
@@ -824,6 +875,46 @@ return packer.startup(function(use)
         yadm                         = {
           enable = false
         },
+        on_attach                    = function(bufnr)
+          local gs = package.loaded.gitsigns
+
+          local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+
+          -- Navigation
+          map('n', ']c', function()
+            if vim.wo.diff then return ']c' end
+            vim.schedule(function() gs.next_hunk() end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          map('n', '[c', function()
+            if vim.wo.diff then return '[c' end
+            vim.schedule(function() gs.prev_hunk() end)
+            return '<Ignore>'
+          end, { expr = true })
+
+          -- Actions
+          map('n', '<leader>hs', gs.stage_hunk)
+          map('n', '<leader>hr', gs.reset_hunk)
+          map('v', '<leader>hs', function() gs.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
+          map('v', '<leader>hr', function() gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end)
+          map('n', '<leader>hS', gs.stage_buffer)
+          map('n', '<leader>hu', gs.undo_stage_hunk)
+          map('n', '<leader>hR', gs.reset_buffer)
+          map('n', '<leader>hp', gs.preview_hunk)
+          map('n', '<leader>hb', function() gs.blame_line { full = true } end)
+          map('n', '<leader>tb', gs.toggle_current_line_blame)
+          map('n', '<leader>hd', gs.diffthis)
+          map('n', '<leader>hD', function() gs.diffthis('~') end)
+          map('n', '<leader>td', gs.toggle_deleted)
+
+          -- Text object
+          map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        end
       }
     end
   }
@@ -949,9 +1040,78 @@ return packer.startup(function(use)
   --   end
   -- }
 
+  -- Intent showable
+  -- use {
+  --   "echasnovski/mini.indentscope",
+  --   branch = 'stable',
+  --   config = function()
+  --     require('mini.indentscope').setup()
+  --   end
+  -- }
+  use {
+    "preservim/vim-indent-guides",
+    config = function()
+      vim.g.indent_guides_enable_on_vim_startup = 1
+      vim.g.indent_guides_start_level = 2
+      vim.g.indent_guides_guide_size = 1
+      vim.g.indent_guides_exclude_filetypes = { 'help', 'nerdtree', 'tagbar', 'unite' }
+    end
+  }
+
+  -- Transparent opacity
+  use {
+    'xiyaowong/transparent.nvim',
+    config = function()
+      require("transparent").setup({
+        groups = { -- table: default groups
+          'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
+          'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
+          'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
+          'SignColumn', 'CursorLineNr', 'EndOfBuffer',
+        },
+        extra_groups = {},   -- table: additional groups that should be cleared
+        exclude_groups = {}, -- table: groups you don't want to clear
+      })
+    end
+  }
+
+  -- File browser
+  use {
+    'nvim-tree/nvim-tree.lua',
+    requires = {
+      'nvim-tree/nvim-web-devicons', -- optional
+    },
+    config = function()
+      -- disable netrw at the very start of your init.lua
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+
+      -- set termguicolors to enable highlight groups
+      vim.opt.termguicolors = true
+
+      -- empty setup using defaults
+      require("nvim-tree").setup()
+
+      -- OR setup with some options
+      require("nvim-tree").setup({
+        sort_by = "case_sensitive",
+        view = {
+          width = 30,
+        },
+        renderer = {
+          group_empty = true,
+        },
+        filters = {
+          dotfiles = true,
+        },
+      })
+      require("nvim-tree.api").tree.open()
+    end
+  }
+
   -- Ruby plugins
   use { 'vim-ruby/vim-ruby' }
-  use { 'tpope/vim-rails.git' }
+  use { 'tpope/vim-rails' }
 
   -- filetype plugins
   use { 'jlcrochet/vim-rbs', ft = "rbs" }
