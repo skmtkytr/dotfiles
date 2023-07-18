@@ -9,3 +9,8 @@ endtry
 ]]
 
 vim.cmd([[colorscheme monokai-pro]])
+-- vim.cmd([[colorscheme nightfox]])
+
+-- vim.cmd([[let g:sonokai_style = 'espresso']])
+-- vim.cmd([[let g:sonokai_better_performance = 1]])
+-- vim.cmd([[colorscheme sonokai]])

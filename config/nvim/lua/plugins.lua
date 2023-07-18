@@ -48,9 +48,65 @@ return packer.startup(function(use)
 
   use({ "wbthomason/packer.nvim" })
   use({ "nvim-lua/plenary.nvim" }) -- Common utilities
+  use({ "tpope/vim-surround" })
 
   -- Colorschemes
-  use({ "EdenEast/nightfox.nvim" }) -- Color scheme
+  use "sainnhe/sonokai"
+  use({
+    "EdenEast/nightfox.nvim",
+    config = function()
+      -- Default options
+      require('nightfox').setup({
+        options = {
+          -- Compiled file's destination location
+          compile_path = vim.fn.stdpath("cache") .. "/nightfox",
+          compile_file_suffix = "_compiled", -- Compiled file suffix
+          transparent = false,               -- Disable setting background
+          terminal_colors = true,            -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+          dim_inactive = false,              -- Non focused panes set to alternative background
+          module_default = true,             -- Default enable value for modules
+          colorblind = {
+            enable = false,                  -- Enable colorblind support
+            simulate_only = false,           -- Only show simulated colorblind colors and not diff shifted
+            severity = {
+              protan = 0,                    -- Severity [0,1] for protan (red)
+              deutan = 0,                    -- Severity [0,1] for deutan (green)
+              tritan = 0,                    -- Severity [0,1] for tritan (blue)
+            },
+          },
+          styles = {             -- Style to be applied to different syntax groups
+            comments = "italic", -- Value is any valid attr-list value `:help attr-list`
+            conditionals = "NONE",
+            constants = "NONE",
+            functions = "NONE",
+            keywords = "NONE",
+            numbers = "NONE",
+            operators = "NONE",
+            strings = "NONE",
+            types = "NONE",
+            variables = "NONE",
+          },
+          inverse = { -- Inverse highlight for different types
+            match_paren = false,
+            visual = false,
+            search = false,
+          },
+          modules = { -- List of various plugins and additional options
+            -- ...
+          },
+        },
+        palettes = {
+          name = "carbonfox",
+        },
+        specs = {},
+        groups = {},
+      })
+      -- require("nightfox.config").set_fox("duskfox")
+      -- require("nightfox").load()
+    end
+  })
+  -- use "phanviet/vim-monokai-pro"
+
   use {
     "loctvl842/monokai-pro.nvim",
     config = function()
@@ -78,15 +134,15 @@ return packer.startup(function(use)
         inc_search = "background",   -- underline | background
         background_clear = {
           -- "float_win",
-          "toggleterm",
+          -- "toggleterm",
           "telescope",
           -- "which-key",
-          "renamer",
-          "notify",
+          -- "renamer",
+          -- "notify",
           -- "nvim-tree",
           -- "neo-tree",
-          -- "bufferline",-- better used if background of `neo-tree` or `nvim-tree` is cleared
-        }, -- "float_win","toggleterm", "telescope", "which-key", "renamer", "neo-tree", "nvim-tree", "bufferline"
+          "bufferline", -- better used if background of `neo-tree` or `nvim-tree` is cleared
+        },              -- "float_win","toggleterm", "telescope", "which-key", "renamer", "neo-tree", "nvim-tree", "bufferline"
         plugins = {
           bufferline = {
             underline_selected = false,
@@ -176,7 +232,6 @@ return packer.startup(function(use)
   use({ "windwp/nvim-autopairs" })        -- Autopairs,integrates with both cmp and treesitter
   use({ "kyazdani42/nvim-web-devicons" }) -- File icons
   use({ "mattn/vim-lsp-icons" })          -- File icons
-  use({ "akinsho/bufferline.nvim" })
 
   -- cmp plugins
   use({
@@ -239,7 +294,9 @@ return packer.startup(function(use)
   })
 
   -- LSP
-  use({ "neovim/nvim-lspconfig" })           -- enable LSP
+  use({
+    "neovim/nvim-lspconfig",
+  })                                         -- enable LSP
   use({ "williamboman/nvim-lsp-installer" }) -- simple to use language server installer
   use({
     "jose-elias-alvarez/null-ls.nvim",
@@ -255,7 +312,7 @@ return packer.startup(function(use)
               return utils.root_has_file({ ".stylua.toml" })
             end,
           }),
-          null_ls.builtins.diagnostics.rubocop,
+          -- null_ls.builtins.diagnostics.rubocop,
           -- null_ls.builtins.diagnostics.rubocop.with({
           --   prefer_local = "bundle_bin",
           --   condition = function(utils)
@@ -268,7 +325,7 @@ return packer.startup(function(use)
           null_ls.builtins.diagnostics.yamllint,
           null_ls.builtins.diagnostics.commitlint,
           null_ls.builtins.formatting.rubyfmt,
-          null_ls.builtins.formatting.rubocop,
+          -- null_ls.builtins.formatting.rubocop,
           -- null_ls.builtins.formatting.rubocop.with({
           --   prefer_local = "bundle_bin",
           --   condition = function(utils)
@@ -283,6 +340,7 @@ return packer.startup(function(use)
 
   use({
     "glepnir/lspsaga.nvim",
+    -- event = { "LspAttach" },
     after = 'nvim-lspconfig',
     config = function()
       require('lspsaga').setup({})
@@ -346,7 +404,7 @@ return packer.startup(function(use)
         lspconfig.rubocop.setup({
           calabilities = opt.capabilities,
           on_new_config = function(config, root_dir)
-            config.cmd = { "bundle", "exec", "rubocop", "langserver" }
+            config.cmd = { "bundle", "exec", "rubocop" }
             return config
           end
         })
@@ -724,7 +782,7 @@ return packer.startup(function(use)
   -- git commit outline
   use {
     "lewis6991/gitsigns.nvim",
-    -- event = { "FocusLost", "CursorHold" },
+    event = { "FocusLost", "CursorHold", "CursorHoldI" },
     config = function()
       require('gitsigns').setup {
         signs                        = {
@@ -787,59 +845,117 @@ return packer.startup(function(use)
     end,
   }
 
-  -- lich builtin cmdline, notify
+  -- Tab UIs
   use {
-    "folke/noice.nvim",
-    -- event = { "BufRead", "BufNewFile", "InsertEnter", "CmdlineEnter" },
-    -- module = { "noice" },
-    requires = {
-      { "MunifTanjim/nui.nvim" },
-      {
-        "rcarriga/nvim-notify",
-        module = { "notify" },
-        config = function()
-          require("notify").setup {
-            -- nvim-notify の設定
-          }
-        end
-      },
-    },
-    wants = { "nvim-treesitter" },
-    setup = function()
-      if not _G.__vim_notify_overwritten then
-        vim.notify = function(...)
-          local arg = { ... }
-          require "notify"
-          require "noice"
-          vim.schedule(function()
-            vim.notify(unpack(args))
-          end)
-        end
-        _G.__vim_notify_overwritten = true
-      end
-    end,
+    'akinsho/bufferline.nvim',
+    tag = "v4.2.0",
+    requires = 'nvim-tree/nvim-web-devicons',
     config = function()
-      require("noice").setup {
-        -- noice.nvim の設定
-        lsp = {
-          -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-          override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
-          },
-        },
-        -- you can enable a preset for easier configuration
-        presets = {
-          bottom_search = false, -- use a classic bottom cmdline for search
-        },
-
+      local bufferline = require('bufferline')
+      bufferline.setup {
+        options = {
+          mode = "buffers",                               -- set to "tabs" to only show tabpages instead
+          style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
+          max_name_length = 18,
+          tab_size = 18,
+          diagnostics = "nvim_lsp",
+          diagnostics_indicator = function(count, level, diagnostics_dict, context)
+            local icon = level:match("error") and " " or " "
+            return " " .. icon .. count
+          end,
+          color_icons = true -- whether or not to add the filetype icon highlights
+        }
       }
     end
   }
+  -- use {
+  --   'kdheepak/tabline.nvim',
+  --   config = function()
+  --     require 'tabline'.setup {
+  --       -- Defaults configuration options
+  --       enable = true,
+  --       options = {
+  --         -- If lualine is installed tabline will use separators configured in lualine by default.
+  --         -- These options can be used to override those settings.
+  --         section_separators = { '', '' },
+  --         component_separators = { '', '' },
+  --         max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
+  --         show_tabs_always = false,  -- this shows tabs only when there are more than one tab or if the first tab is named
+  --         show_devicons = true,      -- this shows devicons in buffer section
+  --         show_bufnr = false,        -- this appends [bufnr] to buffer section,
+  --         show_filename_only = false, -- shows base filename only instead of relative path in filename
+  --         modified_icon = "+ ",      -- change the default modified icon
+  --         modified_italic = false,   -- set to true by default; this determines whether the filename turns italic if modified
+  --         show_tabs_only = false,    -- this shows only tabs instead of tabs + buffers
+  --       }
+  --     }
+  --     vim.cmd [[
+  --     set guioptions-=e " Use showtabline in gui vim
+  --     set sessionoptions+=tabpages,globals " store tabpages and globals in session
+  --   ]]
+  --   end,
+  --   requires = { { 'hoob3rt/lualine.nvim', opt = true }, { 'kyazdani42/nvim-web-devicons', opt = true } }
+  -- }
+
+
+  -- lich builtin cmdline, notify
+  -- use {
+  --   "folke/noice.nvim",
+  --   -- event = { "BufRead", "BufNewFile", "InsertEnter", "CmdlineEnter" },
+  --   -- module = { "noice" },
+  --   requires = {
+  --     { "MunifTanjim/nui.nvim" },
+  --     {
+  --       "rcarriga/nvim-notify",
+  --       module = { "notify" },
+  --       config = function()
+  --         require("notify").setup {
+  --           -- nvim-notify の設定
+  --         }
+  --       end
+  --     },
+  --   },
+  --   wants = { "nvim-treesitter" },
+  --   setup = function()
+  --     if not _G.__vim_notify_overwritten then
+  --       vim.notify = function(...)
+  --         local arg = { ... }
+  --         require "notify"
+  --         require "noice"
+  --         vim.schedule(function()
+  --           vim.notify(unpack(args))
+  --         end)
+  --       end
+  --       _G.__vim_notify_overwritten = true
+  --     end
+  --   end,
+  --   config = function()
+  --     require("noice").setup {
+  --       -- noice.nvim の設定
+  --       lsp = {
+  --         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+  --         override = {
+  --           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+  --           ["vim.lsp.util.stylize_markdown"] = true,
+  --           ["cmp.entry.get_documentation"] = true,
+  --         },
+  --       },
+  --       -- you can enable a preset for easier configuration
+  --       presets = {
+  --         bottom_search = false, -- use a classic bottom cmdline for search
+  --       },
+  --
+  --     }
+  --   end
+  -- }
+
+  -- Ruby plugins
+  use { 'vim-ruby/vim-ruby' }
+  use { 'tpope/vim-rails.git' }
 
   -- filetype plugins
-  use 'jlcrochet/vim-rbs'
+  use { 'jlcrochet/vim-rbs', ft = "rbs" }
+  use { "keith/rspec.vim", ft = "rb" }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
