@@ -282,6 +282,27 @@ return packer.startup(function(use)
   })                             -- File icons
   use({ "mattn/vim-lsp-icons" }) -- File icons
 
+  -- Github copilot
+  use {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
+  }
+  use {
+    "zbirenbaum/copilot-cmp",
+    event = { "InsertEnter" },
+    after = { "copilot.lua" },
+    config = function()
+      require("copilot_cmp").setup()
+    end
+  }
+
   -- cmp plugins
   use({
     "hrsh7th/nvim-cmp",
@@ -295,13 +316,26 @@ return packer.startup(function(use)
       { "hrsh7th/cmp-nvim-lua",                event = { "InsertEnter" } },
       { "hrsh7th/cmp-cmdline",                 event = { "InsertEnter" } },
       { "hrsh7th/cmp-nvim-lsp-signature-help", event = { "InsertEnter" } },
+      {
+        "zbirenbaum/copilot-cmp",
+        event = { "InsertEnter" },
+        after = { "copilot.lua" },
+        config = function()
+          require("copilot_cmp").setup()
+        end
+      },
     },
     config = function()
-      -- ここからnvim-cmpの補完設定
+      local has_words_before = function()
+        if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+      end
       local cmp = require "cmp"
       local lspkind = require('lspkind')
       cmp.setup({
         sources = cmp.config.sources({
+          { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "path" },
           { name = "luasnip" },
@@ -313,14 +347,23 @@ return packer.startup(function(use)
           end,
         },
         mapping = cmp.mapping.preset.insert({
+          ['<C-Space>'] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<Tab>"] = vim.schedule_wrap(function(fallback)
+            if cmp.visible() and has_words_before() then
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+            else
+              fallback()
+            end
+          end),
         }),
         formatting = {
           format = lspkind.cmp_format({
             mode = 'symbol',       -- show only symbol annotations
             maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
             ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+            symbol_map = { Copilot = "" },
 
             -- The function below will be called before any actual modifications from lspkind
             -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
@@ -496,36 +539,46 @@ return packer.startup(function(use)
     end
   })
 
+  -- LSP diagnostics UI plugins
+  -- use({
+  --   "folke/trouble.nvim",
+  --   requires = "nvim-tree/nvim-web-devicons",
+  --   config = function()
+  --     require("trouble").setup({
+  --       auto_close = true,
+  --     })
+  --
+  --     local wk = require "which-key"
+  --     wk.register({
+  --       ["<leader>x"] = {
+  --         name = "+Trouble",
+  --       },
+  --     })
+  --     vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
+  --     vim.api.nvim_set_keymap(
+  --       "n",
+  --       "<leader>xw",
+  --       "<cmd>TroubleToggle workspace_diagnostics<cr>",
+  --       { silent = true, noremap = true }
+  --     )
+  --     vim.api.nvim_set_keymap(
+  --       "n",
+  --       "<leader>xd",
+  --       "<cmd>TroubleToggle document_diagnostics<cr>",
+  --       { silent = true, noremap = true }
+  --     )
+  --     vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
+  --     vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
+  --     vim.api.nvim_set_keymap("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
+  --   end,
+  -- })
   use({
-    "folke/trouble.nvim",
-    requires = "nvim-tree/nvim-web-devicons",
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     config = function()
-      require("trouble").setup({
-        auto_close = true,
+      require("lsp_lines").setup()
+      vim.diagnostic.config({
+        virtual_text = false,
       })
-
-      local wk = require "which-key"
-      wk.register({
-        ["<leader>x"] = {
-          name = "+Trouble",
-        },
-      })
-      vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
-      vim.api.nvim_set_keymap(
-        "n",
-        "<leader>xw",
-        "<cmd>TroubleToggle workspace_diagnostics<cr>",
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap(
-        "n",
-        "<leader>xd",
-        "<cmd>TroubleToggle document_diagnostics<cr>",
-        { silent = true, noremap = true }
-      )
-      vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
-      vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
-      vim.api.nvim_set_keymap("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
     end,
   })
 
@@ -702,8 +755,9 @@ return packer.startup(function(use)
 
       vim.keymap.set("n", "<C-p>", builtin "find_files" { hidden = true, ["layout_config.preview_width"] = 0.8 })
       vim.keymap.set("n", "<Space>f", builtin "live_grep" {})
-
       vim.keymap.set("n", "<Leader>fG", builtin "grep_string" {})
+      vim.keymap.set("n", ";cb", "<cmd>lua require('telescope').extensions.frecency.frecency({ workspace = 'CWD'})<CR>",
+        { noremap = true, silent = true })
       vim.keymap.set("n", "<C-O>", builtin "lsp_document_symbols" {})
     end,
     config = function()
@@ -733,6 +787,12 @@ return packer.startup(function(use)
             layout_config = {
               width = 0.9,
             },
+          },
+          oldfiles = {
+            theme = "dropdown",
+            leuout_config = {
+              width = 0.9,
+            }
           }
         },
         extensions = {
@@ -742,6 +802,12 @@ return packer.startup(function(use)
             override_file_sorter = true,    -- override the file sorter
             case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
+          },
+          frecency = {
+            show_scores = false,
+            show_unindexed = true,
+            ignore_patterns = { "*.git/*", "*/tmp/*" },
+            disable_devicons = false,
           }
         },
       }
@@ -753,6 +819,14 @@ return packer.startup(function(use)
     "nvim-telescope/telescope-file-browser.nvim",
     requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
   })
+  use {
+    "nvim-telescope/telescope-frecency.nvim",
+    config = function()
+      require "telescope".load_extension("frecency")
+    end,
+    requires = { "kkharji/sqlite.lua" }
+  }
+
 
 
   -- Treesitter
@@ -932,6 +1006,7 @@ return packer.startup(function(use)
       }
     end
   }
+  use { "tpope/vim-fugitive" }
 
   use {
     "petertriho/nvim-scrollbar",
@@ -959,7 +1034,7 @@ return packer.startup(function(use)
       local bufferline = require('bufferline')
       bufferline.setup {
         options = {
-          mode = "tabs",                               -- set to "tabs" to only show tabpages instead
+          mode = "tabs", -- set to "tabs" to only show tabpages instead
           separator_style = 'slant',
           always_show_bufferline = false,
           style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
@@ -1064,13 +1139,27 @@ return packer.startup(function(use)
   --     require('mini.indentscope').setup()
   --   end
   -- }
+  -- use {
+  --   "preservim/vim-indent-guides",
+  --   config = function()
+  --     vim.g.indent_guides_enable_on_vim_startup = 1
+  --     vim.g.indent_guides_start_level = 2
+  --     vim.g.indent_guides_guide_size = 1
+  --     vim.g.indent_guides_exclude_filetypes = { 'help', 'nerdtree', 'tagbar', 'unite' }
+  --   end
+  -- }
   use {
-    "preservim/vim-indent-guides",
+    "lukas-reineke/indent-blankline.nvim",
     config = function()
-      vim.g.indent_guides_enable_on_vim_startup = 1
-      vim.g.indent_guides_start_level = 2
-      vim.g.indent_guides_guide_size = 1
-      vim.g.indent_guides_exclude_filetypes = { 'help', 'nerdtree', 'tagbar', 'unite' }
+      vim.opt.list = true
+      vim.opt.listchars:append "space:⋅"
+      vim.opt.listchars:append "eol:↴"
+
+      require("indent_blankline").setup {
+        space_char_blankline = " ",
+        show_current_context = true,
+        show_current_context_start = true,
+      }
     end
   }
 
@@ -1126,11 +1215,11 @@ return packer.startup(function(use)
 
   -- Ruby plugins
   use { 'vim-ruby/vim-ruby' }
-  use { 'tpope/vim-rails' }
+  -- use { 'tpope/vim-rails' }
 
   -- filetype plugins
   use { 'jlcrochet/vim-rbs', ft = "rbs" }
-  use { "keith/rspec.vim", ft = "rb" }
+  -- use { "keith/rspec.vim", ft = "rb" }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
