@@ -12,3 +12,10 @@ config/fisherman
 *_tags
 
 config/fish/functions/_*
+
+config/nvim/pack/github/start/copilot.vim
+config/nvim/plugin/packer_compiled.lua
+config/github-copilot/hosts.json
+config/github-copilot/versions.json
+config/nvim/lazy-lock.json
+config/fish/completions

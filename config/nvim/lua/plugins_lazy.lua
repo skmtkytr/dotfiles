@@ -24,15 +24,27 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 require('lazy').setup({
 
   -- Install your plugins here
+  {
+    "dstein64/vim-startuptime",
+    -- lazy-load on a command
+    cmd = "StartupTime",
+    -- init is called during startup. Configuration for vim plugins typically should be set in an init function
+    init = function()
+      vim.g.startuptime_tries = 10
+    end,
+  },
 
-  "dstein64/vim-startuptime",
   -- My plugins here
 
-  { "wbthomason/packer.nvim" },
   { "nvim-lua/plenary.nvim" }, -- Common utilities
   { "tpope/vim-surround" },
   {
     "folke/which-key.nvim",
+    keys = {
+      { "n", "<F3>",       "<cmd>OtherClear<CR><cmd>:Other<CR>" },
+      { "n", "<leader>os", "<cmd>OtherClear<CR><cmd>:OtherSplit<CR>" },
+      { "n", "<leader>ov", "<cmd>OtherClear<CR><cmd>:OtherVSplit<CR>" },
+    },
     config = function()
       local wk = require "which-key"
       wk.register({
@@ -40,18 +52,15 @@ require('lazy').setup({
           name = "+Other",
         },
       })
-      vim.keymap.set("n", "<F3>", "<cmd>OtherClear<CR><cmd>:Other<CR>")
-      vim.keymap.set("n", "<leader>os", "<cmd>OtherClear<CR><cmd>:OtherSplit<CR>")
-      vim.keymap.set("n", "<leader>ov", "<cmd>OtherClear<CR><cmd>:OtherVSplit<CR>")
     end
   },
 
   -- Statusline
   {
     "nvim-lualine/lualine.nvim",
-    event = { "InsertEnter", "CursorHold", "FocusLost", "BufRead", "BufNewFile" },
+    event = { "InsertEnter", "BufRead", "BufNewFile" },
     dependencies = {
-      { "nvim-tree/nvim-web-devicons" },
+      { "nvim-tree/nvim-web-devicons", },
     },
     setup = function()
       vim.opt.laststatus = 0
@@ -103,6 +112,7 @@ require('lazy').setup({
 
   {
     "windwp/nvim-autopairs",
+    event = { "InsertEnter" },
     config = function() require("nvim-autopairs").setup {} end
   }, -- Autopairs,integrates with both cmp and treesitter
   {
@@ -114,12 +124,6 @@ require('lazy').setup({
         -- you can specify color or cterm_color instead of specifying both of them
         -- DevIcon will be appended to `name`
         override = {
-          zsh = {
-            icon = "",
-            color = "#428850",
-            cterm_color = "65",
-            name = "Zsh"
-          }
         },
         -- globally enable different highlight colors per icon (default to true)
         -- if set to false all icons will have the default icon's color
@@ -152,13 +156,12 @@ require('lazy').setup({
         },
       }
     end
-  },                                                      -- File icons
-  { "mattn/vim-lsp-icons",                lazy = true, }, -- File icons
+  },                                                       -- File icons
+  { "mattn/vim-lsp-icons",                 lazy = true, }, -- File icons
 
   -- Github copilot
   {
     "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
     event = "InsertEnter",
     config = function()
       require("copilot").setup({
@@ -170,7 +173,6 @@ require('lazy').setup({
   {
     "zbirenbaum/copilot-cmp",
     event = { "InsertEnter" },
-    after = { "copilot.lua" },
     config = function()
       require("copilot_cmp").setup()
     end
@@ -179,7 +181,10 @@ require('lazy').setup({
   -- cmp plugins
   {
     "hrsh7th/nvim-cmp",
-    module = { "cmp" },
+    -- load cmp on InsertEnter
+    event = "InsertEnter",
+    -- these dependencies will only be loaded when cmp loads
+    -- dependencies are always lazy-loaded unless specified otherwise
     dependencies = {
       { "hrsh7th/cmp-buffer",                  event = { "InsertEnter" } },
       { "hrsh7th/cmp-path",                    event = { "InsertEnter" } },
@@ -189,10 +194,10 @@ require('lazy').setup({
       { "hrsh7th/cmp-nvim-lua",                event = { "InsertEnter" } },
       { "hrsh7th/cmp-cmdline",                 event = { "InsertEnter" } },
       { "hrsh7th/cmp-nvim-lsp-signature-help", event = { "InsertEnter" } },
+      { "onsails/lspkind-nvim",                event = "InsertEnter" },
       {
         "zbirenbaum/copilot-cmp",
         event = { "InsertEnter" },
-        after = { "copilot.lua" },
         config = function()
           require("copilot_cmp").setup()
         end
@@ -247,17 +252,20 @@ require('lazy').setup({
         }
       })
     end
-  },                              -- The completion plugin
-  { "hrsh7th/cmp-buffer" },       -- buffer completions
-  { "hrsh7th/cmp-path" },         -- path completions
-  { "hrsh7th/cmp-cmdline" },      -- cmdline completions
-  { "saadparwaiz1/cmp_luasnip" }, -- snippet completions
-  { "hrsh7th/cmp-nvim-lsp" },
-  { "hrsh7th/cmp-nvim-lua" },
-  { "hrsh7th/cmp-nvim-lsp-signature-help" },
-  { "onsails/lspkind-nvim" },
+  },
+  { "hrsh7th/cmp-buffer",                  event = { "InsertEnter" } },
+  { "hrsh7th/cmp-path",                    event = { "InsertEnter" } },
+  { "hrsh7th/cmp-cmdline",                 event = { "InsertEnter" } },
+  { "saadparwaiz1/cmp_luasnip",            event = { "InsertEnter" } },
+  { "hrsh7th/cmp-nvim-lsp",                event = { "InsertEnter" } },
+  { "hrsh7th/cmp-nvim-lua",                event = { "InsertEnter" } },
+  { "hrsh7th/cmp-cmdline",                 event = { "InsertEnter" } },
+  { "hrsh7th/cmp-nvim-lsp-signature-help", event = { "InsertEnter" } },
+  { "onsails/lspkind-nvim",                event = "InsertEnter" },
   {
     "j-hui/fidget.nvim",
+    tag = "legacy",
+    event = "LspAttach",
     config = function()
       require("fidget").setup {}
     end
@@ -266,6 +274,7 @@ require('lazy').setup({
   -- snippets
   {
     "L3MON4D3/LuaSnip",
+    event = "InsertEnter",
     -- follow latest release.
     version = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
     -- install jsregexp (optional!:).
@@ -275,10 +284,11 @@ require('lazy').setup({
   -- LSP
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
   },                                     -- enable LSP
-  { "williamboman/nvim-lsp-installer" }, -- simple to  language server installer
   {
     "jose-elias-alvarez/null-ls.nvim",
+    event = { "LspAttach" },
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       local null_ls = require "null-ls"
@@ -319,8 +329,7 @@ require('lazy').setup({
 
   {
     "glepnir/lspsaga.nvim",
-    -- event = { "LspAttach" },
-    after = 'nvim-lspconfig',
+    event = { "LspAttach" },
     config = function()
       require('lspsaga').setup({})
     end
@@ -329,12 +338,14 @@ require('lazy').setup({
   --  { 'mattn/vim-lsp-settings' }, -- LSP suggest installer
   {
     'williamboman/mason.nvim',
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       require('mason').setup()
     end
   },
   {
     'williamboman/mason-lspconfig.nvim',
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       require('mason-lspconfig').setup_handlers({ function(server)
         local opt = {
@@ -459,6 +470,7 @@ require('lazy').setup({
   -- other.vim
   {
     'rgroli/other.nvim',
+    cmd = "Other",
     config = function()
       local rails_controller_patterns = {
         { target = "/spec/controllers/%1_spec.rb", context = "spec" },
@@ -601,11 +613,17 @@ require('lazy').setup({
   { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
   {
     "nvim-telescope/telescope-file-browser.nvim",
+    cmd = 'Telescope',
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
   },
   {
     "nvim-telescope/telescope-frecency.nvim",
+    cmd = 'Telescope',
+    keys = {
+      { ';cb', ":Telescope frecency workspace=CWD<CR>" },
+    },
     config = function()
+      require("telescope").load_extension("frecency")
     end,
     dependencies = { "kkharji/sqlite.lua" }
   },
@@ -616,7 +634,15 @@ require('lazy').setup({
       { "nvim-telescope/telescope-file-browser.nvim", },
       { "nvim-telescope/telescope-frecency.nvim", },
     },
+    cmd = 'Telescope',
+    keys = {
+      { '<C-p>',      ':Telescope find_files find_command=rg,--files,--hidden,--glob,!*.git <CR>' },
+      { '<Space>f',   ':Telescope live_grep<CR>' },
+      { '<Leader>fG', ':Telescope grep_string<CR>' },
+      { '<C-O>',      ':Telescope lsp_document_symbols<CR>' }
+    },
     config = function()
+      require('telescope').load_extension('frecency')
       require('telescope').setup {
         defaults = {
           leyout_config = {
@@ -673,6 +699,7 @@ require('lazy').setup({
       "windwp/nvim-ts-autotag",
       "RRethy/nvim-treesitter-endwise",
     },
+    event = { "BufRead" },
     build = function()
       require("nvim-treesitter.install").update({ with_sync = true })
     end,
@@ -714,9 +741,9 @@ require('lazy').setup({
       }
     end,
   },
-  { "windwp/nvim-ts-autotag" },
-  { "RRethy/nvim-treesitter-endwise" },
-  { "nvim-treesitter/playground" },
+  { "windwp/nvim-ts-autotag",         lazy = true },
+  { "RRethy/nvim-treesitter-endwise", lazy = true },
+  { "nvim-treesitter/playground",     cmd = "TSPlaygroundToggle" },
 
   -- comment outer
   { "tyru/caw.vim" },
@@ -724,7 +751,7 @@ require('lazy').setup({
   -- git commit outline
   {
     "lewis6991/gitsigns.nvim",
-    event = { "FocusLost", "CursorHold", "CursorHoldI" },
+    event = { "BufRead" },
     config = function()
       require('gitsigns').setup {
         signs                        = {
@@ -737,7 +764,7 @@ require('lazy').setup({
         },
         signcolumn                   = true,  -- Toggle with `:Gitsigns toggle_signs`
         numhl                        = true,  -- Toggle with `:Gitsigns toggle_numhl`
-        linehl                       = true,  -- Toggle with `:Gitsigns toggle_linehl`
+        linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
         word_diff                    = false, -- Toggle with `:Gitsigns toggle_word_diff`
         watch_gitdir                 = {
           follow_files = true
@@ -963,17 +990,11 @@ require('lazy').setup({
     dependencies = {
       'nvim-tree/nvim-web-devicons', -- optional
     },
+    keys = {
+      { '<M-w>',  ':NvimTreeToggle<CR>' },
+      { '<C-j>w', ':NvimTreeFindFile<CR>' }
+    },
     config = function()
-      -- disable netrw at the very start of your init.lua
-      vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
-
-      -- set termguicolors to enable highlight groups
-      vim.opt.termguicolors = true
-
-      -- empty setup using defaults
-      require("nvim-tree").setup()
-
       -- OR setup with some options
       require("nvim-tree").setup({
         sort_by = "case_sensitive",
@@ -991,7 +1012,7 @@ require('lazy').setup({
   },
 
   -- Ruby plugins
-  { 'vim-ruby/vim-ruby' },
+  { 'vim-ruby/vim-ruby', ft = "rb" },
   --  { 'tpope/vim-rails' },
 
   -- filetype plugins
@@ -1059,9 +1080,6 @@ require('lazy').setup({
     lazy = true,
     dependencies = {
       { "nvim-tree/nvim-web-devicons" },
-      { "nvim-telescope/telescope.nvim" },
-      { "nvim-tree/nvim-tree.lua" },
-      { "akinsho/bufferline.nvim" },
     },
     config = function()
       require("monokai-pro").setup({
@@ -1118,6 +1136,7 @@ require('lazy').setup({
   {
     'akinsho/bufferline.nvim',
     tag = "v4.2.0",
+    event = { "BufRead", "BufNewFile" },
     dependencies = 'nvim-tree/nvim-web-devicons',
     config = function()
       local bufferline = require('bufferline')
@@ -1142,6 +1161,7 @@ require('lazy').setup({
 
   {
     "norcalli/nvim-colorizer.lua",
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("colorizer").setup()
     end
@@ -1149,32 +1169,30 @@ require('lazy').setup({
 
 
 
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
 }, {})
 
-local function builtin(name)
-  return function(opt)
-    return function()
-      return require("telescope.builtin")[name](opt or {})
-    end
-  end
-end
+-- local function builtin(name)
+--   return function(opt)
+--     return function()
+--       return require("telescope.builtin")[name](opt or {})
+--     end
+--   end
+-- end
+--
+-- local function extensions(name, prop)
+--   return function(opt)
+--     return function()
+--       local telescope = require "telescope"
+--       telescope.load_extension(name)
+--       return telescope.extensions[name][prop](opt or {})
+--     end
+--   end
+-- end
 
-local function extensions(name, prop)
-  return function(opt)
-    return function()
-      local telescope = require "telescope"
-      telescope.load_extension(name)
-      return telescope.extensions[name][prop](opt or {})
-    end
-  end
-end
-
-vim.keymap.set("n", "<C-p>", builtin "find_files" { hidden = true, ["layout_config.preview_width"] = 0.8 })
-vim.keymap.set("n", "<Space>f", builtin "live_grep" {})
-vim.keymap.set("n", "<Leader>fG", builtin "grep_string" {})
-vim.keymap.set("n", ";cb",
-  "<cmd>lua require('telescope').extensions.frecency.frecency({ workspace = 'CWD'})<CR>",
-  { noremap = true, silent = true })
-vim.keymap.set("n", "<C-O>", builtin "lsp_document_symbols" {})
+-- vim.keymap.set("n", "<C-p>", builtin "find_files" { hidden = true, ["layout_config.preview_width"] = 0.8 })
+-- vim.keymap.set("n", "<Space>f", builtin "live_grep" {})
+-- vim.keymap.set("n", "<Leader>fG", builtin "grep_string" {})
+-- vim.keymap.set("n", ";cb",
+--   "<cmd>lua require('telescope').extensions.frecency.frecency({ workspace = 'CWD'})<CR>",
+--   { noremap = true, silent = true })
+-- vim.keymap.set("n", "<C-O>", builtin "lsp_document_symbols" {})

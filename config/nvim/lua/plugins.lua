@@ -51,62 +51,61 @@ return packer.startup(function(use)
   use({ "tpope/vim-surround" })
 
   -- Colorschemes
-  use "sainnhe/sonokai"
-  use({
-    "EdenEast/nightfox.nvim",
-    config = function()
-      -- Default options
-      require('nightfox').setup({
-        options = {
-          -- Compiled file's destination location
-          compile_path = vim.fn.stdpath("cache") .. "/nightfox",
-          compile_file_suffix = "_compiled",       -- Compiled file suffix
-          transparent = vim.g.transparent_enabled, -- Disable setting background
-          terminal_colors = true,                  -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
-          dim_inactive = false,                    -- Non focused panes set to alternative background
-          module_default = true,                   -- Default enable value for modules
-          colorblind = {
-            enable = false,                        -- Enable colorblind support
-            simulate_only = false,                 -- Only show simulated colorblind colors and not diff shifted
-            severity = {
-              protan = 0,                          -- Severity [0,1] for protan (red)
-              deutan = 0,                          -- Severity [0,1] for deutan (green)
-              tritan = 0,                          -- Severity [0,1] for tritan (blue)
-            },
-          },
-          styles = {             -- Style to be applied to different syntax groups
-            comments = "italic", -- Value is any valid attr-list value `:help attr-list`
-            conditionals = "NONE",
-            constants = "NONE",
-            functions = "NONE",
-            keywords = "NONE",
-            numbers = "NONE",
-            operators = "NONE",
-            strings = "NONE",
-            types = "NONE",
-            variables = "NONE",
-          },
-          inverse = { -- Inverse highlight for different types
-            match_paren = false,
-            visual = false,
-            search = false,
-          },
-          modules = { -- List of various plugins and additional options
-            -- ...
-          },
-        },
-        palettes = {
-          name = "carbonfox",
-        },
-        specs = {},
-        groups = {},
-      })
-      -- require("nightfox.config").set_fox("duskfox")
-      -- require("nightfox").load()
-    end
-  })
+  -- use "sainnhe/sonokai"
+  -- use({
+  --   "EdenEast/nightfox.nvim",
+  --   config = function()
+  --     -- Default options
+  --     require('nightfox').setup({
+  --       options = {
+  --         -- Compiled file's destination location
+  --         compile_path = vim.fn.stdpath("cache") .. "/nightfox",
+  --         compile_file_suffix = "_compiled",       -- Compiled file suffix
+  --         transparent = vim.g.transparent_enabled, -- Disable setting background
+  --         terminal_colors = true,                  -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+  --         dim_inactive = false,                    -- Non focused panes set to alternative background
+  --         module_default = true,                   -- Default enable value for modules
+  --         colorblind = {
+  --           enable = false,                        -- Enable colorblind support
+  --           simulate_only = false,                 -- Only show simulated colorblind colors and not diff shifted
+  --           severity = {
+  --             protan = 0,                          -- Severity [0,1] for protan (red)
+  --             deutan = 0,                          -- Severity [0,1] for deutan (green)
+  --             tritan = 0,                          -- Severity [0,1] for tritan (blue)
+  --           },
+  --         },
+  --         styles = {             -- Style to be applied to different syntax groups
+  --           comments = "italic", -- Value is any valid attr-list value `:help attr-list`
+  --           conditionals = "NONE",
+  --           constants = "NONE",
+  --           functions = "NONE",
+  --           keywords = "NONE",
+  --           numbers = "NONE",
+  --           operators = "NONE",
+  --           strings = "NONE",
+  --           types = "NONE",
+  --           variables = "NONE",
+  --         },
+  --         inverse = { -- Inverse highlight for different types
+  --           match_paren = false,
+  --           visual = false,
+  --           search = false,
+  --         },
+  --         modules = { -- List of various plugins and additional options
+  --           -- ...
+  --         },
+  --       },
+  --       palettes = {
+  --         name = "carbonfox",
+  --       },
+  --       specs = {},
+  --       groups = {},
+  --     })
+  --     -- require("nightfox.config").set_fox("duskfox")
+  --     -- require("nightfox").load()
+  --   end
+  -- })
   -- use "phanviet/vim-monokai-pro"
-
   use {
     "loctvl842/monokai-pro.nvim",
     config = function()
@@ -328,7 +327,7 @@ return packer.startup(function(use)
     config = function()
       local has_words_before = function()
         if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
         return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
       end
       local cmp = require "cmp"
@@ -425,10 +424,10 @@ return packer.startup(function(use)
           --     return utils.root_has_file({ ".rubocop.yml" })
           --   end,
           -- }),
-          null_ls.builtins.diagnostics.luacheck.with({
-            extra_args = { "--globals", "vim", "--globals", "awesome" },
-          }),
-          null_ls.builtins.diagnostics.yamllint,
+          -- null_ls.builtins.diagnostics.luacheck.with({
+          --   extra_args = { "--globals", "vim", "--globals", "awesome" },
+          -- }),
+          -- null_ls.builtins.diagnostics.yamllint,
           null_ls.builtins.diagnostics.commitlint,
           null_ls.builtins.formatting.rubyfmt,
           -- null_ls.builtins.formatting.rubocop,
@@ -723,16 +722,30 @@ return packer.startup(function(use)
   use({ "MunifTanjim/prettier.nvim" })
 
   -- Telescope
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use({
+    "nvim-telescope/telescope-file-browser.nvim",
+    requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+  })
+  use {
+    "nvim-telescope/telescope-frecency.nvim",
+    config = function()
+      require "telescope".load_extension("frecency")
+    end,
+    requires = { "kkharji/sqlite.lua" }
+  }
   use {
     "nvim-telescope/telescope.nvim",
     -- module = { "telescope" },
     requires = {
       { 'nvim-lua/plenary.nvim' },
       { "nvim-telescope/telescope-file-browser.nvim", opt = true },
+      { "nvim-telescope/telescope-frecency.nvim",     opt = true },
     },
     wants = {
       "telescope-file-browser.nvim",
       "telescope-fzf-native.nvim",
+      "telescope-frecency.nvim",
     },
     setup = function()
       local function builtin(name)
@@ -787,13 +800,10 @@ return packer.startup(function(use)
             layout_config = {
               width = 0.9,
             },
+            ignore_patterns = {
+              "*/vendor/*",
+            },
           },
-          oldfiles = {
-            theme = "dropdown",
-            leuout_config = {
-              width = 0.9,
-            }
-          }
         },
         extensions = {
           fzf = {
@@ -814,64 +824,21 @@ return packer.startup(function(use)
       -- require('telescope').load_extension('fzy_native')
     end
   }
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-  use({
-    "nvim-telescope/telescope-file-browser.nvim",
-    requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
-  })
-  use {
-    "nvim-telescope/telescope-frecency.nvim",
-    config = function()
-      require "telescope".load_extension("frecency")
-    end,
-    requires = { "kkharji/sqlite.lua" }
-  }
-
 
 
   -- Treesitter
   use({
     "nvim-treesitter/nvim-treesitter",
-    requires = { "RRethy/nvim-treesitter-endwise" },
+    requires = {
+      "windwp/nvim-ts-autotag",
+      "RRethy/nvim-treesitter-endwise",
+    },
+    wants = {
+      "windwp/nvim-ts-autotag",
+      "RRethy/nvim-treesitter-endwise",
+    },
     config = function()
-      require 'nvim-treesitter.configs'.setup {
-        -- A list of parser names, or "all" (the five listed parsers should always be installed)
-        ensure_installed = {
-          "bash",
-          "c",
-          "cmake",
-          "cpp",
-          "css",
-          "diff",
-          "dockerfile",
-          "haskell",
-          "html",
-          "java",
-          "javascript",
-          "json",
-          "git_config",
-          "gitcommit",
-          "go",
-          "graphql",
-          "lua",
-          "make",
-          "markdown",
-          "markdown_inline",
-          "perl",
-          "php",
-          "proto",
-          "regex",
-          "rst",
-          "ruby",
-          "rust",
-          "scala",
-          "sql",
-          "tsx",
-          "toml",
-          "typescript",
-          "vim",
-          "yaml",
-        },               -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+      require('nvim-treesitter.configs').setup {
         highlight = {
           enable = true, -- false will disable the whole extension
         },
@@ -880,20 +847,22 @@ return packer.startup(function(use)
         },
         indent = {
           enable = true,
-          disable = { "ruby" },
-        },
-        matchup = {
-          enable = true,
-        },
-        rainbow = {
-          enable = true,
-          extended_mode = true,
-          max_file_lines = 2000,
         },
         endwise = {
           enable = true,
         }, -- Install parsers synchronously (only applied to `ensure_installed`)
-        sync_install = false,
+        -- A list of parser names, or "all" (the five listed parsers should always be installed)
+        ensure_installed = {
+          "lua",
+          "ruby",
+          "go",
+          "javascript",
+          "typescript",
+          "tsx",
+          "html",
+
+        }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+        sync_install = true,
 
         -- Automatically install missing parsers when entering buffer
         -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
@@ -904,8 +873,6 @@ return packer.startup(function(use)
 
         ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
         -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
-
-
       }
     end,
     { run = ":TSUpdate" }
