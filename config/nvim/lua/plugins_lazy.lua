@@ -41,9 +41,9 @@ require('lazy').setup({
   {
     "folke/which-key.nvim",
     keys = {
-      { "n", "<F3>",       "<cmd>OtherClear<CR><cmd>:Other<CR>" },
-      { "n", "<leader>os", "<cmd>OtherClear<CR><cmd>:OtherSplit<CR>" },
-      { "n", "<leader>ov", "<cmd>OtherClear<CR><cmd>:OtherVSplit<CR>" },
+      { "<F3>",       "<cmd>OtherClear<CR><cmd>:Other<CR>" },
+      { "<leader>os", "<cmd>OtherClear<CR><cmd>:OtherSplit<CR>" },
+      { "<leader>ov", "<cmd>OtherClear<CR><cmd>:OtherVSplit<CR>" },
     },
     config = function()
       local wk = require "which-key"
@@ -170,13 +170,13 @@ require('lazy').setup({
       })
     end,
   },
-  {
-    "zbirenbaum/copilot-cmp",
-    event = { "InsertEnter" },
-    config = function()
-      require("copilot_cmp").setup()
-    end
-  },
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   event = { "InsertEnter" },
+  --   config = function()
+  --     require("copilot_cmp").setup()
+  --   end
+  -- },
 
   -- cmp plugins
   {
@@ -285,7 +285,7 @@ require('lazy').setup({
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
-  },                                     -- enable LSP
+  }, -- enable LSP
   {
     "jose-elias-alvarez/null-ls.nvim",
     event = { "LspAttach" },
@@ -330,8 +330,12 @@ require('lazy').setup({
   {
     "glepnir/lspsaga.nvim",
     event = { "LspAttach" },
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
     config = function()
-      require('lspsaga').setup({})
+      require('lspsaga').setup()
     end
   }, -- LSP UIs
   --  { "prabirshrestha/vim-lsp" }, -- LSP
@@ -352,14 +356,14 @@ require('lazy').setup({
           -- -- Function executed when the LSP server startup
           on_attach = function(client, bufnr)
             if client.server_capabilities.documentFormattingProvider then
-              vim.cmd(
-                [[
-             augroup LspFormatting
-             autocmd! * <buffer>
-             autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
-             augroup END
-             ]]
-              )
+              --  vim.cmd(
+              --    [[
+              -- augroup LspFormatting
+              -- autocmd! * <buffer>
+              -- autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
+              -- augroup END
+              -- ]]
+              --  )
             end
             -- vim.cmd 'autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil,1000)'
           end,
@@ -459,7 +463,7 @@ require('lazy').setup({
   {
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     config = function()
-      require("lsp_lines").setup()
+      -- require("lsp_lines").setup()
       vim.diagnostic.config({
         virtual_text = false,
       })
@@ -610,7 +614,7 @@ require('lazy').setup({
   { "MunifTanjim/prettier.nvim" },
 
   -- Telescope
-  { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   {
     "nvim-telescope/telescope-file-browser.nvim",
     cmd = 'Telescope',
@@ -645,23 +649,75 @@ require('lazy').setup({
       require('telescope').load_extension('frecency')
       require('telescope').setup {
         defaults = {
-          leyout_config = {
-            vertical               = {
+          leyout_config        = {
+            vertical       = {
               width = 0.9,
               height = 0.95,
               preview_height = 0.5,
             },
-            file_sorter            = require('telescope.sorters').get_fzy_sorter,
-            prompt_prefix          = ' >',
-            color_devicons         = true,
+            -- file_sorter            = require('telescope.sorters').get_fzy_sorter,
+            color_devicons = true,
 
-            file_previewer         = require('telescope.previewers').vim_buffer_cat.new,
-            grep_previewer         = require('telescope.previewers').vim_buffer_vimgrep.new,
-            qflist_previewer       = require('telescope.previewers').vim_buffer_qflist.new,
-
-            -- Developer configurations: Not meant for general override
-            buffer_previewer_maker = require('telescope.previewers').buffer_previewer_maker
-          }
+            -- file_previewer         = require('telescope.previewers').vim_buffer_cat.new,
+            -- grep_previewer         = require('telescope.previewers').vim_buffer_vimgrep.new,
+            -- list_previewer       = require('telescope.previewers').vim_buffer_qflist.new,
+            -- buffer_previewer_maker = require('telescope.previewers').buffer_previewer_maker
+          },
+          prompt_prefix        = "   ",
+          selection_caret      = "  ",
+          sorting_strategy     = "ascending",
+          file_ignore_patterns = {
+            ".git/",
+            "target/",
+            "docs/",
+            "vendor/*",
+            "%.lock",
+            "__pycache__/*",
+            "%.sqlite3",
+            "%.ipynb",
+            "node_modules/*",
+            -- "%.jpg",
+            -- "%.jpeg",
+            -- "%.png",
+            "%.svg",
+            "%.otf",
+            "%.ttf",
+            "%.webp",
+            ".dart_tool/",
+            ".github/",
+            ".gradle/",
+            ".idea/",
+            ".settings/",
+            ".vscode/",
+            "__pycache__/",
+            "build/",
+            "gradle/",
+            "node_modules/",
+            "%.pdb",
+            "%.dll",
+            "%.class",
+            "%.exe",
+            "%.cache",
+            "%.ico",
+            "%.pdf",
+            "%.dylib",
+            "%.jar",
+            "%.docx",
+            "%.met",
+            "smalljre_*/*",
+            ".vale/",
+            "%.burp",
+            "%.mp4",
+            "%.mkv",
+            "%.rar",
+            "%.zip",
+            "%.7z",
+            "%.tar",
+            "%.bz2",
+            ".epub",
+            "%.flac",
+            "%.tar.gz",
+          },
         },
         pickers = {
           find_files = {
@@ -682,7 +738,7 @@ require('lazy').setup({
           },
           frecency = {
             show_scores = false,
-            show_unindexed = true,
+            show_unindexed = false,
             ignore_patterns = { "*.git/*", "*/tmp/*" },
             disable_devicons = false,
           }
@@ -695,14 +751,13 @@ require('lazy').setup({
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
-    dependencies = {
-      "windwp/nvim-ts-autotag",
-      "RRethy/nvim-treesitter-endwise",
-    },
-    event = { "BufRead" },
-    build = function()
-      require("nvim-treesitter.install").update({ with_sync = true })
-    end,
+    -- dependencies = {
+    --   "windwp/nvim-ts-autotag",
+    --   "RRethy/nvim-treesitter-endwise",
+    -- },
+    -- event = { "BufRead" },
+    branch = "master",
+    build = ":TSUpdate",
     config = function()
       require('nvim-treesitter.configs').setup {
         highlight = {
@@ -741,9 +796,9 @@ require('lazy').setup({
       }
     end,
   },
-  { "windwp/nvim-ts-autotag",         lazy = true },
-  { "RRethy/nvim-treesitter-endwise", lazy = true },
-  { "nvim-treesitter/playground",     cmd = "TSPlaygroundToggle" },
+  { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
+  -- { "windwp/nvim-ts-autotag",         lazy = true },
+  -- { "RRethy/nvim-treesitter-endwise", lazy = true },
 
   -- comment outer
   { "tyru/caw.vim" },
@@ -836,7 +891,7 @@ require('lazy').setup({
       }
     end
   },
-  { "tpope/vim-fugitive" },
+  { "tpope/vim-fugitive", cmd = "Git" },
 
   {
     "petertriho/nvim-scrollbar",
@@ -1012,11 +1067,11 @@ require('lazy').setup({
   },
 
   -- Ruby plugins
-  { 'vim-ruby/vim-ruby', ft = "rb" },
+  { 'vim-ruby/vim-ruby',  ft = "rb" },
   --  { 'tpope/vim-rails' },
 
   -- filetype plugins
-  { 'jlcrochet/vim-rbs', ft = "rbs" },
+  { 'jlcrochet/vim-rbs',  ft = "rbs" },
   --  { "keith/rspec.vim", ft = "rb" }
 
   -- Colorschemes
@@ -1076,7 +1131,8 @@ require('lazy').setup({
   -- },
   --  "phanviet/vim-monokai-pro",
   {
-    "loctvl842/monokai-pro.nvim",
+    "skmtkytr/monokai-pro.nvim",
+    branch = "update-treesitter-highlight-for-ruby",
     lazy = true,
     dependencies = {
       { "nvim-tree/nvim-web-devicons" },
@@ -1132,6 +1188,18 @@ require('lazy').setup({
     end
   },
 
+
+  {
+    'glepnir/dashboard-nvim',
+    event = 'VimEnter',
+    config = function()
+      require('dashboard').setup {
+        -- config
+      }
+    end,
+    dependencies = { { 'nvim-tree/nvim-web-devicons' } }
+  },
+
   -- Tab UIs
   {
     'akinsho/bufferline.nvim',
@@ -1166,8 +1234,6 @@ require('lazy').setup({
       require("colorizer").setup()
     end
   },
-
-
 
 }, {})
 
