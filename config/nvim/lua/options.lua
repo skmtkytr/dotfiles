@@ -31,6 +31,7 @@ local options = {
   number = true,
   relativenumber = false,
   numberwidth = 4,
+  laststatus = 3,
   signcolumn = "yes",
   wrap = false,
   winblend = 0,

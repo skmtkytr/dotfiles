@@ -14,8 +14,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
 --
@@ -62,10 +60,6 @@ require('lazy').setup({
     dependencies = {
       { "nvim-tree/nvim-web-devicons", },
     },
-    setup = function()
-      vim.opt.laststatus = 0
-      vim.opt.showtabline = 0
-    end,
     config = function()
       require('lualine').setup {
         options = {
@@ -74,7 +68,7 @@ require('lazy').setup({
           component_separators = { left = '', right = '' },
           section_separators = { left = '', right = '' },
           disabled_filetypes = {
-            statusline = {},
+            statusline = { "dashboard", "lazy", "alpha" },
             winbar = {},
           },
           ignore_focus = {},
@@ -163,6 +157,10 @@ require('lazy').setup({
   {
     "zbirenbaum/copilot.lua",
     event = "InsertEnter",
+    ft = {
+      "go", "typescript", "typescriptreact", "javascript", "javascriptreact", "lua", "rust", "python",
+      "ruby", "elixir", "php", "java", "c", "cpp", "cs", "scala", "swift", "kotlin", "dart", "haskell",
+    },
     config = function()
       require("copilot").setup({
         suggestion = { enabled = false },
@@ -197,7 +195,6 @@ require('lazy').setup({
       { "onsails/lspkind-nvim",                event = "InsertEnter" },
       {
         "zbirenbaum/copilot-cmp",
-        event = { "InsertEnter" },
         config = function()
           require("copilot_cmp").setup()
         end
@@ -215,8 +212,10 @@ require('lazy').setup({
         sources = cmp.config.sources({
           { name = "copilot" },
           { name = "nvim_lsp" },
+          { name = "buffer" },
           { name = "path" },
           { name = "luasnip" },
+          { name = "cmdline" },
           { name = "nvim_lsp_signature_help" },
         }),
         snippet = {
@@ -292,6 +291,8 @@ require('lazy').setup({
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       local null_ls = require "null-ls"
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
       null_ls.setup({
         capabilities = capabilities,
         sources = {
@@ -312,8 +313,9 @@ require('lazy').setup({
           --   extra_args = { "--globals", "vim", "--globals", "awesome" },
           -- }),
           -- null_ls.builtins.diagnostics.yamllint,
-          null_ls.builtins.diagnostics.commitlint,
-          null_ls.builtins.formatting.rubyfmt,
+          -- null_ls.builtins.diagnostics.commitlint,
+          null_ls.builtins.formatting.gofmt,
+          -- null_ls.builtins.formatting.rubyfmt,
           -- null_ls.builtins.formatting.rubocop,
           -- null_ls.builtins.formatting.rubocop.with({
           --   prefer_local = "bundle_bin",
@@ -354,19 +356,19 @@ require('lazy').setup({
       require('mason-lspconfig').setup_handlers({ function(server)
         local opt = {
           -- -- Function executed when the LSP server startup
-          on_attach = function(client, bufnr)
-            if client.server_capabilities.documentFormattingProvider then
-              --  vim.cmd(
-              --    [[
-              -- augroup LspFormatting
-              -- autocmd! * <buffer>
-              -- autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
-              -- augroup END
-              -- ]]
-              --  )
-            end
-            -- vim.cmd 'autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil,1000)'
-          end,
+          -- on_attach = function(client, bufnr)
+          --   if client.server_capabilities.documentFormattingProvider then
+          --  vim.cmd(
+          --    [[
+          -- augroup LspFormatting
+          -- autocmd! * <buffer>
+          -- autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
+          -- augroup END
+          -- ]]
+          --  )
+          -- end
+          -- vim.cmd 'autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil,1000)'
+          -- end,
           capabilities = require('cmp_nvim_lsp').default_capabilities(
             vim.lsp.protocol.make_client_capabilities()
           )
@@ -386,14 +388,14 @@ require('lazy').setup({
           }
         })
 
-        lspconfig.typeprof.setup({
-          capabilities = opt.capabilities,
-          -- on_attach = on_attach,
-          on_new_config = function(config, root_dir)
-            config.cmd = { "bundle", "exec", "typeprof" }
-            return config
-          end,
-        })
+        -- lspconfig.typeprof.setup({
+        --   capabilities = opt.capabilities,
+        --   -- on_attach = on_attach,
+        --   on_new_config = function(config, root_dir)
+        --     config.cmd = { "bundle", "exec", "typeprof" }
+        --     return config
+        --   end,
+        -- })
 
         lspconfig.rubocop.setup({
           calabilities = opt.capabilities,
@@ -406,22 +408,25 @@ require('lazy').setup({
         -- SteepのLanguage Serverを起動するための設定
         -- デフォルトの設定をいくつか上書きしている
         lspconfig.steep.setup({
-          -- 補完に対応したcapabilitiesを渡す
           capabilities = opt.capabilities,
-          on_attach = function(client, bufnr)
-            -- LSP関連のキーマップの基本定義
-            -- on_attach(client, bufnr)
-            -- Steepで型チェックを再実行するためのキーマップ定義
-            vim.keymap.set("n", "<space>ct", function()
-              client.request("$/typecheck", { guid = "typecheck-" .. os.time() }, function()
-              end, bufnr)
-            end, { silent = true, buffer = bufnr })
-          end,
-          on_new_config = function(config, root_dir)
-            config.cmd = { "bundle", "exec", "steep", "langserver" }
-            return config
-          end,
         })
+        -- lspconfig.steep.setup({
+        --   -- 補完に対応したcapabilitiesを渡す
+        --   capabilities = opt.capabilities,
+        --   on_attach = function(client, bufnr)
+        --     -- LSP関連のキーマップの基本定義
+        --     -- on_attach(client, bufnr)
+        --     -- Steepで型チェックを再実行するためのキーマップ定義
+        --     vim.keymap.set("n", "<space>ct", function()
+        --       client.request("$/typecheck", { guid = "typecheck-" .. os.time() }, function()
+        --       end, bufnr)
+        --     end, { silent = true, buffer = bufnr })
+        --   end,
+        --   on_new_config = function(config, root_dir)
+        --     config.cmd = { "bundle", "exec", "steep", "langserver" }
+        --     return config
+        --   end,
+        -- })
       end
       })
     end
@@ -474,7 +479,7 @@ require('lazy').setup({
   -- other.vim
   {
     'rgroli/other.nvim',
-    cmd = "Other",
+    cmd = { "Other", "OtherClear" },
     config = function()
       local rails_controller_patterns = {
         { target = "/spec/controllers/%1_spec.rb", context = "spec" },
@@ -640,10 +645,11 @@ require('lazy').setup({
     },
     cmd = 'Telescope',
     keys = {
-      { '<C-p>',      ':Telescope find_files find_command=rg,--files,--hidden,--glob,!*.git <CR>' },
-      { '<Space>f',   ':Telescope live_grep<CR>' },
-      { '<Leader>fG', ':Telescope grep_string<CR>' },
-      { '<C-O>',      ':Telescope lsp_document_symbols<CR>' }
+      { '<C-p>',    ':Telescope find_files find_command=rg,--files,--hidden,--glob,!*.git <CR>' },
+      { '<Space>f', ':Telescope live_grep<CR>' },
+      { ';cf',      ':Telescope grep_string<CR>' },
+      { '<C-O>',    ':Telescope lsp_document_symbols<CR>' },
+      { ';gst',     ':Telescope git_status<CR>' },
     },
     config = function()
       require('telescope').load_extension('frecency')
@@ -751,10 +757,10 @@ require('lazy').setup({
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
-    -- dependencies = {
-    --   "windwp/nvim-ts-autotag",
-    --   "RRethy/nvim-treesitter-endwise",
-    -- },
+    dependencies = {
+      "windwp/nvim-ts-autotag",
+      "RRethy/nvim-treesitter-endwise",
+    },
     -- event = { "BufRead" },
     branch = "master",
     build = ":TSUpdate",
@@ -801,7 +807,7 @@ require('lazy').setup({
   -- { "RRethy/nvim-treesitter-endwise", lazy = true },
 
   -- comment outer
-  { "tyru/caw.vim" },
+  { "skmtkytr/caw.vim" },
 
   -- git commit outline
   {
@@ -1194,7 +1200,35 @@ require('lazy').setup({
     event = 'VimEnter',
     config = function()
       require('dashboard').setup {
-        -- config
+        theme = 'hyper',
+        config = {
+          week_header = {
+            enable = true,
+          },
+          shortcut = {
+            { desc = '󰊳 Update', group = '@property', action = 'Lazy update', key = 'u' },
+            {
+              icon = ' ',
+              icon_hl = '@variable',
+              desc = 'Files',
+              group = 'Label',
+              action = 'Telescope find_files',
+              key = 'f',
+            },
+            {
+              desc = ' MRU',
+              group = 'DiagnosticHint',
+              action = 'Telescope frecency',
+              key = 'a',
+            },
+            {
+              desc = ' dotfiles',
+              group = 'Number',
+              action = 'Telescope find_files cwd=~/dotfiles',
+              key = 'd',
+            },
+          },
+        },
       }
     end,
     dependencies = { { 'nvim-tree/nvim-web-devicons' } }
@@ -1233,6 +1267,77 @@ require('lazy').setup({
     config = function()
       require("colorizer").setup()
     end
+  },
+
+  -- better vim.ui
+  {
+    "stevearc/dressing.nvim",
+    lazy = false,
+    opts = {
+      input = {
+        win_options = { winblend = 0 },
+      },
+    },
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.input(...)
+      end
+    end,
+  },
+
+  -- noicer ui
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      { "MunifTanjim/nui.nvim" },
+      {
+        "rcarriga/nvim-notify",
+        module = { "notify" },
+        config = function()
+          require("notify").setup {
+            -- nvim-notify の設定
+          }
+        end
+      },
+    },
+    opts = {
+      cmdline = {
+        view = "cmdline_popup",
+        format = {
+          cmdline = { icon = "  " },
+          search_down = { icon = "  󰄼" },
+          search_up = { icon = "  " },
+          lua = { icon = "  " },
+        },
+      },
+      -- lsp = {
+      --   progress = { enabled = true },
+      --   hover = { enabled = false },
+      --   signature = { enabled = false },
+      --   -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+      --   override = {
+      --     ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      --     ["vim.lsp.util.stylize_markdown"] = true,
+      --     ["cmp.entry.get_documentation"] = true,
+      --   },
+      -- },
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            find = "%d+L, %d+B",
+          },
+        },
+      },
+    },
   },
 
 }, {})
