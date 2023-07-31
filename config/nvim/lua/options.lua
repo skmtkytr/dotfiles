@@ -29,7 +29,7 @@ local options = {
   tabstop = 2,
   cursorline = true,
   number = true,
-  relativenumber = false,
+  relativenumber = true,
   numberwidth = 4,
   laststatus = 3,
   signcolumn = "yes",
@@ -45,6 +45,7 @@ local options = {
   listchars = { tab = '>>', trail = '-', nbsp = '+' },
   splitbelow = false, -- オンのとき、ウィンドウを横分割すると新しいウィンドウはカレントウィンドウの下に開かれる
   splitright = false, -- オンのとき、ウィンドウを縦分割すると新しいウィンドウはカレントウィンドウの右に開かれる
+  splitkeep = "screen",
 }
 
 vim.opt.shortmess:append("c")

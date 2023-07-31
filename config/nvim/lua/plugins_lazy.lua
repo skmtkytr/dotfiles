@@ -409,6 +409,15 @@ require('lazy').setup({
         -- デフォルトの設定をいくつか上書きしている
         lspconfig.steep.setup({
           capabilities = opt.capabilities,
+          on_attach = function(client, bufnr)
+            -- LSP関連のキーマップの基本定義
+            -- on_attach(client, bufnr)
+            -- Steepで型チェックを再実行するためのキーマップ定義
+            vim.keymap.set("n", "<space>ct", function()
+              client.request("$/typecheck", { guid = "typecheck-" .. os.time() }, function()
+              end, bufnr)
+            end, { silent = true, buffer = bufnr })
+          end,
         })
         -- lspconfig.steep.setup({
         --   -- 補完に対応したcapabilitiesを渡す
@@ -761,7 +770,7 @@ require('lazy').setup({
       "windwp/nvim-ts-autotag",
       "RRethy/nvim-treesitter-endwise",
     },
-    -- event = { "BufRead" },
+    event = { "BufReadPost", "BufNewFile" },
     branch = "master",
     build = ":TSUpdate",
     config = function()
@@ -1015,6 +1024,21 @@ require('lazy').setup({
   -- }
   {
     "lukas-reineke/indent-blankline.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      filetype_exclude = {
+        "help",
+        "alpha",
+        "dashboard",
+        "neo-tree",
+        "Trouble",
+        "lazy",
+        "mason",
+        "notify",
+        "toggleterm",
+        "lazyterm",
+      },
+    },
     config = function()
       vim.opt.list = true
       vim.opt.listchars:append "space:⋅"
@@ -1047,30 +1071,75 @@ require('lazy').setup({
 
   -- File browser
   {
-    'nvim-tree/nvim-tree.lua',
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    cmd = "Neotree",
     dependencies = {
-      'nvim-tree/nvim-web-devicons', -- optional
-    },
-    keys = {
-      { '<M-w>',  ':NvimTreeToggle<CR>' },
-      { '<C-j>w', ':NvimTreeFindFile<CR>' }
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
     },
     config = function()
-      -- OR setup with some options
-      require("nvim-tree").setup({
-        sort_by = "case_sensitive",
-        view = {
-          width = 30,
-        },
-        renderer = {
-          group_empty = true,
-        },
-        filters = {
-          dotfiles = true,
+      require("neo-tree").setup({
+        filesystem = {
+          filtered_items = {
+            visible = false, -- when true, they will just be displayed differently than normal items
+            hide_dotfiles = false,
+            hide_gitignored = true,
+            hide_hidden = true, -- only works on Windows for hidden files/directories
+            hide_by_name = {
+              "node_modules",
+              "vendor"
+            },
+            hide_by_pattern = { -- uses glob style patterns
+              --"*.meta",
+              --"*/src/*/tsconfig.json",
+            },
+            always_show = { -- remains visible even if other settings would normally hide it
+              --".gitignored",
+            },
+            never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
+              ".DS_Store",
+              --"thumbs.db"
+            },
+            never_show_by_pattern = { -- uses glob style patterns
+              --".null-ls_*",
+            },
+          },
+          follow_current_file = {
+            enabled = true,          -- This will find and focus the file in the active buffer every time
+            --               -- the current file is changed while the tree is open.
+            leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+          },
         },
       })
     end
   },
+  -- {
+  --   'nvim-tree/nvim-tree.lua',
+  --   dependencies = {
+  --     'nvim-tree/nvim-web-devicons', -- optional
+  --   },
+  --   keys = {
+  --     { '<M-w>',  ':NvimTreeToggle<CR>' },
+  --     { '<C-j>w', ':NvimTreeFindFile<CR>' }
+  --   },
+  --   config = function()
+  --     -- OR setup with some options
+  --     require("nvim-tree").setup({
+  --       sort_by = "case_sensitive",
+  --       view = {
+  --         width = 30,
+  --       },
+  --       renderer = {
+  --         group_empty = true,
+  --       },
+  --       filters = {
+  --         dotfiles = true,
+  --       },
+  --     })
+  --   end
+  -- },
 
   -- Ruby plugins
   { 'vim-ruby/vim-ruby',  ft = "rb" },
@@ -1167,14 +1236,14 @@ require('lazy').setup({
         },
         inc_search = "underline",    -- underline | background
         background_clear = {
-          -- "float_win",
-          -- "toggleterm",
+          "float_win",
+          "toggleterm",
           "telescope",
-          -- "which-key",
+          "which-key",
           -- "renamer",
-          -- "notify",
-          "nvim-tree",
-          -- "neo-tree",
+          "notify",
+          -- "nvim-tree",
+          "neo-tree",
           -- "bufferline",
           -- better used if background of `neo-tree` or `nvim-tree` is cleared
         }, -- "float_win","toggleterm", "telescope", "which-key", "renamer", "neo-tree", "nvim-tree", "bufferline"
@@ -1262,6 +1331,92 @@ require('lazy').setup({
   },
 
   {
+    "simrat39/symbols-outline.nvim",
+    config = function()
+      require("symbols-outline").setup()
+    end
+  },
+
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.opt.laststatus = 3
+      vim.opt.splitkeep = "screen"
+    end,
+    opts = {
+      bottom = {
+        -- toggleterm / lazyterm at the bottom with a height of 40% of the screen
+        {
+          ft = "toggleterm",
+          size = { height = 0.25 },
+          -- exclude floating windows
+          filter = function(buf, win)
+            return vim.api.nvim_win_get_config(win).relative == ""
+          end,
+        },
+        {
+          ft = "lazyterm",
+          title = "LazyTerm",
+          size = { height = 0.25 },
+          filter = function(buf)
+            return not vim.b[buf].lazyterm_cmd
+          end,
+        },
+        "Trouble",
+        { ft = "qf",            title = "QuickFix" },
+        {
+          ft = "help",
+          size = { height = 20 },
+          -- only show help buffers
+          filter = function(buf)
+            return vim.bo[buf].buftype == "help"
+          end,
+        },
+        { ft = "spectre_panel", size = { height = 0.4 } },
+      },
+      left = {
+        -- Neo-tree filesystem always takes half the screen height
+        {
+          title = "Neo-Tree",
+          ft = "neo-tree",
+          filter = function(buf)
+            return vim.b[buf].neo_tree_source == "filesystem"
+          end,
+          size = { height = 0.4 },
+        },
+        {
+          title = "Neo-Tree Git",
+          ft = "neo-tree",
+          filter = function(buf)
+            return vim.b[buf].neo_tree_source == "git_status"
+          end,
+          pinned = true,
+          open = "Neotree position=right git_status",
+        },
+        {
+          title = "Neo-Tree Buffers",
+          ft = "neo-tree",
+          filter = function(buf)
+            return vim.b[buf].neo_tree_source == "buffers"
+          end,
+          pinned = true,
+          open = "Neotree position=top buffers",
+        },
+        {
+          ft = "Outline",
+          pinned = true,
+          open = "SymbolsOutlineOpen",
+          -- open = "Lspsaga outline",
+        },
+        -- any other neo-tree windows
+        "neo-tree",
+      },
+    },
+  },
+
+  -- Colorizer plugins
+  {
     "norcalli/nvim-colorizer.lua",
     event = { "BufRead", "BufNewFile" },
     config = function()
@@ -1340,7 +1495,33 @@ require('lazy').setup({
     },
   },
 
-}, {})
+  -- improve neovim builtin terminal
+  { 'akinsho/toggleterm.nvim', version = "*", config = true },
+
+}, {
+  performance = {
+    cache = {
+      enabled = true,
+    },
+    reset_packpath = true, -- reset the package path to improve startup time
+    rtp = {
+      -- reset = true,        -- reset the runtime path to $VIMRUNTIME and your config directory
+      ---@type string[]
+      paths = {}, -- add any custom paths here that you want to includes in the rtp
+      ---@type string[] list any plugins you want to disable here
+      disabled_plugins = {
+        "gzip",
+        -- "matchit",
+        -- "matchparen",
+        "netrwPlugin",
+        -- "tarPlugin",
+        -- "tohtml",
+        -- "tutor",
+        "zipPlugin",
+      },
+    },
+  }
+})
 
 -- local function builtin(name)
 --   return function(opt)
