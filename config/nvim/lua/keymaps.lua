@@ -117,6 +117,9 @@ keymap('v', '<Leader>c', '<Plug>(caw:hatpos:toggle)', {})
 keymap('n', '<Leader>,', '<Plug>(caw:zeropos:toggle)', {})
 keymap('v', '<Leader>,', '<Plug>(caw:zeropos:toggle)', {})
 
+-- test
+keymap('n', '<leader>rtb', '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', opts) -- Run Test Buffer
+keymap('n', '<leader>rtc', '<cmd>lua require("neotest").run.run()<CR>', opts) -- Run Test Current Cursor
 
 -- Telescope mappings
 -- keymap("n", "<C-p>", "<cmd>Telescope fd theme=dropdown<cr>", opts)

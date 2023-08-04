@@ -344,7 +344,15 @@ require('lazy').setup({
   --  { 'mattn/vim-lsp-settings' }, -- LSP suggest installer
   {
     'williamboman/mason.nvim',
-    event = { "BufReadPre", "BufNewFile" },
+    cmd = {
+      "Mason",
+      "MasonInstall",
+      "MasonUninstall",
+      "MasonUninstallAll",
+      "MasonLog",
+      "MasonUpdate",
+    },
+    -- event = { "BufReadPre", "BufNewFile" },
     config = function()
       require('mason').setup()
     end
@@ -477,7 +485,7 @@ require('lazy').setup({
   {
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     config = function()
-      -- require("lsp_lines").setup()
+      require("lsp_lines").setup()
       vim.diagnostic.config({
         virtual_text = false,
       })
@@ -490,7 +498,7 @@ require('lazy').setup({
     'rgroli/other.nvim',
     cmd = { "Other", "OtherClear" },
     config = function()
-      local rails_controller_patterns = {
+      rails_controller_patterns = {
         { target = "/spec/controllers/%1_spec.rb", context = "spec" },
         { target = "/spec/requests/%1_spec.rb",    context = "spec" },
         { target = "/spec/factories/%1.rb",        context = "factories", transformer = "singularize" },
@@ -498,14 +506,12 @@ require('lazy').setup({
         { target = "/app/views/%1/**/*.html.*",    context = "view" },
       }
       require("other-nvim").setup({
-
-
         mappings = {
           -- builtin mappings
           -- "livewire",
           -- "angular",
           -- "laravel",
-          -- "rails",
+          "rails",
           -- "golang",
           -- custom mapping
           {
@@ -559,31 +565,37 @@ require('lazy').setup({
             },
           },
           {
-            pattern = "/app/contexts/(.*).rb",
+            pattern = "/app/contexts/(.*).rb$",
             target = {
               { target = "/app/contexts/%1.rbs",      context = "sig" },
               { target = "/spec/contexts/%1_spec.rb", context = "spec" },
             },
           },
           {
+            pattern = "/app/contexts/(.*).rbs$",
+            target = {
+              { target = "/app/contexts/%1.rb",      context = "app" },
+              { target = "/spec/contexts/%1_spec.rb", context = "spec" },
+            },
           },
           {
-            pattern = "/lib/(.*).rb",
+            pattern = "/lib/(.*)/(.*).rb",
             target = {
               { target = "/spec/%1_spec.rb", context = "spec" },
               { target = "/sig/%1.rbs",      context = "sig" },
             },
           },
           {
-            pattern = "/sig/(.*).rbs",
+            pattern = "/sig/.*/(.*).rbs",
             target = {
               { target = "/lib/%1.rb", context = "lib" },
               { target = "/%1.rb" },
             },
           },
           {
-            pattern = "/spec/(.*)_spec.rb",
+            pattern = "/spec/.*/(.*)_spec.rb",
             target = {
+              { target = "/app/%1.rb",  context = "app" },
               { target = "/lib/%1.rb",  context = "lib" },
               { target = "/sig/%1.rbs", context = "sig" },
             },
@@ -1347,14 +1359,14 @@ require('lazy').setup({
     opts = {
       bottom = {
         -- toggleterm / lazyterm at the bottom with a height of 40% of the screen
-        {
-          ft = "toggleterm",
-          size = { height = 0.25 },
-          -- exclude floating windows
-          filter = function(buf, win)
-            return vim.api.nvim_win_get_config(win).relative == ""
-          end,
-        },
+        -- {
+        --   ft = "toggleterm",
+        --   size = { height = 0.25 },
+        --   -- exclude floating windows
+        --   filter = function(buf, win)
+        --     return vim.api.nvim_win_get_config(win).relative == ""
+        --   end,
+        -- },
         {
           ft = "lazyterm",
           title = "LazyTerm",
@@ -1495,8 +1507,73 @@ require('lazy').setup({
     },
   },
 
+  -- Test interacting
+  {
+    "nvim-neotest/neotest",
+    cmd = 'Neotest',
+    keys = {
+      { "<leader>ts", ":Neotest summary<CR>", desc = "open [T]est [S]ummary" },
+    },
+    dependencies = {
+      "olimorris/neotest-rspec",
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-rspec")({
+            rspec_cmd = function()
+              return vim.tbl_flatten({
+                -- docker compose run --rm rails bundle exec rspec
+                "docker",
+                "compose",
+                "run",
+                "--rm",
+                "rails",
+                "bundle",
+                "exec",
+                "rspec"
+              })
+            end,
+
+            transform_spec_path = function(path)
+              local prefix = require('neotest-rspec').root(path)
+              return string.sub(path, string.len(prefix) + 2, -1)
+            end,
+
+            results_path = "tmp/rspec.output"
+          })
+        },
+      })
+    end
+  },
+
+  -- Additional lua configuration, makes nvim stuff amazing!
+  {
+    'folke/neodev.nvim',
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require('neodev').setup()
+    end
+  },
+
   -- improve neovim builtin terminal
-  { 'akinsho/toggleterm.nvim', version = "*", config = true },
+  {
+    'akinsho/toggleterm.nvim',
+    version = "*",
+    keys = {
+      { "<leader>lg", "<cmd>lua _lazygit_toggle()<CR>", desc = "open [L]azy[g]it" },
+    },
+    opts = {
+      autochdir = true,
+    },
+    config = function()
+      local Terminal = require("toggleterm.terminal").Terminal
+      local lazygit = Terminal:new({ cmd = "lazygit", direction = "float", hidden = true })
+      function _lazygit_toggle()
+        lazygit:toggle()
+      end
+    end
+  },
 
 }, {
   performance = {
