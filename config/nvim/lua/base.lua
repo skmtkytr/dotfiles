@@ -13,6 +13,10 @@ vim.api.nvim_create_user_command("Tabn", function(opts)
   vim.cmd("tabnew")
 end, {})
 
+vim.api.nvim_create_user_command("TestRun", function(opts)
+  require("neotest").run.run(vim.fn.expand("%"))
+end, {})
+
 -- Reference highlight
 -- vim.cmd [[
 -- set updatetime=500
