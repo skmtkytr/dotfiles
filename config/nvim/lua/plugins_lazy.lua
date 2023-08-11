@@ -1326,24 +1326,25 @@ require('lazy').setup({
           },
           shortcut = {
             { desc = '󰊳 Update', group = '@property', action = 'Lazy update', key = 'u' },
+            { desc = '󰊳 Profile', group = '@property', action = 'Lazy profile', key = 'p' },
             {
               icon = ' ',
               icon_hl = '@variable',
               desc = 'Files',
               group = 'Label',
-              action = 'Telescope find_files',
+              action = 'FzfLua files',
               key = 'f',
             },
             {
               desc = ' MRU',
               group = 'DiagnosticHint',
-              action = 'Telescope frecency',
+              action = 'FzfLua oldfiles',
               key = 'a',
             },
             {
               desc = ' dotfiles',
               group = 'Number',
-              action = 'Telescope find_files cwd=~/dotfiles',
+              action = 'FzfLua files cwd=~/.dotfiles',
               key = 'd',
             },
           },
