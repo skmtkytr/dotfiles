@@ -1,7 +1,7 @@
 ########################################
 # VIM
 if test -f $HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim'
-  alias nvim=$HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim'
+  alias nvim=$HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim  --startuptime /tmp/nvim-startuptime'
 end
 
 alias vim='nvim'
@@ -19,6 +19,7 @@ alias mv='mv -i'
  
 alias mkdir='mkdir -p'
 
+alias lg='lazygit'
 alias gcp='git cherry-pick '
 
 alias unset='set --erase'

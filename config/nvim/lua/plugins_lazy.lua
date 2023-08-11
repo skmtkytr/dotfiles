@@ -302,7 +302,7 @@ require('lazy').setup({
               return utils.root_has_file({ ".stylua.toml" })
             end,
           }),
-          -- null_ls.builtins.diagnostics.rubocop,
+          null_ls.builtins.diagnostics.rubocop,
           -- null_ls.builtins.diagnostics.rubocop.with({
           --   prefer_local = "bundle_bin",
           --   condition = function(utils)
@@ -405,13 +405,13 @@ require('lazy').setup({
         --   end,
         -- })
 
-        lspconfig.rubocop.setup({
-          calabilities = opt.capabilities,
-          on_new_config = function(config, root_dir)
-            config.cmd = { "bundle", "exec", "rubocop" }
-            return config
-          end
-        })
+        -- lspconfig.rubocop.setup({
+        --   calabilities = opt.capabilities,
+        --   on_new_config = function(config, root_dir)
+        --     config.cmd = { "bundle", "exec", "rubocop" }
+        --     return config
+        --   end
+        -- })
 
         -- SteepのLanguage Serverを起動するための設定
         -- デフォルトの設定をいくつか上書きしている
@@ -574,7 +574,7 @@ require('lazy').setup({
           {
             pattern = "/app/contexts/(.*).rbs$",
             target = {
-              { target = "/app/contexts/%1.rb",      context = "app" },
+              { target = "/app/contexts/%1.rb",       context = "app" },
               { target = "/spec/contexts/%1_spec.rb", context = "spec" },
             },
           },
@@ -639,41 +639,52 @@ require('lazy').setup({
   -- Formatter
   { "MunifTanjim/prettier.nvim" },
 
-  -- Telescope
-  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-  {
-    "nvim-telescope/telescope-file-browser.nvim",
-    cmd = 'Telescope',
-    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
-  },
-  {
-    "nvim-telescope/telescope-frecency.nvim",
-    cmd = 'Telescope',
-    keys = {
-      { ';cb', ":Telescope frecency workspace=CWD<CR>" },
-    },
-    config = function()
-      require("telescope").load_extension("frecency")
-    end,
-    dependencies = { "kkharji/sqlite.lua" }
-  },
+  -- fuzzy finder
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       { 'nvim-lua/plenary.nvim' },
-      { "nvim-telescope/telescope-file-browser.nvim", },
-      { "nvim-telescope/telescope-frecency.nvim", },
+      {
+        "nvim-telescope/telescope-file-browser.nvim",
+        cmd = 'Telescope',
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+      },
+      {
+        "nvim-telescope/telescope-frecency.nvim",
+        cmd = 'Telescope',
+        keys = {
+          -- { ';cb', ":Telescope frecency workspace=CWD<CR>" },
+        },
+        config = function()
+          require("telescope").load_extension("frecency")
+        end,
+        dependencies = { "kkharji/sqlite.lua" }
+      },
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = 'make',
+        config = function()
+          require('telescope').load_extension('fzf')
+        end
+      },
+      {
+        "nvim-telescope/telescope-fzf-writer.nvim",
+        config = function()
+          require('telescope').load_extension('fzf_writer')
+        end
+      },
     },
     cmd = 'Telescope',
     keys = {
-      { '<C-p>',    ':Telescope find_files find_command=rg,--files,--hidden,--glob,!*.git <CR>' },
-      { '<Space>f', ':Telescope live_grep<CR>' },
-      { ';cf',      ':Telescope grep_string<CR>' },
-      { '<C-O>',    ':Telescope lsp_document_symbols<CR>' },
-      { ';gst',     ':Telescope git_status<CR>' },
+      -- { '<C-p>',    ':Telescope find_files find_command=rg,--files,--hidden,--ignore,--glob,!*.git <CR>' },
+      -- { '<Space>f', ':Telescope live_grep<CR>' },
+      -- { ';cf',      ':Telescope grep_string<CR>' },
+      -- { '<C-O>',    ':Telescope lsp_document_symbols<CR>' },
+      -- { ';gst',     ':Telescope git_status<CR>' },
     },
     config = function()
       require('telescope').load_extension('frecency')
+      require('telescope').load_extension('fzf')
       require('telescope').setup {
         defaults = {
           leyout_config        = {
@@ -763,6 +774,15 @@ require('lazy').setup({
             case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
           },
+          fzf_writer = {
+            minimum_grep_characters = 2,
+            minimum_files_characters = 2,
+
+            -- Disabled by default.
+            -- Will probably slow down some aspects of the sorter, but can make color highlights.
+            -- I will work on this more later.
+            use_highlighter = true,
+          },
           frecency = {
             show_scores = false,
             show_unindexed = false,
@@ -771,6 +791,24 @@ require('lazy').setup({
           }
         },
       }
+    end
+  },
+  {
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = 'Fzflua',
+    keys = {
+      { '<C-p>',    '<cmd>lua require(\'fzf-lua\').files()<CR>', { silent = true } },
+      { ';cb',    '<cmd>lua require(\'fzf-lua\').oldfiles()<CR>', { silent = true } },
+      { '<Space>f', '<cmd>lua require(\'fzf-lua\').live_grep_native()<CR>', { silent = true } },
+      { ';cf', '<cmd>lua require(\'fzf-lua\').grep_cword()<CR>', { silent = true } },
+      { '<C-O>', '<cmd>lua require(\'fzf-lua\').lsp_document_symbols()<CR>', { silent = true } },
+      { ';gst', '<cmd>lua require(\'fzf-lua\').git_status()<CR>', { silent = true } },
+    },
+    config = function()
+      -- calling `setup` is optional for customization
+      require("fzf-lua").setup({'telescope'})
     end
   },
 
@@ -1522,17 +1560,26 @@ require('lazy').setup({
         adapters = {
           require("neotest-rspec")({
             rspec_cmd = function()
-              return vim.tbl_flatten({
-                -- docker compose run --rm rails bundle exec rspec
-                "docker",
-                "compose",
-                "run",
-                "--rm",
-                "rails",
-                "bundle",
-                "exec",
-                "rspec"
-              })
+              local result = vim.fs.find("docker-compose.yml")
+              if #result ~= 0 then
+                return vim.tbl_flatten({
+                  -- docker compose run --rm rails bundle exec rspec
+                  "docker",
+                  "compose",
+                  "run",
+                  "--rm",
+                  "rails",
+                  "bundle",
+                  "exec",
+                  "rspec"
+                })
+              else
+                return vim.tbl_flatten({
+                  "bundle",
+                  "exec",
+                  "rspec",
+                })
+              end
             end,
 
             transform_spec_path = function(path)
@@ -1546,6 +1593,16 @@ require('lazy').setup({
       })
     end
   },
+  -- vim session manager
+  -- {
+  --   'rmagatti/auto-session',
+  --   config = function()
+  --     require("auto-session").setup {
+  --       log_level = "error",
+  --       auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+  --     }
+  --   end
+  -- },
 
   -- Additional lua configuration, makes nvim stuff amazing!
   {

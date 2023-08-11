@@ -6,6 +6,12 @@
 	autoCRLF = false
 	safecrlf = true
 	editor = "nvim "
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
 [alias]
 	co = checkout
 	br = branch
@@ -29,6 +35,7 @@
 	default = upstream
 [merge]
   tool = vimdiff
+  conflictstyle = diff3
 [mergetool]
   path = nvim
 [difftool]
@@ -41,6 +48,7 @@
 	helper = osxkeychain
 [diff]
   tool = nvimdiff
+  colorMoved = default
 [difftool "nvimdiff"]
   cmd = "nvim -R -d -c \"wincmd l\" -d \"$LOCAL\" \"$REMOTE\""
 [mergetool "nvimdiff"]
