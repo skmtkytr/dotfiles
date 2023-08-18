@@ -315,7 +315,7 @@ require('lazy').setup({
           -- null_ls.builtins.diagnostics.yamllint,
           -- null_ls.builtins.diagnostics.commitlint,
           null_ls.builtins.formatting.gofmt,
-          -- null_ls.builtins.formatting.rubyfmt,
+          null_ls.builtins.formatting.rubyfmt,
           -- null_ls.builtins.formatting.rubocop,
           -- null_ls.builtins.formatting.rubocop.with({
           --   prefer_local = "bundle_bin",
@@ -412,6 +412,7 @@ require('lazy').setup({
         --     return config
         --   end
         -- })
+        lspconfig.solargraph.setup({})
 
         -- SteepのLanguage Serverを起動するための設定
         -- デフォルトの設定をいくつか上書きしている
