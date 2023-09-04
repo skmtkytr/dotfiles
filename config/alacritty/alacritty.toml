@@ -61,18 +61,24 @@ TERM = "alacritty"
 
 [font]
 size = 14.0
+offset = {x = 0, y = 1}
+# glyph_offset = {x = 2, y = 2}
 
 [font.bold]
-family = "Fira Code"
+# family = "Fira Code"
+family = 'UDEV Gothic 35NFLG'
 
 [font.bold_italic]
-family = "Fira Code"
+# family = "Fira Code"
+family = 'UDEV Gothic 35NFLG'
 
 [font.italic]
-family = "Fira Code"
+# family = "Fira Code"
+family = 'UDEV Gothic 35NFLG'
 
 [font.normal]
-family = "Fira Code"
+# family = "Fira Code"
+family = 'UDEV Gothic 35NFLG'
 
 [keyboard]
 bindings = [
@@ -87,6 +93,11 @@ bindings = [
   { action = "Quit",  key = "Q",  mods = "Super" },
   { action = "Quit",  key = "W",  mods = "Super" },
   { action = "ToggleFullscreen",  key = "F",  mods = "Command|Control" },
+  # { key = '[', mods= 'Alt', chars= "[" },
+  # { key = 'H', mods= 'Alt', chars= "H" },
+  # { key = 'J', mods= 'Alt', chars= "J" },
+  # { key = 'K', mods= 'Alt', chars= "K" },
+  # { key = 'L', mods= 'Alt', chars= "L" }
 ]
 
 [mouse]
@@ -112,8 +123,9 @@ program = "/opt/homebrew/bin/fish"
 decorations = "full"
 dynamic_padding = false
 startup_mode = "Windowed"
-opacity = 0.91
+opacity = 1.00
 dynamic_title = true
+option_as_alt = 'OnlyLeft'
 
 [window.class]
 general = "Alacritty"

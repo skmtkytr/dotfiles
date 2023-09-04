@@ -19,6 +19,7 @@ end
 -- config.harfbuzz_features = {"zero" , "ss01", "cv05"}
 
 -- config.disable_default_key_bindings = true
+config.hide_tab_bar_if_only_one_tab = true
 config.keys = {
   -- paste from the clipboard
   { key = 'V', mods = 'SUPER', action = act.PasteFrom 'Clipboard' },

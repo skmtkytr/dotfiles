@@ -1,0 +1,8 @@
+gui:
+  showIcons: true
+
+customCommands:
+  - key: "<c-r>"
+    command: "gh pr create --fill --web"
+    context: "global"
+    loadingText: "Creating pull request on GitHub"

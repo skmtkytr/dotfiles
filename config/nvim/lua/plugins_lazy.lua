@@ -285,6 +285,7 @@ require('lazy').setup({
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
   }, -- enable LSP
+
   {
     "jose-elias-alvarez/null-ls.nvim",
     event = { "LspAttach" },
@@ -293,6 +294,64 @@ require('lazy').setup({
       local null_ls = require "null-ls"
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+      local cspell_append = function(opts)
+        local word = opts.args
+        if not word or word == "" then
+          -- 引数がなければcwordを取得
+          word = vim.call('expand', '<cword>'):lower()
+        end
+
+        -- bangの有無で保存先を分岐
+        local dictionary_name = opts.bang and 'dotfiles' or 'user'
+        local dictionary_path = opts.bang and cspell_files.dotfiles or cspell_files.user
+
+        -- shellのechoコマンドで辞書ファイルに追記
+        io.popen('echo ' .. word .. ' >> ' .. dictionary_path)
+
+        -- 追加した単語および辞書を表示
+        vim.notify(
+          '"' .. word .. '" is appended to ' .. dictionary_name .. ' dictionary.',
+          vim.log.levels.INFO,
+          {}
+        )
+
+        -- cspellをリロードするため、現在行を更新してすぐ戻す
+        if vim.api.nvim_get_option_value('modifiable', {}) then
+          vim.api.nvim_set_current_line(vim.api.nvim_get_current_line())
+          vim.api.nvim_command('silent! undo')
+        end
+      end
+
+      vim.api.nvim_create_user_command(
+        'CSpellAppend',
+        cspell_append,
+        { nargs = '?', bang = true }
+      )
+
+      -- $XDG_CONFIG_HOME/cspell
+      local cspell_config_dir = '~/.config/cspell'
+      -- $XDG_DATA_HOME/cspell
+      local cspell_data_dir = '~/.local/share/cspell'
+      cspell_files = {
+        config = vim.call('expand', cspell_config_dir .. '/cspell.json'),
+        dotfiles = vim.call('expand', cspell_config_dir .. '/dotfiles.txt'),
+        vim = vim.call('expand', cspell_data_dir .. '/vim.txt.gz'),
+        user = vim.call('expand', cspell_data_dir .. '/user.txt'),
+      }
+
+      -- vim辞書がなければダウンロード
+      if vim.fn.filereadable(cspell_files.vim) ~= 1 then
+        local vim_dictionary_url = 'https://github.com/iamcco/coc-spell-checker/raw/master/dicts/vim/vim.txt.gz'
+        io.popen('curl -fsSLo ' .. cspell_files.vim .. ' --create-dirs ' .. vim_dictionary_url)
+      end
+
+      -- ユーザー辞書がなければ作成
+      if vim.fn.filereadable(cspell_files.user) ~= 1 then
+        io.popen('mkdir -p ' .. cspell_data_dir)
+        io.popen('touch ' .. cspell_files.user)
+      end
+
       null_ls.setup({
         capabilities = capabilities,
         sources = {
@@ -302,7 +361,7 @@ require('lazy').setup({
               return utils.root_has_file({ ".stylua.toml" })
             end,
           }),
-          null_ls.builtins.diagnostics.rubocop,
+          -- null_ls.builtins.diagnostics.rubocop,
           -- null_ls.builtins.diagnostics.rubocop.with({
           --   prefer_local = "bundle_bin",
           --   condition = function(utils)
@@ -323,9 +382,77 @@ require('lazy').setup({
           --     return utils.root_has_file({ ".rubocop.yml" })
           --   end,
           -- }),
-          null_ls.builtins.completion.spell,
+          --
+          -- null_ls.builtins.diagnostics.codespell,
+          -- null_ls.builtins.completion.spell,
+          -- null_ls.builtins.diagnostics.cspell.with({
+          --   diagnostics_postprocess = function(diagnostic)
+          --     -- レベルをWARNに変更（デフォルトはERROR）
+          --     diagnostic.severity = vim.diagnostic.severity["WARN"]
+          --     -- 起動時に設定ファイル読み込み
+          --     extra_args = { '--config', cspell_files.config }
+          --   end,
+          --   condition = function()
+          --     -- cspellが実行できるときのみ有効
+          --     return vim.fn.executable('cspell') > 0
+          --   end
+          -- })
+
         },
       })
+
+      local cspell_custom_actions = {
+        name = 'append-to-cspell-dictionary',
+        method = null_ls.methods.CODE_ACTION,
+        filetypes = {},
+        generator = {
+          fn = function(_)
+            -- 現在のカーソル位置
+            local lnum = vim.fn.getcurpos()[2] - 1
+            local col = vim.fn.getcurpos()[3]
+
+            -- 現在行のエラーメッセージ一覧
+            local diagnostics = vim.diagnostic.get(0, { lnum = lnum })
+
+            -- カーソル位置にcspellの警告が出ているか探索
+            local word = ''
+            local regex = '^Unknown word %((%w+)%)$'
+            for _, v in pairs(diagnostics) do
+              if v.source == "cspell" and
+                  v.col < col and col <= v.end_col and
+                  string.match(v.message, regex) then
+                -- 見つかった場合、単語を抽出
+                word = string.gsub(v.message, regex, '%1'):lower()
+                break
+              end
+            end
+
+            -- 警告が見つからなければ終了
+            if word == '' then
+              return
+            end
+
+            -- cspell_appendを呼び出すactionのリストを返却
+            return {
+              {
+                title = 'Append "' .. word .. '" to user dictionary',
+                action = function()
+                  cspell_append({ args = word })
+                end
+              },
+              {
+                title = 'Append "' .. word .. '" to dotfiles dictionary',
+                action = function()
+                  cspell_append({ args = word, bang = true })
+                end
+              }
+            }
+          end
+        }
+      }
+
+      -- null_lsに登録
+      -- null_ls.register(cspell_custom_actions)
     end
   },
 
@@ -357,6 +484,7 @@ require('lazy').setup({
       require('mason').setup()
     end
   },
+
   {
     'williamboman/mason-lspconfig.nvim',
     event = { "BufReadPre", "BufNewFile" },
@@ -381,7 +509,7 @@ require('lazy').setup({
             vim.lsp.protocol.make_client_capabilities()
           )
         }
-        opt.capabilities.textDocument.completion.completionItem.snippetSupport = false
+        -- opt.capabilities.textDocument.completion.completionItem.snippetSupport = false
         require('lspconfig')[server].setup(opt)
         local lspconfig = require("lspconfig")
 
@@ -800,16 +928,16 @@ require('lazy').setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = 'Fzflua',
     keys = {
-      { '<C-p>',    '<cmd>lua require(\'fzf-lua\').files()<CR>', { silent = true } },
-      { ';cb',    '<cmd>lua require(\'fzf-lua\').oldfiles()<CR>', { silent = true } },
-      { '<Space>f', '<cmd>lua require(\'fzf-lua\').live_grep_native()<CR>', { silent = true } },
-      { ';cf', '<cmd>lua require(\'fzf-lua\').grep_cword()<CR>', { silent = true } },
-      { '<C-O>', '<cmd>lua require(\'fzf-lua\').lsp_document_symbols()<CR>', { silent = true } },
-      { ';gst', '<cmd>lua require(\'fzf-lua\').git_status()<CR>', { silent = true } },
+      { '<C-p>',    '<cmd>lua require(\'fzf-lua\').files()<CR>',                { silent = true } },
+      { ';cb',      '<cmd>lua require(\'fzf-lua\').oldfiles()<CR>',             { silent = true } },
+      { '<Space>f', '<cmd>lua require(\'fzf-lua\').live_grep_native()<CR>',     { silent = true } },
+      { ';cf',      '<cmd>lua require(\'fzf-lua\').grep_cword()<CR>',           { silent = true } },
+      { '<C-O>',    '<cmd>lua require(\'fzf-lua\').lsp_document_symbols()<CR>', { silent = true } },
+      { ';gst',     '<cmd>lua require(\'fzf-lua\').git_status()<CR>',           { silent = true } },
     },
     config = function()
       -- calling `setup` is optional for customization
-      require("fzf-lua").setup({'telescope'})
+      require("fzf-lua").setup({ 'telescope' })
     end
   },
 
@@ -1005,56 +1133,6 @@ require('lazy').setup({
   -- }
 
 
-  -- lich builtin cmdline, notify
-  --  {
-  --   "folke/noice.nvim",
-  --   -- event = { "BufRead", "BufNewFile", "InsertEnter", "CmdlineEnter" },
-  --   -- module = { "noice" },
-  --   dependencies = {
-  --     { "MunifTanjim/nui.nvim" },
-  --     {
-  --       "rcarriga/nvim-notify",
-  --       module = { "notify" },
-  --       config = function()
-  --         require("notify").setup {
-  --           -- nvim-notify の設定
-  --         }
-  --       end
-  --     },
-  --   },
-  --   wants = { "nvim-treesitter" },
-  --   setup = function()
-  --     if not _G.__vim_notify_overwritten then
-  --       vim.notify = function(...)
-  --         local arg = { ... }
-  --         require "notify"
-  --         require "noice"
-  --         vim.schedule(function()
-  --           vim.notify(unpack(args))
-  --         end)
-  --       end
-  --       _G.__vim_notify_overwritten = true
-  --     end
-  --   end,
-  --   config = function()
-  --     require("noice").setup {
-  --       -- noice.nvim の設定
-  --       lsp = {
-  --         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-  --         override = {
-  --           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-  --           ["vim.lsp.util.stylize_markdown"] = true,
-  --           ["cmp.entry.get_documentation"] = true,
-  --         },
-  --       },
-  --       -- you can enable a preset for easier configuration
-  --       presets = {
-  --         bottom_search = false, -- use a classic bottom cmdline for search
-  --       },
-  --
-  --     }
-  --   end
-  -- }
 
   -- Intent showable
   --  {
@@ -1129,9 +1207,37 @@ require('lazy').setup({
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
+      {
+        -- only needed if you want to use the commands with "_with_window_picker" suffix
+        's1n7ax/nvim-window-picker',
+        version = '2.*',
+        config = function()
+          require 'window-picker'.setup({
+            autoselect_one = true,
+            include_current = false,
+            filter_rules = {
+              -- filter using buffer options
+              bo = {
+                -- if the file type is one of following, the window will be ignored
+                filetype = { 'neo-tree', "neo-tree-popup", "notify" },
+
+                -- if the buffer type is one of following, the window will be ignored
+                buftype = { 'terminal', "quickfix" },
+              },
+            },
+            other_win_hl_color = '#e35e4f',
+          })
+        end,
+      }
     },
     config = function()
       require("neo-tree").setup({
+        sources = {
+          "filesystem",
+          "buffers",
+          "git_status",
+          "document_symbols",
+        },
         filesystem = {
           filtered_items = {
             visible = false, -- when true, they will just be displayed differently than normal items
@@ -1500,9 +1606,11 @@ require('lazy').setup({
   },
 
   -- noicer ui
+  -- lich builtin cmdline, notify
   {
     "folke/noice.nvim",
     event = "VeryLazy",
+    -- cmd = { "Noice", "NoiceToggle" },
     dependencies = {
       { "MunifTanjim/nui.nvim" },
       {
@@ -1546,13 +1654,63 @@ require('lazy').setup({
       },
     },
   },
+  --  {
+  --   "folke/noice.nvim",
+  --   -- event = { "BufRead", "BufNewFile", "InsertEnter", "CmdlineEnter" },
+  --   -- module = { "noice" },
+  --   dependencies = {
+  --     { "MunifTanjim/nui.nvim" },
+  --     {
+  --       "rcarriga/nvim-notify",
+  --       module = { "notify" },
+  --       config = function()
+  --         require("notify").setup {
+  --           -- nvim-notify の設定
+  --         }
+  --       end
+  --     },
+  --   },
+  --   wants = { "nvim-treesitter" },
+  --   setup = function()
+  --     if not _G.__vim_notify_overwritten then
+  --       vim.notify = function(...)
+  --         local arg = { ... }
+  --         require "notify"
+  --         require "noice"
+  --         vim.schedule(function()
+  --           vim.notify(unpack(args))
+  --         end)
+  --       end
+  --       _G.__vim_notify_overwritten = true
+  --     end
+  --   end,
+  --   config = function()
+  --     require("noice").setup {
+  --       -- noice.nvim の設定
+  --       lsp = {
+  --         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+  --         override = {
+  --           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+  --           ["vim.lsp.util.stylize_markdown"] = true,
+  --           ["cmp.entry.get_documentation"] = true,
+  --         },
+  --       },
+  --       -- you can enable a preset for easier configuration
+  --       presets = {
+  --         bottom_search = false, -- use a classic bottom cmdline for search
+  --       },
+  --
+  --     }
+  --   end
+  -- }
+
 
   -- Test interacting
   {
     "nvim-neotest/neotest",
     cmd = 'Neotest',
     keys = {
-      { "<leader>ts", ":Neotest summary<CR>", desc = "open [T]est [S]ummary" },
+      { "<leader>ts", ":Neotest summary<CR>", silent = true, desc = "open [T]est [S]ummary" },
     },
     dependencies = {
       "olimorris/neotest-rspec",
@@ -1614,6 +1772,17 @@ require('lazy').setup({
       require('neodev').setup()
     end
   },
+
+  -- Define your keymaps, commands, and autocommands as simple Lua tables, building a legend at the same time (like VS Code's Command Palette).
+  -- {
+  --   'mrjones2014/legendary.nvim',
+  --   -- since legendary.nvim handles all your keymaps/commands,
+  --   -- its recommended to load legendary.nvim before other plugins
+  --   priority = 10000,
+  --   lazy = false,
+  --   -- sqlite is only needed if you want to use frecency sorting
+  --   -- dependencies = { 'kkharji/sqlite.lua' }
+  -- },
 
   -- improve neovim builtin terminal
   {
