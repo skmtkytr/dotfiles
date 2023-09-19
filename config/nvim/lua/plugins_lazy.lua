@@ -289,7 +289,32 @@ require('lazy').setup({
   {
     "jose-elias-alvarez/null-ls.nvim",
     event = { "LspAttach" },
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        'MunifTanjim/prettier.nvim',
+        event = { "LspAttach" },
+        config = function()
+          local prettier = require("prettier")
+
+          prettier.setup({
+            ["null-ls"] = {
+              condition = function()
+                return prettier.config_exists({
+                  -- if `false`, skips checking `package.json` for `"prettier"` key
+                  check_package_json = true,
+                })
+              end,
+              runtime_condition = function(params)
+                -- return false to skip running prettier
+                return true
+              end,
+              timeout = 5000,
+            }
+          })
+        end
+      },
+    },
     config = function()
       local null_ls = require "null-ls"
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -353,6 +378,31 @@ require('lazy').setup({
       end
 
       null_ls.setup({
+        on_attach = function(client, bufnr)
+          if client.supports_method("textDocument/formatting") then
+            vim.keymap.set("n", "<Leader>f", function()
+              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+            end, { buffer = bufnr, desc = "[lsp] format" })
+
+            -- format on save
+            vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+            -- vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+            --   buffer = bufnr,
+            --   group = group,
+            --   callback = function()
+            --     vim.lsp.buf.format({ bufnr = bufnr, async = async })
+            --   end,
+            --   desc = "[lsp] format on save",
+            -- })
+          end
+
+          if client.supports_method("textDocument/rangeFormatting") then
+            vim.keymap.set("x", "<Leader>f", function()
+              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+            end, { buffer = bufnr, desc = "[lsp] format" })
+          end
+        end,
+
         capabilities = capabilities,
         sources = {
           null_ls.builtins.completion.luasnip,
@@ -375,6 +425,17 @@ require('lazy').setup({
           -- null_ls.builtins.diagnostics.commitlint,
           null_ls.builtins.formatting.gofmt,
           null_ls.builtins.formatting.rubyfmt,
+          null_ls.builtins.formatting.deno_fmt.with {
+            condition = function(utils)
+              return not (utils.has_file { ".prettierrc", ".prettierrc.js", "deno.json", "deno.jsonc" })
+            end,
+          },
+          null_ls.builtins.formatting.prettier.with {
+            condition = function(utils)
+              return utils.has_file { ".prettierrc", ".prettierrc.js" }
+            end,
+            prefer_local = "node_modules/.bin",
+          },
           -- null_ls.builtins.formatting.rubocop,
           -- null_ls.builtins.formatting.rubocop.with({
           --   prefer_local = "bundle_bin",
@@ -532,6 +593,7 @@ require('lazy').setup({
         --     return config
         --   end,
         -- })
+        lspconfig.gopls.setup {}
 
         -- lspconfig.rubocop.setup({
         --   calabilities = opt.capabilities,
@@ -613,6 +675,7 @@ require('lazy').setup({
   -- })
   {
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    event = "LspAttach",
     config = function()
       require("lsp_lines").setup()
       vim.diagnostic.config({
@@ -758,6 +821,7 @@ require('lazy').setup({
   -- motion
   {
     'phaazon/hop.nvim',
+    event = { "BufRead", "BufNewFile" },
     branch = 'v2', -- optional but strongly recommended
     config = function()
       -- you can configure Hop the way you like here; see :h hop-config
@@ -937,7 +1001,12 @@ require('lazy').setup({
     },
     config = function()
       -- calling `setup` is optional for customization
-      require("fzf-lua").setup({ 'telescope' })
+      require("fzf-lua").setup({
+        'telescope',
+        files = {
+          fd_opts = "-I --color=never --type f --hidden --follow --exclude .git",
+        }
+      })
     end
   },
 
@@ -995,7 +1064,10 @@ require('lazy').setup({
   -- { "RRethy/nvim-treesitter-endwise", lazy = true },
 
   -- comment outer
-  { "skmtkytr/caw.vim" },
+  {
+    "tyru/caw.vim",
+    event = { "BufRead", "BufNewFile" },
+  },
 
   -- git commit outline
   {
@@ -1451,7 +1523,7 @@ require('lazy').setup({
             {
               desc = ' dotfiles',
               group = 'Number',
-              action = 'FzfLua files cwd=~/.dotfiles',
+              action = 'FzfLua files cwd=~/dotfiles',
               key = 'd',
             },
           },
@@ -1490,6 +1562,7 @@ require('lazy').setup({
 
   {
     "simrat39/symbols-outline.nvim",
+    cmd = "SymbolsOutlineOpen",
     config = function()
       require("symbols-outline").setup()
     end
@@ -1585,7 +1658,8 @@ require('lazy').setup({
   -- better vim.ui
   {
     "stevearc/dressing.nvim",
-    lazy = false,
+    event = { "BufRead", "BufNewFile" },
+    -- lazy = false,
     opts = {
       input = {
         win_options = { winblend = 0 },
