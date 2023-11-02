@@ -24,6 +24,7 @@ local options = {
   writebackup = false,
   shell = "fish",
   backupskip = { "/tmp/*", "/private/tmp/*" },
+  shortmess = 'I',
   expandtab = true,
   shiftwidth = 2,
   tabstop = 2,

@@ -1065,7 +1065,7 @@ require('lazy').setup({
 
   -- comment outer
   {
-    "tyru/caw.vim",
+    "skmtkytr/caw.vim",
     event = { "BufRead", "BufNewFile" },
   },
 
@@ -1225,6 +1225,7 @@ require('lazy').setup({
   -- }
   {
     "lukas-reineke/indent-blankline.nvim",
+    tag = 'v2.20.8',
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       filetype_exclude = {
@@ -1434,10 +1435,301 @@ require('lazy').setup({
   --   end
   -- },
   --  "phanviet/vim-monokai-pro",
+  -- {
+  --   "catppuccin/nvim",
+  --   name = "catppuccin",
+  --   priority = 1000,
+  --   config = function()
+  --     require("catppuccin").setup({
+  --       compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
+  --       flavour = "mocha", -- latte, frappe, macchiato, mocha
+  --       background = {     -- :h background
+  --         light = "latte",
+  --         dark = "mocha",
+  --       },
+  --       transparent_background = false, -- disables setting the background color.
+  --       show_end_of_buffer = false,     -- shows the '~' characters after the end of buffers
+  --       term_colors = false,            -- sets terminal colors (e.g. `g:terminal_color_0`)
+  --       dim_inactive = {
+  --         enabled = false,              -- dims the background color of inactive window
+  --         shade = "dark",
+  --         percentage = 0.15,            -- percentage of the shade to apply to the inactive window
+  --       },
+  --       no_italic = false,              -- Force no italic
+  --       no_bold = false,                -- Force no bold
+  --       no_underline = false,           -- Force no underline
+  --       styles = {                      -- Handles the styles of general hi groups (see `:h highlight-args`):
+  --         comments = { "italic" },      -- Change the style of comments
+  --         conditionals = { "italic" },
+  --         loops = {},
+  --         functions = {},
+  --         keywords = {},
+  --         strings = {},
+  --         variables = {},
+  --         numbers = {},
+  --         booleans = {},
+  --         properties = {},
+  --         types = {},
+  --         operators = {},
+  --       },
+  --       color_overrides = {},
+  --       custom_highlights = function(c)
+  --         local p = {
+  --           dark2 = "#131313",
+  --           dark1 = "#191919",
+  --           background = "#222222",
+  --           text = "#f7f1ff",
+  --           accent1 = "#fc618d",
+  --           accent2 = "#fd9353",
+  --           accent3 = "#fce566",
+  --           accent4 = "#7bd88f",
+  --           accent5 = "#5ad4e6",
+  --           accent6 = "#948ae3",
+  --           dimmed1 = "#bab6c0",
+  --           dimmed2 = "#8b888f",
+  --           dimmed3 = "#69676c",
+  --           dimmed4 = "#525053",
+  --           dimmed5 = "#363537",
+  --
+  --         }
+  --         c.base = {
+  --           dark = p.dark2,      -- "#19181a"
+  --           black = p.dark1,     --"#221f22",
+  --           red = p.accent1,     -- "#ff6188",
+  --           green = p.accent4,   -- "#a9dc76",
+  --           yellow = p.accent3,  -- "#ffd866",
+  --           blue = p.accent2,    -- "#fc9867",
+  --           magenta = p.accent6, -- "#ab9df2",
+  --           cyan = p.accent5,    -- "#78dce8",
+  --           white = p.text,      -- "#fcfcfa",
+  --           dimmed1 = p.dimmed1, -- "#c1c0c0",
+  --           dimmed2 = p.dimmed2, -- "#939293",
+  --           dimmed3 = p.dimmed3, -- "#727072",
+  --           dimmed4 = p.dimmed4, -- "#5b595c",
+  --           dimmed5 = p.dimmed5, -- "#403e41",
+  --         }
+  --         c.sideBar = {
+  --           background = p.dark1,   -- "#221f22",
+  --           foreground = p.dimmed2, -- "#939293",
+  --         }
+  --         c.editorSuggestWidget = {
+  --           background = p.dimmed5,         -- "#403e41",
+  --           border = p.dimmed5,             -- "#403e41",
+  --           foreground = p.dimmed1,         -- "#c1c0c0",
+  --           highlightForeground = p.text,   -- "#fcfcfa",
+  --           selectedBackground = p.dimmed3, -- "#727072",
+  --         }
+  --
+  --         return {
+  --           Comment = { fg = c.base.dimmed3, },       -- Comments
+  --           Constant = { fg = c.base.magenta },       -- (preferred) any constant
+  --           String = { fg = c.base.yellow },          --   a string constant: "this is a string"
+  --           Character = { fg = c.base.magenta },      -- a character constant: 'c', '\n'
+  --           Number = { fg = c.base.magenta },         -- a number constant: 234, 0xff
+  --           Boolean = { fg = c.base.magenta },        -- a boolean constant: TRUE, false
+  --           Float = { fg = c.base.magenta },          -- a floating point constant: 2.3e10
+  --           Identifier = { fg = c.base.white },       -- (preferred) any variable name
+  --           Function = { fg = c.base.green },         -- function name (also: methods for classes)
+  --           Statement = { fg = c.base.magenta },      -- (preferred) any statement
+  --           Conditional = { fg = c.base.red },        --  if, then, else, endif, switch, etc
+  --           Repeat = { fg = c.base.red },             -- for, do, while, etc
+  --           Label = { fg = c.base.red },              -- case, default, etc
+  --           Operator = { fg = c.base.red },           -- "sizeof", "+", "*", etc
+  --           Keyword = { fg = c.base.red, },           -- any other keyword
+  --           Exception = { fg = c.base.red },          -- try, catch, throw
+  --           PreProc = { fg = c.base.yellow },         -- (preferred) generic Preprocessor
+  --           Include = { fg = c.base.red },            -- preprocessor #include
+  --           Define = { fg = c.base.red },             -- preprocessor #define
+  --           Macro = { fg = c.base.red },              -- same as Define
+  --           PreCondit = { fg = c.base.red },          -- preprocessor #if, #else, #endif, etc
+  --           Type = { fg = c.base.white },             -- React, ReactDOM (import React from 'react';)
+  --           StorageClass = { fg = c.base.red, },      -- static, register, volatile, etc
+  --           Structure = { fg = c.base.cyan, },        -- struct, union, enum, etc
+  --           Typedef = { fg = c.base.red },            -- A typedef
+  --           Special = { fg = c.base.blue },           -- (preferred) any special symbol
+  --           SpecialChar = { fg = c.base.blue },       -- special character in a constant
+  --           -- Tag = {}, -- you can use CTRL-] on this
+  --           Delimiter = { fg = c.base.white },        -- character that needs attention
+  --           SpecialComment = { fg = c.base.dimmed3 }, -- special things inside a comment
+  --           -- Debug = {}, -- debugging statements
+  --           Underlined = { underline = true },        -- (preferred) text that stands out, HTML links
+  --           Bold = { bold = true },
+  --           -- Ignore = { }, -- (preferred) left blank, hidden  |hl-Ignore|
+  --           Italic = { italic = true },
+  --           Error = { fg = c.red }, -- (preferred) any erroneous construct
+  --           Todo = {
+  --             -- bg = c.editor.background,
+  --             fg = c.base.magenta,
+  --             bold = true,
+  --           },                                                    -- (preferred) anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+  --           ["@include"] = { fg = c.base.red },                   -- `import`
+  --           ["@variable"] = { fg = c.base.white },
+  --           ["@punctuation.delimiter"] = { fg = c.base.dimmed2 }, -- `;`
+  --           ["@punctuation.bracket"] = { fg = c.base.dimmed2 },   -- `(`
+  --           ["@constructor"] = { fg = c.base.red },               -- `StrictMode` in `<React.StrictMode>`
+  --           ["@tag.delimiter"] = { fg = c.base.dimmed2 },         -- `<`, `>` in `<div>`
+  --           ["@operator"] = { fg = c.base.red },                  -- `=`, `=>`
+  --           ["@keyword"] = { fg = c.base.cyan, italic = true },   -- `const`, `export`, `default`
+  --           ["@parameter"] = { fg = c.base.white },
+  --           ["@string.documentation"] = { fg = c.base.dimmed3 },
+  --           ["@type.builtin"] = { fg = c.base.cyan },
+  --           ["@_isinstance"] = { fg = c.base.green },
+  --
+  --           ["@keyword.return"] = { fg = c.base.red },
+  --           ["@keyword.operator"] = { fg = c.base.red },
+  --           ["@method.call"] = { fg = c.base.green },
+  --           ["@property"] = { fg = c.base.white },
+  --           ["@function"] = { fg = c.base.green },
+  --           ["@constant.builtin"] = { fg = c.base.magenta },
+  --           ["@tag"] = { fg = c.base.red },
+  --           ["@tag.attribute"] = { fg = c.base.cyan, italic = true },
+  --           ["@attribute"] = { fg = c.base.cyan },
+  --           ["@conditional"] = { fg = c.base.red },
+  --           ["@repeat"] = { fg = c.base.red },
+  --           ["@keyword.function"] = { fg = c.base.cyan, bold = true, italic = true },
+  --           ["@number"] = { fg = c.base.magenta },
+  --           ["@boolean"] = { fg = c.base.magenta },
+  --           ["@type.qualifier"] = { fg = c.base.red, italic = true },
+  --           ["@annotation"] = { fg = c.base.cyan, italic = true },
+  --           ["@field"] = { fg = c.base.red },
+  --           -- scss
+  --           ["@keyword.scss"] = { fg = c.base.red },
+  --           ["@function.scss"] = { fg = c.base.cyan },
+  --           ["@property.scss"] = { fg = c.base.green },
+  --           ["@string.scss"] = { fg = c.base.blue, italic = true },
+  --           ["@number.scss"] = { fg = c.base.magenta },
+  --           ["@type.scss"] = { fg = c.base.cyan },
+  --           -- cpp
+  --           ["@keyword.cpp"] = { fg = c.base.cyan, italic = true },
+  --           ["@namespace.cpp"] = { fg = c.base.white },
+  --           ["@operator.cpp"] = { fg = c.base.red },
+  --           ["@type.cpp"] = { fg = c.base.blue, italic = true },
+  --           ["@variable.cpp"] = { fg = c.base.white },
+  --           ["@constant.cpp"] = { fg = c.base.cyan },
+  --           ["@constant.macro.cpp"] = { fg = c.base.red },
+  --           ["@punctuation.delimiter.cpp"] = { fg = c.sideBar.foreground },
+  --           -- python
+  --           ["@type.python"] = { fg = c.base.white },
+  --           ["@keyword.python"] = { fg = c.base.cyan, italic = true },
+  --           ["@variable.builtin.python"] = {
+  --             fg = c.editorSuggestWidget.foreground,
+  --             italic = true,
+  --           },
+  --           ["@field.python"] = { fg = c.base.white },
+  --           ["@variable.python"] = { fg = c.base.white },
+  --           ["@constructor.python"] = { fg = c.base.green },
+  --           ["@method.python"] = { fg = c.base.green },
+  --           ["@function.builtin.python"] = { fg = c.base.cyan, italic = true },
+  --           ["@exception.python"] = { fg = c.base.red, italic = true },
+  --           ["@constant.python"] = { fg = c.base.magenta },
+  --           ["@keyword.function.python"] = { fg = c.base.cyan, italic = true },
+  --           ["@operator.python"] = { fg = c.base.red },
+  --           ["@varibale.builtin.python"] = { fg = c.base.blue, italic = true },
+  --           ["@parameter.python"] = { fg = c.base.blue, italic = true },
+  --           -- ruby
+  --           ["@variable.ruby"] = { fg = c.base.white },
+  --           ["@symbol.ruby"] = { fg = c.base.magenta },
+  --           ["@property.ruby"] = { fg = c.base.magenta },
+  --           ["@error.ruby"] = { fg = c.base.magenta },
+  --           ["@constant.ruby"] = { fg = c.base.magenta },
+  --           ["@label.ruby"] = { fg = c.base.magenta },
+  --           ["@text.danger.ruby"] = { fg = c.base.magenta },
+  --           ["@function.builtin.ruby"] = { fg = c.base.red },
+  --           ["@type.ruby"] = { fg = c.base.cyan },
+  --           ["@field.ruby"] = { fg = c.base.white },
+  --           ["@keyword.ruby"] = { fg = c.base.red, italic = true },
+  --           ["@exception.ruby"] = { fg = c.base.red, italic = true },
+  --           ["@keyword.function.ruby"] = { fg = c.base.red },
+  --           ["@conditional.ruby"] = { fg = c.base.red },
+  --           ["@namespace.ruby"] = { fg = c.base.magenta },
+  --           ["@parameter.ruby"] = { fg = c.base.blue, italic = true },
+  --           -- lua
+  --           ["@variable.lua"] = { fg = c.base.white },
+  --           ["@function.builtin.lua"] = { fg = c.base.green },
+  --           ["@field.lua"] = { fg = c.base.white },
+  --           ["@keyword.lua"] = { fg = c.base.red, italic = true },
+  --           ["@keyword.function.lua"] = { fg = c.base.red },
+  --           ["@conditional.lua"] = { fg = c.base.red },
+  --           ["@namespace.lua"] = { fg = c.base.red },
+  --           ["@comment.documentation.lua"] = { fg = c.base.cyan },
+  --           ["@parameter.lua"] = { fg = c.base.blue, italic = true },
+  --           -- latex
+  --           ["@text.environment.latex"] = { fg = c.base.green },
+  --           ["@text.environment.name.latex"] = { fg = c.base.blue, italic = true },
+  --           ["@punctuation.special.latex"] = { fg = c.base.red },
+  --           ["@text.math.latex"] = { fg = c.base.magenta },
+  --           ["@text.strong.latex"] = { bold = true },
+  --           ["@text.emphasis.latex"] = { italic = true },
+  --           ["@string.latex"] = { fg = c.base.cyan },
+  --           ["@function.macro.latex"] = { fg = c.base.green },
+  --           -- Dockerfile
+  --           ["@keyword.dockerfile"] = { fg = c.base.red },
+  --           ["@lsp.type.class.dockerfile"] = { fg = c.base.cyan },
+  --           ["@function.call.bash"] = { fg = c.base.green },
+  --           ["@parameter.bash"] = { fg = c.base.white },
+  --         }
+  --       end,
+  --       integrations = {
+  --         cmp = true,
+  --         gitsigns = true,
+  --         nvimtree = true,
+  --         treesitter = true,
+  --         notify = false,
+  --         mini = false,
+  --         -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+  --       },
+  --     })
+  --   end
+  -- },
+  -- {
+  --   "folke/tokyonight.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   opts = {},
+  --   config = function()
+  --     require("tokyonight").setup({
+  --       -- your configuration comes here
+  --       -- or leave it empty to use the default settings
+  --       style = "night",  -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+  --       light_style = "day", -- The theme is used when the background is set to light
+  --       transparent = false, -- Enable this to disable setting the background color
+  --       terminal_colors = true, -- Configure the colors used when opening a `:terminal` in [Neovim](https://github.com/neovim/neovim)
+  --       styles = {
+  --         -- Style to be applied to different syntax groups
+  --         -- Value is any valid attr-list value for `:help nvim_set_hl`
+  --         comments = { italic = true },
+  --         keywords = { italic = true },
+  --         functions = {},
+  --         variables = {},
+  --         -- Background styles. Can be "dark", "transparent" or "normal"
+  --         sidebars = "dark",        -- style for sidebars, see below
+  --         floats = "dark",          -- style for floating windows
+  --       },
+  --       sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
+  --       day_brightness = 0.3,       -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
+  --       hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
+  --       dim_inactive = false,       -- dims inactive windows
+  --       lualine_bold = false,       -- When `true`, section headers in the lualine theme will be bold
+  --
+  --       --- You can override specific color groups to use other groups or a hex color
+  --       --- function will be called with a ColorScheme table
+  --       ---@param colors ColorScheme
+  --       on_colors = function(colors) end,
+  --
+  --       --- You can override specific highlights to use other groups or a hex color
+  --       --- function will be called with a Highlights and ColorScheme table
+  --       ---@param highlights Highlights
+  --       ---@param colors ColorScheme
+  --       on_highlights = function(highlights, colors) end,
+  --     })
+  --   end
+  -- },
   {
     "skmtkytr/monokai-pro.nvim",
     branch = "update-treesitter-highlight-for-ruby",
-    lazy = true,
+    lazy = false,
+    priority = 1000,
+    opts = {},
     dependencies = {
       { "nvim-tree/nvim-web-devicons" },
     },
