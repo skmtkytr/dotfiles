@@ -67,18 +67,22 @@ offset = {x = 0, y = 1}
 [font.bold]
 # family = "Fira Code"
 family = 'UDEV Gothic 35NFLG'
+# family = 'Monaspace Neon'
 
 [font.bold_italic]
 # family = "Fira Code"
 family = 'UDEV Gothic 35NFLG'
+# family = 'Monaspace Neon'
 
 [font.italic]
 # family = "Fira Code"
 family = 'UDEV Gothic 35NFLG'
+# family = 'Monaspace Neon'
 
 [font.normal]
 # family = "Fira Code"
 family = 'UDEV Gothic 35NFLG'
+# family = 'Monaspace Neon'
 
 [keyboard]
 bindings = [
