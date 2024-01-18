@@ -275,7 +275,7 @@ require('lazy').setup({
     "L3MON4D3/LuaSnip",
     event = "InsertEnter",
     -- follow latest release.
-    version = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
     -- install jsregexp (optional!:).
     build = "make install_jsregexp"
   },
@@ -583,6 +583,15 @@ require('lazy').setup({
               },
             },
           }
+        })
+
+        lspconfig.eslint.setup({
+          on_attach = function(client, bufnr)
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              buffer = bufnr,
+              command = "EslintFixAll",
+            })
+          end,
         })
 
         -- lspconfig.typeprof.setup({
@@ -2020,56 +2029,6 @@ require('lazy').setup({
       },
     },
   },
-  --  {
-  --   "folke/noice.nvim",
-  --   -- event = { "BufRead", "BufNewFile", "InsertEnter", "CmdlineEnter" },
-  --   -- module = { "noice" },
-  --   dependencies = {
-  --     { "MunifTanjim/nui.nvim" },
-  --     {
-  --       "rcarriga/nvim-notify",
-  --       module = { "notify" },
-  --       config = function()
-  --         require("notify").setup {
-  --           -- nvim-notify の設定
-  --         }
-  --       end
-  --     },
-  --   },
-  --   wants = { "nvim-treesitter" },
-  --   setup = function()
-  --     if not _G.__vim_notify_overwritten then
-  --       vim.notify = function(...)
-  --         local arg = { ... }
-  --         require "notify"
-  --         require "noice"
-  --         vim.schedule(function()
-  --           vim.notify(unpack(args))
-  --         end)
-  --       end
-  --       _G.__vim_notify_overwritten = true
-  --     end
-  --   end,
-  --   config = function()
-  --     require("noice").setup {
-  --       -- noice.nvim の設定
-  --       lsp = {
-  --         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-  --         override = {
-  --           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-  --           ["vim.lsp.util.stylize_markdown"] = true,
-  --           ["cmp.entry.get_documentation"] = true,
-  --         },
-  --       },
-  --       -- you can enable a preset for easier configuration
-  --       presets = {
-  --         bottom_search = false, -- use a classic bottom cmdline for search
-  --       },
-  --
-  --     }
-  --   end
-  -- }
-
 
   -- Test interacting
   {
@@ -2079,6 +2038,9 @@ require('lazy').setup({
       { "<leader>ts", ":Neotest summary<CR>", silent = true, desc = "open [T]est [S]ummary" },
     },
     dependencies = {
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
       "olimorris/neotest-rspec",
     },
     config = function()
