@@ -514,6 +514,8 @@ return packer.startup(function(use)
           end
         })
 
+        lspconfig.sqls.setup({})
+
         -- SteepのLanguage Serverを起動するための設定
         -- デフォルトの設定をいくつか上書きしている
         lspconfig.steep.setup({

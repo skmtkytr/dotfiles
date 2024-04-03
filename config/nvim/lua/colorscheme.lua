@@ -8,8 +8,8 @@ catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 ]]
 
-vim.cmd([[colorscheme monokai-pro]])
--- vim.cmd([[colorscheme catppuccin]])
+-- vim.cmd([[colorscheme monokai-pro]])
+vim.cmd([[colorscheme catppuccin]])
 -- vim.cmd([[colorscheme tokyonight]])
 -- vim.cmd([[colorscheme nightfox]])
 

@@ -10,6 +10,7 @@ alias view='nvim -R'
 
 alias find='fd '
 alias ls='exa --icons'
+alias top='btop'
 alias la='ls -a'
 alias ll='ls -l'
  

@@ -168,13 +168,32 @@ require('lazy').setup({
       })
     end,
   },
-  -- {
-  --   "zbirenbaum/copilot-cmp",
-  --   event = { "InsertEnter" },
-  --   config = function()
-  --     require("copilot_cmp").setup()
-  --   end
-  -- },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" },  -- for curl, log wrapper
+    },
+    opts = {
+      debug = true, -- Enable debugging
+      -- See Configuration section for rest
+    },
+    keys = {
+      -- Quick chat with Copilot
+      {
+        "<leader>ccq",
+        function()
+          local input = vim.fn.input("Quick Chat: ")
+          if input ~= "" then
+            require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+          end
+        end,
+        desc = "CopilotChat - Quick chat",
+      }
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
 
   -- cmp plugins
   {
@@ -314,6 +333,19 @@ require('lazy').setup({
           })
         end
       },
+    },
+    config = function()
+
+    end
+  },
+
+  -- mason-null-ls bridges mason.nvim with the null-ls plugin
+  {
+    "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "nvimtools/none-ls.nvim",
     },
     config = function()
       local null_ls = require "null-ls"
@@ -514,9 +546,8 @@ require('lazy').setup({
 
       -- null_lsに登録
       -- null_ls.register(cspell_custom_actions)
-    end
+    end,
   },
-
   {
     "glepnir/lspsaga.nvim",
     event = { "LspAttach" },
@@ -650,48 +681,48 @@ require('lazy').setup({
   },
 
   -- LSP diagnostics UI plugins
-  -- ({
-  --   "folke/trouble.nvim",
-  --   dependencies = "nvim-tree/nvim-web-devicons",
-  --   config = function()
-  --     require("trouble").setup({
-  --       auto_close = true,
-  --     })
-  --
-  --     local wk = require "which-key"
-  --     wk.register({
-  --       ["<leader>x"] = {
-  --         name = "+Trouble",
-  --       },
-  --     })
-  --     vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
-  --     vim.api.nvim_set_keymap(
-  --       "n",
-  --       "<leader>xw",
-  --       "<cmd>TroubleToggle workspace_diagnostics<cr>",
-  --       { silent = true, noremap = true }
-  --     )
-  --     vim.api.nvim_set_keymap(
-  --       "n",
-  --       "<leader>xd",
-  --       "<cmd>TroubleToggle document_diagnostics<cr>",
-  --       { silent = true, noremap = true }
-  --     )
-  --     vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
-  --     vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
-  --     vim.api.nvim_set_keymap("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
-  --   end,
-  -- })
   {
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-    event = "LspAttach",
+    "folke/trouble.nvim",
+    dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
-      require("lsp_lines").setup()
-      vim.diagnostic.config({
-        virtual_text = false,
+      require("trouble").setup({
+        auto_close = true,
       })
+
+      local wk = require "which-key"
+      wk.register({
+        ["<leader>x"] = {
+          name = "+Trouble",
+        },
+      })
+      vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>xw",
+        "<cmd>TroubleToggle workspace_diagnostics<cr>",
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>xd",
+        "<cmd>TroubleToggle document_diagnostics<cr>",
+        { silent = true, noremap = true }
+      )
+      vim.api.nvim_set_keymap("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
+      vim.api.nvim_set_keymap("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
+      vim.api.nvim_set_keymap("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
     end,
   },
+  -- {
+  --   "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+  --   event = "LspAttach",
+  --   config = function()
+  --     require("lsp_lines").setup()
+  --     vim.diagnostic.config({
+  --       virtual_text = false,
+  --     })
+  --   end,
+  -- },
 
 
   -- other.vim
@@ -702,8 +733,9 @@ require('lazy').setup({
       rails_controller_patterns = {
         { target = "/spec/controllers/%1_spec.rb", context = "spec" },
         { target = "/spec/requests/%1_spec.rb",    context = "spec" },
-        { target = "/spec/factories/%1.rb",        context = "factories", transformer = "singularize" },
-        { target = "/app/models/%1.rb",            context = "models",    transformer = "singularize" },
+        { target = "/spec/factories/%1.rb",        context = "factories",   transformer = "singularize" },
+        { target = "/app/models/%1.rb",            context = "models",      transformer = "singularize" },
+        { target = "/app/controllers/%1.rb",       context = "controllers", transformer = "singularize" },
         { target = "/app/views/%1/**/*.html.*",    context = "view" },
       }
       require("other-nvim").setup({
@@ -750,6 +782,14 @@ require('lazy').setup({
             },
           },
           {
+            pattern = 'spec/requests/(.*)_spec.rb',
+            target = rails_controller_patterns,
+          },
+          {
+            pattern = 'spec/controllers/(.*)_spec.rb',
+            target = rails_controller_patterns,
+          },
+          {
             pattern = "/app/controllers/.*/(.*)_controller.rb",
             target = rails_controller_patterns,
           },
@@ -777,6 +817,12 @@ require('lazy').setup({
             target = {
               { target = "/app/contexts/%1.rb",       context = "app" },
               { target = "/spec/contexts/%1_spec.rb", context = "spec" },
+            },
+          },
+          {
+            pattern = "/spec/contexts/(.*)_spec.rb$",
+            target = {
+              { target = "/app/contexts/%1.rb", context = "app" },
             },
           },
           {
@@ -1001,12 +1047,12 @@ require('lazy').setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = 'Fzflua',
     keys = {
-      { '<C-p>',    '<cmd>lua require(\'fzf-lua\').files()<CR>',                { silent = true } },
-      { ';cb',      '<cmd>lua require(\'fzf-lua\').oldfiles()<CR>',             { silent = true } },
-      { '<Space>f', '<cmd>lua require(\'fzf-lua\').live_grep_native()<CR>',     { silent = true } },
-      { ';cf',      '<cmd>lua require(\'fzf-lua\').grep_cword()<CR>',           { silent = true } },
-      { '<C-O>',    '<cmd>lua require(\'fzf-lua\').lsp_document_symbols()<CR>', { silent = true } },
-      { ';gst',     '<cmd>lua require(\'fzf-lua\').git_status()<CR>',           { silent = true } },
+      { '<C-p>', '<cmd>lua require(\'fzf-lua\').files()<CR>',                { silent = true } },
+      { ';cb',   '<cmd>lua require(\'fzf-lua\').oldfiles()<CR>',             { silent = true } },
+      { ';f',    '<cmd>lua require(\'fzf-lua\').live_grep_native()<CR>',     { silent = true } },
+      { ';cf',   '<cmd>lua require(\'fzf-lua\').grep_cword()<CR>',           { silent = true } },
+      { '<C-O>', '<cmd>lua require(\'fzf-lua\').lsp_document_symbols()<CR>', { silent = true } },
+      { ';gst',  '<cmd>lua require(\'fzf-lua\').git_status()<CR>',           { silent = true } },
     },
     config = function()
       -- calling `setup` is optional for customization
@@ -1016,6 +1062,19 @@ require('lazy').setup({
           fd_opts = "-I --color=never --type f --hidden --follow --exclude .git",
         }
       })
+    end
+  },
+  {
+    'yuki-yano/fzf-preview.vim',
+    branch = 'release/rpc',
+    dependencies = {
+      'junegunn/fzf'
+    },
+    build = 'fzf#install()',
+    config = function()
+      -- g:fzf_binary_preview_command is executed if this command succeeds, and g:fzf_preview_command is executed if it fails
+      -- vim.g.fzf_preview_if_binary_command = '[[ "(file --mime {})" =~ binary ]]'
+      vim.g.fzf_preview_if_binary_command = 'false '
     end
   },
 
@@ -1034,6 +1093,12 @@ require('lazy').setup({
       require('nvim-treesitter.configs').setup {
         highlight = {
           enable = true, -- false will disable the whole extension
+          -- disable = function(lang)
+          --   local ok = pcall(function()
+          --     vim.treesitter.get_query(lang, 'highlights')
+          --   end)
+          --   return not ok
+          -- end,
         },
         incremental_selection = {
           enable = true,
@@ -1043,7 +1108,11 @@ require('lazy').setup({
         },
         endwise = {
           enable = true,
-        }, -- Install parsers synchronously (only applied to `ensure_installed`)
+        },
+        autotag = {
+          enable = true,
+        },
+        -- Install parsers synchronously (only applied to `ensure_installed`)
         -- A list of parser names, or "all" (the five listed parsers should always be installed)
         ensure_installed = {
           "lua",
@@ -1100,7 +1169,7 @@ require('lazy').setup({
           follow_files = true
         },
         attach_to_untracked          = true,
-        current_line_blame           = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+        current_line_blame           = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
         current_line_blame_opts      = {
           virt_text = true,
           virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
@@ -1234,7 +1303,8 @@ require('lazy').setup({
   -- }
   {
     "lukas-reineke/indent-blankline.nvim",
-    tag = 'v2.20.8',
+    -- tag = 'v2.20.8',
+    main = "ibl",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       filetype_exclude = {
@@ -1251,15 +1321,16 @@ require('lazy').setup({
       },
     },
     config = function()
+      require("ibl").setup()
       vim.opt.list = true
       vim.opt.listchars:append "space:⋅"
       vim.opt.listchars:append "eol:↴"
 
-      require("indent_blankline").setup {
-        space_char_blankline = " ",
-        show_current_context = true,
-        show_current_context_start = true,
-      }
+      -- require("indent_blankline").setup {
+      --   space_char_blankline = " ",
+      --   show_current_context = true,
+      --   show_current_context_start = true,
+      -- }
     end
   },
 
@@ -1444,252 +1515,266 @@ require('lazy').setup({
   --   end
   -- },
   --  "phanviet/vim-monokai-pro",
-  -- {
-  --   "catppuccin/nvim",
-  --   name = "catppuccin",
-  --   priority = 1000,
-  --   config = function()
-  --     require("catppuccin").setup({
-  --       compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
-  --       flavour = "mocha", -- latte, frappe, macchiato, mocha
-  --       background = {     -- :h background
-  --         light = "latte",
-  --         dark = "mocha",
-  --       },
-  --       transparent_background = false, -- disables setting the background color.
-  --       show_end_of_buffer = false,     -- shows the '~' characters after the end of buffers
-  --       term_colors = false,            -- sets terminal colors (e.g. `g:terminal_color_0`)
-  --       dim_inactive = {
-  --         enabled = false,              -- dims the background color of inactive window
-  --         shade = "dark",
-  --         percentage = 0.15,            -- percentage of the shade to apply to the inactive window
-  --       },
-  --       no_italic = false,              -- Force no italic
-  --       no_bold = false,                -- Force no bold
-  --       no_underline = false,           -- Force no underline
-  --       styles = {                      -- Handles the styles of general hi groups (see `:h highlight-args`):
-  --         comments = { "italic" },      -- Change the style of comments
-  --         conditionals = { "italic" },
-  --         loops = {},
-  --         functions = {},
-  --         keywords = {},
-  --         strings = {},
-  --         variables = {},
-  --         numbers = {},
-  --         booleans = {},
-  --         properties = {},
-  --         types = {},
-  --         operators = {},
-  --       },
-  --       color_overrides = {},
-  --       custom_highlights = function(c)
-  --         local p = {
-  --           dark2 = "#131313",
-  --           dark1 = "#191919",
-  --           background = "#222222",
-  --           text = "#f7f1ff",
-  --           accent1 = "#fc618d",
-  --           accent2 = "#fd9353",
-  --           accent3 = "#fce566",
-  --           accent4 = "#7bd88f",
-  --           accent5 = "#5ad4e6",
-  --           accent6 = "#948ae3",
-  --           dimmed1 = "#bab6c0",
-  --           dimmed2 = "#8b888f",
-  --           dimmed3 = "#69676c",
-  --           dimmed4 = "#525053",
-  --           dimmed5 = "#363537",
-  --
-  --         }
-  --         c.base = {
-  --           dark = p.dark2,      -- "#19181a"
-  --           black = p.dark1,     --"#221f22",
-  --           red = p.accent1,     -- "#ff6188",
-  --           green = p.accent4,   -- "#a9dc76",
-  --           yellow = p.accent3,  -- "#ffd866",
-  --           blue = p.accent2,    -- "#fc9867",
-  --           magenta = p.accent6, -- "#ab9df2",
-  --           cyan = p.accent5,    -- "#78dce8",
-  --           white = p.text,      -- "#fcfcfa",
-  --           dimmed1 = p.dimmed1, -- "#c1c0c0",
-  --           dimmed2 = p.dimmed2, -- "#939293",
-  --           dimmed3 = p.dimmed3, -- "#727072",
-  --           dimmed4 = p.dimmed4, -- "#5b595c",
-  --           dimmed5 = p.dimmed5, -- "#403e41",
-  --         }
-  --         c.sideBar = {
-  --           background = p.dark1,   -- "#221f22",
-  --           foreground = p.dimmed2, -- "#939293",
-  --         }
-  --         c.editorSuggestWidget = {
-  --           background = p.dimmed5,         -- "#403e41",
-  --           border = p.dimmed5,             -- "#403e41",
-  --           foreground = p.dimmed1,         -- "#c1c0c0",
-  --           highlightForeground = p.text,   -- "#fcfcfa",
-  --           selectedBackground = p.dimmed3, -- "#727072",
-  --         }
-  --
-  --         return {
-  --           Comment = { fg = c.base.dimmed3, },       -- Comments
-  --           Constant = { fg = c.base.magenta },       -- (preferred) any constant
-  --           String = { fg = c.base.yellow },          --   a string constant: "this is a string"
-  --           Character = { fg = c.base.magenta },      -- a character constant: 'c', '\n'
-  --           Number = { fg = c.base.magenta },         -- a number constant: 234, 0xff
-  --           Boolean = { fg = c.base.magenta },        -- a boolean constant: TRUE, false
-  --           Float = { fg = c.base.magenta },          -- a floating point constant: 2.3e10
-  --           Identifier = { fg = c.base.white },       -- (preferred) any variable name
-  --           Function = { fg = c.base.green },         -- function name (also: methods for classes)
-  --           Statement = { fg = c.base.magenta },      -- (preferred) any statement
-  --           Conditional = { fg = c.base.red },        --  if, then, else, endif, switch, etc
-  --           Repeat = { fg = c.base.red },             -- for, do, while, etc
-  --           Label = { fg = c.base.red },              -- case, default, etc
-  --           Operator = { fg = c.base.red },           -- "sizeof", "+", "*", etc
-  --           Keyword = { fg = c.base.red, },           -- any other keyword
-  --           Exception = { fg = c.base.red },          -- try, catch, throw
-  --           PreProc = { fg = c.base.yellow },         -- (preferred) generic Preprocessor
-  --           Include = { fg = c.base.red },            -- preprocessor #include
-  --           Define = { fg = c.base.red },             -- preprocessor #define
-  --           Macro = { fg = c.base.red },              -- same as Define
-  --           PreCondit = { fg = c.base.red },          -- preprocessor #if, #else, #endif, etc
-  --           Type = { fg = c.base.white },             -- React, ReactDOM (import React from 'react';)
-  --           StorageClass = { fg = c.base.red, },      -- static, register, volatile, etc
-  --           Structure = { fg = c.base.cyan, },        -- struct, union, enum, etc
-  --           Typedef = { fg = c.base.red },            -- A typedef
-  --           Special = { fg = c.base.blue },           -- (preferred) any special symbol
-  --           SpecialChar = { fg = c.base.blue },       -- special character in a constant
-  --           -- Tag = {}, -- you can use CTRL-] on this
-  --           Delimiter = { fg = c.base.white },        -- character that needs attention
-  --           SpecialComment = { fg = c.base.dimmed3 }, -- special things inside a comment
-  --           -- Debug = {}, -- debugging statements
-  --           Underlined = { underline = true },        -- (preferred) text that stands out, HTML links
-  --           Bold = { bold = true },
-  --           -- Ignore = { }, -- (preferred) left blank, hidden  |hl-Ignore|
-  --           Italic = { italic = true },
-  --           Error = { fg = c.red }, -- (preferred) any erroneous construct
-  --           Todo = {
-  --             -- bg = c.editor.background,
-  --             fg = c.base.magenta,
-  --             bold = true,
-  --           },                                                    -- (preferred) anything that needs extra attention; mostly the keywords TODO FIXME and XXX
-  --           ["@include"] = { fg = c.base.red },                   -- `import`
-  --           ["@variable"] = { fg = c.base.white },
-  --           ["@punctuation.delimiter"] = { fg = c.base.dimmed2 }, -- `;`
-  --           ["@punctuation.bracket"] = { fg = c.base.dimmed2 },   -- `(`
-  --           ["@constructor"] = { fg = c.base.red },               -- `StrictMode` in `<React.StrictMode>`
-  --           ["@tag.delimiter"] = { fg = c.base.dimmed2 },         -- `<`, `>` in `<div>`
-  --           ["@operator"] = { fg = c.base.red },                  -- `=`, `=>`
-  --           ["@keyword"] = { fg = c.base.cyan, italic = true },   -- `const`, `export`, `default`
-  --           ["@parameter"] = { fg = c.base.white },
-  --           ["@string.documentation"] = { fg = c.base.dimmed3 },
-  --           ["@type.builtin"] = { fg = c.base.cyan },
-  --           ["@_isinstance"] = { fg = c.base.green },
-  --
-  --           ["@keyword.return"] = { fg = c.base.red },
-  --           ["@keyword.operator"] = { fg = c.base.red },
-  --           ["@method.call"] = { fg = c.base.green },
-  --           ["@property"] = { fg = c.base.white },
-  --           ["@function"] = { fg = c.base.green },
-  --           ["@constant.builtin"] = { fg = c.base.magenta },
-  --           ["@tag"] = { fg = c.base.red },
-  --           ["@tag.attribute"] = { fg = c.base.cyan, italic = true },
-  --           ["@attribute"] = { fg = c.base.cyan },
-  --           ["@conditional"] = { fg = c.base.red },
-  --           ["@repeat"] = { fg = c.base.red },
-  --           ["@keyword.function"] = { fg = c.base.cyan, bold = true, italic = true },
-  --           ["@number"] = { fg = c.base.magenta },
-  --           ["@boolean"] = { fg = c.base.magenta },
-  --           ["@type.qualifier"] = { fg = c.base.red, italic = true },
-  --           ["@annotation"] = { fg = c.base.cyan, italic = true },
-  --           ["@field"] = { fg = c.base.red },
-  --           -- scss
-  --           ["@keyword.scss"] = { fg = c.base.red },
-  --           ["@function.scss"] = { fg = c.base.cyan },
-  --           ["@property.scss"] = { fg = c.base.green },
-  --           ["@string.scss"] = { fg = c.base.blue, italic = true },
-  --           ["@number.scss"] = { fg = c.base.magenta },
-  --           ["@type.scss"] = { fg = c.base.cyan },
-  --           -- cpp
-  --           ["@keyword.cpp"] = { fg = c.base.cyan, italic = true },
-  --           ["@namespace.cpp"] = { fg = c.base.white },
-  --           ["@operator.cpp"] = { fg = c.base.red },
-  --           ["@type.cpp"] = { fg = c.base.blue, italic = true },
-  --           ["@variable.cpp"] = { fg = c.base.white },
-  --           ["@constant.cpp"] = { fg = c.base.cyan },
-  --           ["@constant.macro.cpp"] = { fg = c.base.red },
-  --           ["@punctuation.delimiter.cpp"] = { fg = c.sideBar.foreground },
-  --           -- python
-  --           ["@type.python"] = { fg = c.base.white },
-  --           ["@keyword.python"] = { fg = c.base.cyan, italic = true },
-  --           ["@variable.builtin.python"] = {
-  --             fg = c.editorSuggestWidget.foreground,
-  --             italic = true,
-  --           },
-  --           ["@field.python"] = { fg = c.base.white },
-  --           ["@variable.python"] = { fg = c.base.white },
-  --           ["@constructor.python"] = { fg = c.base.green },
-  --           ["@method.python"] = { fg = c.base.green },
-  --           ["@function.builtin.python"] = { fg = c.base.cyan, italic = true },
-  --           ["@exception.python"] = { fg = c.base.red, italic = true },
-  --           ["@constant.python"] = { fg = c.base.magenta },
-  --           ["@keyword.function.python"] = { fg = c.base.cyan, italic = true },
-  --           ["@operator.python"] = { fg = c.base.red },
-  --           ["@varibale.builtin.python"] = { fg = c.base.blue, italic = true },
-  --           ["@parameter.python"] = { fg = c.base.blue, italic = true },
-  --           -- ruby
-  --           ["@variable.ruby"] = { fg = c.base.white },
-  --           ["@symbol.ruby"] = { fg = c.base.magenta },
-  --           ["@property.ruby"] = { fg = c.base.magenta },
-  --           ["@error.ruby"] = { fg = c.base.magenta },
-  --           ["@constant.ruby"] = { fg = c.base.magenta },
-  --           ["@label.ruby"] = { fg = c.base.magenta },
-  --           ["@text.danger.ruby"] = { fg = c.base.magenta },
-  --           ["@function.builtin.ruby"] = { fg = c.base.red },
-  --           ["@type.ruby"] = { fg = c.base.cyan },
-  --           ["@field.ruby"] = { fg = c.base.white },
-  --           ["@keyword.ruby"] = { fg = c.base.red, italic = true },
-  --           ["@exception.ruby"] = { fg = c.base.red, italic = true },
-  --           ["@keyword.function.ruby"] = { fg = c.base.red },
-  --           ["@conditional.ruby"] = { fg = c.base.red },
-  --           ["@namespace.ruby"] = { fg = c.base.magenta },
-  --           ["@parameter.ruby"] = { fg = c.base.blue, italic = true },
-  --           -- lua
-  --           ["@variable.lua"] = { fg = c.base.white },
-  --           ["@function.builtin.lua"] = { fg = c.base.green },
-  --           ["@field.lua"] = { fg = c.base.white },
-  --           ["@keyword.lua"] = { fg = c.base.red, italic = true },
-  --           ["@keyword.function.lua"] = { fg = c.base.red },
-  --           ["@conditional.lua"] = { fg = c.base.red },
-  --           ["@namespace.lua"] = { fg = c.base.red },
-  --           ["@comment.documentation.lua"] = { fg = c.base.cyan },
-  --           ["@parameter.lua"] = { fg = c.base.blue, italic = true },
-  --           -- latex
-  --           ["@text.environment.latex"] = { fg = c.base.green },
-  --           ["@text.environment.name.latex"] = { fg = c.base.blue, italic = true },
-  --           ["@punctuation.special.latex"] = { fg = c.base.red },
-  --           ["@text.math.latex"] = { fg = c.base.magenta },
-  --           ["@text.strong.latex"] = { bold = true },
-  --           ["@text.emphasis.latex"] = { italic = true },
-  --           ["@string.latex"] = { fg = c.base.cyan },
-  --           ["@function.macro.latex"] = { fg = c.base.green },
-  --           -- Dockerfile
-  --           ["@keyword.dockerfile"] = { fg = c.base.red },
-  --           ["@lsp.type.class.dockerfile"] = { fg = c.base.cyan },
-  --           ["@function.call.bash"] = { fg = c.base.green },
-  --           ["@parameter.bash"] = { fg = c.base.white },
-  --         }
-  --       end,
-  --       integrations = {
-  --         cmp = true,
-  --         gitsigns = true,
-  --         nvimtree = true,
-  --         treesitter = true,
-  --         notify = false,
-  --         mini = false,
-  --         -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
-  --       },
-  --     })
-  --   end
-  -- },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    config = function()
+      require("catppuccin").setup({
+        compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
+        flavour = "mocha", -- latte, frappe, macchiato, mocha
+        background = {     -- :h background
+          light = "latte",
+          dark = "mocha",
+        },
+        transparent_background = false, -- disables setting the background color.
+        show_end_of_buffer = false,     -- shows the '~' characters after the end of buffers
+        term_colors = false,            -- sets terminal colors (e.g. `g:terminal_color_0`)
+        dim_inactive = {
+          enabled = false,              -- dims the background color of inactive window
+          shade = "dark",
+          percentage = 0.15,            -- percentage of the shade to apply to the inactive window
+        },
+        no_italic = false,              -- Force no italic
+        no_bold = false,                -- Force no bold
+        no_underline = false,           -- Force no underline
+        styles = {                      -- Handles the styles of general hi groups (see `:h highlight-args`):
+          comments = { "italic" },      -- Change the style of comments
+          conditionals = { "italic" },
+          loops = {},
+          functions = {},
+          keywords = {},
+          strings = {},
+          variables = {},
+          numbers = {},
+          booleans = {},
+          properties = {},
+          types = {},
+          operators = {},
+        },
+        color_overrides = {},
+        custom_highlights = function(c)
+          local p = {
+            dark2 = "#131313",
+            dark1 = "#191919",
+            background = "#222222",
+            text = "#f7f1ff",
+            accent1 = "#fc618d",
+            accent2 = "#fd9353",
+            accent3 = "#fce566",
+            accent4 = "#7bd88f",
+            accent5 = "#5ad4e6",
+            accent6 = "#948ae3",
+            dimmed1 = "#bab6c0",
+            dimmed2 = "#8b888f",
+            dimmed3 = "#69676c",
+            dimmed4 = "#525053",
+            dimmed5 = "#363537",
+
+          }
+          c.base = {
+            dark = p.dark2,      -- "#19181a"
+            black = p.dark1,     --"#221f22",
+            red = p.accent1,     -- "#ff6188",
+            green = p.accent4,   -- "#a9dc76",
+            yellow = p.accent3,  -- "#ffd866",
+            blue = p.accent2,    -- "#fc9867",
+            magenta = p.accent6, -- "#ab9df2",
+            cyan = p.accent5,    -- "#78dce8",
+            white = p.text,      -- "#fcfcfa",
+            dimmed1 = p.dimmed1, -- "#c1c0c0",
+            dimmed2 = p.dimmed2, -- "#939293",
+            dimmed3 = p.dimmed3, -- "#727072",
+            dimmed4 = p.dimmed4, -- "#5b595c",
+            dimmed5 = p.dimmed5, -- "#403e41",
+          }
+          c.sideBar = {
+            background = p.dark1,   -- "#221f22",
+            foreground = p.dimmed2, -- "#939293",
+          }
+          c.editorSuggestWidget = {
+            background = p.dimmed5,         -- "#403e41",
+            border = p.dimmed5,             -- "#403e41",
+            foreground = p.dimmed1,         -- "#c1c0c0",
+            highlightForeground = p.text,   -- "#fcfcfa",
+            selectedBackground = p.dimmed3, -- "#727072",
+          }
+
+          return {
+            Comment = { fg = c.base.dimmed3, },       -- Comments
+            Constant = { fg = c.base.magenta },       -- (preferred) any constant
+            String = { fg = c.base.yellow },          --   a string constant: "this is a string"
+            Character = { fg = c.base.magenta },      -- a character constant: 'c', '\n'
+            Number = { fg = c.base.magenta },         -- a number constant: 234, 0xff
+            Boolean = { fg = c.base.magenta },        -- a boolean constant: TRUE, false
+            Float = { fg = c.base.magenta },          -- a floating point constant: 2.3e10
+            Identifier = { fg = c.base.white },       -- (preferred) any variable name
+            Function = { fg = c.base.green },         -- function name (also: methods for classes)
+            Statement = { fg = c.base.magenta },      -- (preferred) any statement
+            Conditional = { fg = c.base.red },        --  if, then, else, endif, switch, etc
+            Repeat = { fg = c.base.red },             -- for, do, while, etc
+            Label = { fg = c.base.red },              -- case, default, etc
+            Operator = { fg = c.base.red },           -- "sizeof", "+", "*", etc
+            Keyword = { fg = c.base.red, },           -- any other keyword
+            Exception = { fg = c.base.red },          -- try, catch, throw
+            PreProc = { fg = c.base.yellow },         -- (preferred) generic Preprocessor
+            Include = { fg = c.base.red },            -- preprocessor #include
+            Define = { fg = c.base.red },             -- preprocessor #define
+            Macro = { fg = c.base.red },              -- same as Define
+            PreCondit = { fg = c.base.red },          -- preprocessor #if, #else, #endif, etc
+            Type = { fg = c.base.white },             -- React, ReactDOM (import React from 'react';)
+            StorageClass = { fg = c.base.red, },      -- static, register, volatile, etc
+            Structure = { fg = c.base.cyan, },        -- struct, union, enum, etc
+            Typedef = { fg = c.base.red },            -- A typedef
+            Special = { fg = c.base.blue },           -- (preferred) any special symbol
+            SpecialChar = { fg = c.base.blue },       -- special character in a constant
+            -- Tag = {}, -- you can use CTRL-] on this
+            Delimiter = { fg = c.base.white },        -- character that needs attention
+            SpecialComment = { fg = c.base.dimmed3 }, -- special things inside a comment
+            -- Debug = {}, -- debugging statements
+            Underlined = { underline = true },        -- (preferred) text that stands out, HTML links
+            Bold = { bold = true },
+            -- Ignore = { }, -- (preferred) left blank, hidden  |hl-Ignore|
+            Italic = { italic = true },
+            Error = { fg = c.red }, -- (preferred) any erroneous construct
+            Todo = {
+              -- bg = c.editor.background,
+              fg = c.base.magenta,
+              bold = true,
+            },                                       -- (preferred) anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+            -- gitsigns
+            GitSignsAdd = { fg = c.base.green },     -- diff mode: Added line |diff.txt|
+            GitSignsChange = { fg = c.base.yellow }, -- diff mode: Changed line |diff.txt|
+            GitSignsDelete = { fg = c.base.red },    -- diff mode: Deleted line |diff.txt|
+
+            GitSignsCurrentLineBlame = { fg = c.base.dimmed4 },
+
+            GitSignsAddPreview = { fg = c.base.green, bg = c.none } or { link = "DiffAdd" },
+            GitSignsDeletePreview = { fg = c.base.red, bg = c.none } or { link = "DiffDelete" },
+            ["@include"] = { fg = c.base.red },                   -- `import`
+            ["@variable"] = { fg = c.base.white },
+            ["@punctuation.delimiter"] = { fg = c.base.dimmed2 }, -- `;`
+            ["@punctuation.bracket"] = { fg = c.base.dimmed2 },   -- `(`
+            ["@constructor"] = { fg = c.base.red },               -- `StrictMode` in `<React.StrictMode>`
+            ["@tag.delimiter"] = { fg = c.base.dimmed2 },         -- `<`, `>` in `<div>`
+            ["@operator"] = { fg = c.base.red },                  -- `=`, `=>`
+            ["@keyword"] = { fg = c.base.cyan, italic = true },   -- `const`, `export`, `default`
+            ["@parameter"] = { fg = c.base.white },
+            ["@string.documentation"] = { fg = c.base.dimmed3 },
+            ["@type.builtin"] = { fg = c.base.cyan },
+            ["@_isinstance"] = { fg = c.base.green },
+            ["@string.special.symbol"] = { fg = c.base.blue },
+            ["@comment.todo"] = { fg = c.base.dark, bg = c.flamingo },
+            ["@variable.parameter"] = { fg = c.base.white },
+
+            ["@keyword.return"] = { fg = c.base.red },
+            ["@keyword.operator"] = { fg = c.base.red },
+            ["@method.call"] = { fg = c.base.green },
+            ["@property"] = { fg = c.base.white },
+            ["@function"] = { fg = c.base.green },
+            ["@constant.builtin"] = { fg = c.base.magenta },
+            ["@tag"] = { fg = c.base.red },
+            ["@tag.attribute"] = { fg = c.base.cyan, italic = true },
+            ["@attribute"] = { fg = c.base.cyan },
+            ["@conditional"] = { fg = c.base.red },
+            ["@repeat"] = { fg = c.base.red },
+            ["@keyword.function"] = { fg = c.base.cyan, bold = true, italic = true },
+            ["@number"] = { fg = c.base.magenta },
+            ["@boolean"] = { fg = c.base.magenta },
+            ["@type.qualifier"] = { fg = c.base.red, italic = true },
+            ["@annotation"] = { fg = c.base.cyan, italic = true },
+            ["@field"] = { fg = c.base.red },
+            -- scss
+            ["@keyword.scss"] = { fg = c.base.red },
+            ["@function.scss"] = { fg = c.base.cyan },
+            ["@property.scss"] = { fg = c.base.green },
+            ["@string.scss"] = { fg = c.base.blue, italic = true },
+            ["@number.scss"] = { fg = c.base.magenta },
+            ["@type.scss"] = { fg = c.base.cyan },
+            -- cpp
+            ["@keyword.cpp"] = { fg = c.base.cyan, italic = true },
+            ["@namespace.cpp"] = { fg = c.base.white },
+            ["@operator.cpp"] = { fg = c.base.red },
+            ["@type.cpp"] = { fg = c.base.blue, italic = true },
+            ["@variable.cpp"] = { fg = c.base.white },
+            ["@constant.cpp"] = { fg = c.base.cyan },
+            ["@constant.macro.cpp"] = { fg = c.base.red },
+            ["@punctuation.delimiter.cpp"] = { fg = c.sideBar.foreground },
+            -- python
+            ["@type.python"] = { fg = c.base.white },
+            ["@keyword.python"] = { fg = c.base.cyan, italic = true },
+            ["@variable.builtin.python"] = {
+              fg = c.editorSuggestWidget.foreground,
+              italic = true,
+            },
+            ["@field.python"] = { fg = c.base.white },
+            ["@variable.python"] = { fg = c.base.white },
+            ["@constructor.python"] = { fg = c.base.green },
+            ["@method.python"] = { fg = c.base.green },
+            ["@function.builtin.python"] = { fg = c.base.cyan, italic = true },
+            ["@exception.python"] = { fg = c.base.red, italic = true },
+            ["@constant.python"] = { fg = c.base.magenta },
+            ["@keyword.function.python"] = { fg = c.base.cyan, italic = true },
+            ["@operator.python"] = { fg = c.base.red },
+            ["@varibale.builtin.python"] = { fg = c.base.blue, italic = true },
+            ["@parameter.python"] = { fg = c.base.blue, italic = true },
+            -- ruby
+            ["@variable.ruby"] = { fg = c.base.white },
+            ["@symbol.ruby"] = { fg = c.base.magenta },
+            ["@string.special.symbol.ruby"] = { fg = c.base.blue },
+            ["@property.ruby"] = { fg = c.base.magenta },
+            ["@error.ruby"] = { fg = c.base.magenta },
+            ["@constant.ruby"] = { fg = c.base.magenta },
+            ["@label.ruby"] = { fg = c.base.magenta },
+            ["@text.danger.ruby"] = { fg = c.base.magenta },
+            ["@function.builtin.ruby"] = { fg = c.base.red },
+            ["@type.ruby"] = { fg = c.base.cyan },
+            ["@field.ruby"] = { fg = c.base.white },
+            ["@keyword.ruby"] = { fg = c.base.red, italic = true },
+            ["@exception.ruby"] = { fg = c.base.red, italic = true },
+            ["@keyword.function.ruby"] = { fg = c.base.red },
+            ["@conditional.ruby"] = { fg = c.base.red },
+            ["@namespace.ruby"] = { fg = c.base.magenta },
+            ["@parameter.ruby"] = { fg = c.base.blue, italic = true },
+            -- lua
+            ["@variable.lua"] = { fg = c.base.white },
+            ["@function.builtin.lua"] = { fg = c.base.green },
+            ["@field.lua"] = { fg = c.base.white },
+            ["@keyword.lua"] = { fg = c.base.red, italic = true },
+            ["@keyword.function.lua"] = { fg = c.base.red },
+            ["@conditional.lua"] = { fg = c.base.red },
+            ["@namespace.lua"] = { fg = c.base.red },
+            ["@comment.documentation.lua"] = { fg = c.base.cyan },
+            ["@parameter.lua"] = { fg = c.base.blue, italic = true },
+            -- latex
+            ["@text.environment.latex"] = { fg = c.base.green },
+            ["@text.environment.name.latex"] = { fg = c.base.blue, italic = true },
+            ["@punctuation.special.latex"] = { fg = c.base.red },
+            ["@text.math.latex"] = { fg = c.base.magenta },
+            ["@text.strong.latex"] = { bold = true },
+            ["@text.emphasis.latex"] = { italic = true },
+            ["@string.latex"] = { fg = c.base.cyan },
+            ["@function.macro.latex"] = { fg = c.base.green },
+            -- Dockerfile
+            ["@keyword.dockerfile"] = { fg = c.base.red },
+            ["@lsp.type.class.dockerfile"] = { fg = c.base.cyan },
+            ["@function.call.bash"] = { fg = c.base.green },
+            ["@parameter.bash"] = { fg = c.base.white },
+          }
+        end,
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          nvimtree = true,
+          treesitter = true,
+          notify = false,
+          mini = false,
+          dashboard = true,
+          -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+        },
+      })
+    end
+  },
   -- {
   --   "folke/tokyonight.nvim",
   --   lazy = false,
@@ -1733,65 +1818,65 @@ require('lazy').setup({
   --     })
   --   end
   -- },
-  {
-    "skmtkytr/monokai-pro.nvim",
-    branch = "update-treesitter-highlight-for-ruby",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-    dependencies = {
-      { "nvim-tree/nvim-web-devicons" },
-    },
-    config = function()
-      require("monokai-pro").setup({
-        transparent_background = vim.g.transparent_enabled,
-        terminal_colors = false,
-        devicons = true, -- highlight the icons of `nvim-web-devicons`
-        styles = {
-          comment = { italic = true },
-          keyword = { italic = true },       -- any other keyword
-          type = { italic = true },          -- (preferred) int, long, char, etc
-          storageclass = { italic = true },  -- static, register, volatile, etc
-          structure = { italic = true },     -- struct, union, enum, etc
-          parameter = { italic = true },     -- parameter pass in function
-          annotation = { italic = true },
-          tag_attribute = { italic = true }, -- attribute of tag in reactjs
-        },
-        filter = "spectrum",                 -- classic | octagon | pro | machine | ristretto | spectrum
-        -- Enable this will disable filter option
-        day_night = {
-          enable = false,            -- turn off by default
-          day_filter = "pro",        -- classic | octagon | pro | machine | ristretto | spectrum
-          night_filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
-        },
-        inc_search = "underline",    -- underline | background
-        background_clear = {
-          "float_win",
-          "toggleterm",
-          "telescope",
-          "which-key",
-          -- "renamer",
-          "notify",
-          -- "nvim-tree",
-          "neo-tree",
-          -- "bufferline",
-          -- better used if background of `neo-tree` or `nvim-tree` is cleared
-        }, -- "float_win","toggleterm", "telescope", "which-key", "renamer", "neo-tree", "nvim-tree", "bufferline"
-        plugins = {
-          bufferline = {
-            underline_selected = false,
-            underline_visible = false,
-          },
-          indent_blankline = {
-            context_highlight = "default", -- default | pro
-            context_start_underline = false,
-          },
-        },
-        ---@param c Colorscheme
-        override = function(c) end,
-      })
-    end
-  },
+  -- {
+  --   "skmtkytr/monokai-pro.nvim",
+  --   branch = "update-treesitter-highlight-for-ruby",
+  --   lazy = false,
+  --   priority = 1000,
+  --   opts = {},
+  --   dependencies = {
+  --     { "nvim-tree/nvim-web-devicons" },
+  --   },
+  --   config = function()
+  --     require("monokai-pro").setup({
+  --       transparent_background = vim.g.transparent_enabled,
+  --       terminal_colors = false,
+  --       devicons = true, -- highlight the icons of `nvim-web-devicons`
+  --       styles = {
+  --         comment = { italic = true },
+  --         keyword = { italic = true },       -- any other keyword
+  --         type = { italic = true },          -- (preferred) int, long, char, etc
+  --         storageclass = { italic = true },  -- static, register, volatile, etc
+  --         structure = { italic = true },     -- struct, union, enum, etc
+  --         parameter = { italic = true },     -- parameter pass in function
+  --         annotation = { italic = true },
+  --         tag_attribute = { italic = true }, -- attribute of tag in reactjs
+  --       },
+  --       filter = "spectrum",                 -- classic | octagon | pro | machine | ristretto | spectrum
+  --       -- Enable this will disable filter option
+  --       day_night = {
+  --         enable = false,            -- turn off by default
+  --         day_filter = "pro",        -- classic | octagon | pro | machine | ristretto | spectrum
+  --         night_filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
+  --       },
+  --       inc_search = "underline",    -- underline | background
+  --       background_clear = {
+  --         "float_win",
+  --         "toggleterm",
+  --         "telescope",
+  --         "which-key",
+  --         -- "renamer",
+  --         "notify",
+  --         -- "nvim-tree",
+  --         "neo-tree",
+  --         -- "bufferline",
+  --         -- better used if background of `neo-tree` or `nvim-tree` is cleared
+  --       }, -- "float_win","toggleterm", "telescope", "which-key", "renamer", "neo-tree", "nvim-tree", "bufferline"
+  --       plugins = {
+  --         bufferline = {
+  --           underline_selected = false,
+  --           underline_visible = false,
+  --         },
+  --         indent_blankline = {
+  --           context_highlight = "default", -- default | pro
+  --           context_start_underline = false,
+  --         },
+  --       },
+  --       ---@param c Colorscheme
+  --       override = function(c) end,
+  --     })
+  --   end
+  -- },
 
 
   {
@@ -1915,17 +2000,17 @@ require('lazy').setup({
           filter = function(buf)
             return vim.b[buf].neo_tree_source == "filesystem"
           end,
-          size = { height = 0.4 },
+          size = { height = 0.5 },
         },
-        {
-          title = "Neo-Tree Git",
-          ft = "neo-tree",
-          filter = function(buf)
-            return vim.b[buf].neo_tree_source == "git_status"
-          end,
-          pinned = true,
-          open = "Neotree position=right git_status",
-        },
+        -- {
+        --   title = "Neo-Tree Git",
+        --   ft = "neo-tree",
+        --   filter = function(buf)
+        --     return vim.b[buf].neo_tree_source == "git_status"
+        --   end,
+        --   pinned = true,
+        --   open = "Neotree position=right git_status",
+        -- },
         {
           title = "Neo-Tree Buffers",
           ft = "neo-tree",
@@ -2038,10 +2123,12 @@ require('lazy').setup({
       { "<leader>ts", ":Neotest summary<CR>", silent = true, desc = "open [T]est [S]ummary" },
     },
     dependencies = {
+      'nvim-neotest/nvim-nio',
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-treesitter/nvim-treesitter",
       "olimorris/neotest-rspec",
+      'nvim-neotest/neotest-go',
     },
     config = function()
       require("neotest").setup({
@@ -2131,7 +2218,8 @@ require('lazy').setup({
     end
   },
 
-}, {
+}
+, {
   performance = {
     cache = {
       enabled = true,
