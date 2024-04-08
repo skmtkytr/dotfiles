@@ -745,7 +745,7 @@ require('lazy').setup({
           -- "angular",
           -- "laravel",
           "rails",
-          -- "golang",
+          "golang",
           -- custom mapping
           {
             pattern = "/app/models/(.*).rb",
@@ -1064,19 +1064,19 @@ require('lazy').setup({
       })
     end
   },
-  {
-    'yuki-yano/fzf-preview.vim',
-    branch = 'release/rpc',
-    dependencies = {
-      'junegunn/fzf'
-    },
-    build = 'fzf#install()',
-    config = function()
-      -- g:fzf_binary_preview_command is executed if this command succeeds, and g:fzf_preview_command is executed if it fails
-      -- vim.g.fzf_preview_if_binary_command = '[[ "(file --mime {})" =~ binary ]]'
-      vim.g.fzf_preview_if_binary_command = 'false '
-    end
-  },
+  -- {
+  --   'yuki-yano/fzf-preview.vim',
+  --   branch = 'release/rpc',
+  --   dependencies = {
+  --     'junegunn/fzf'
+  --   },
+  --   build = 'fzf#install()',
+  --   config = function()
+  --     -- g:fzf_binary_preview_command is executed if this command succeeds, and g:fzf_preview_command is executed if it fails
+  --     -- vim.g.fzf_preview_if_binary_command = '[[ "(file --mime {})" =~ binary ]]'
+  --     vim.g.fzf_preview_if_binary_command = 'false '
+  --   end
+  -- },
 
 
   -- Treesitter
@@ -1322,15 +1322,29 @@ require('lazy').setup({
     },
     config = function()
       require("ibl").setup()
+      vim.opt.smarttab = true
       vim.opt.list = true
       vim.opt.listchars:append "space:⋅"
-      vim.opt.listchars:append "eol:↴"
+      vim.opt.listchars = {
+        tab = '│·',
+        extends = '⟩',
+        precedes = '⟨',
+        trail = '·',
+        eol = '↴',
+        nbsp = '%'
+      }
 
-      -- require("indent_blankline").setup {
-      --   space_char_blankline = " ",
-      --   show_current_context = true,
-      --   show_current_context_start = true,
-      -- }
+      require("ibl").setup {
+        -- space_char_blankline = " ",
+        -- show_current_context = true,
+        -- show_current_context_start = true,
+        -- indent = { highlight = highlight, char = "" },
+        -- whitespace = {
+        --   highlight = highlight,
+        --   remove_blankline_trail = false,
+        -- },
+        -- scope = { enabled = false },
+      }
     end
   },
 
@@ -1451,6 +1465,10 @@ require('lazy').setup({
   --   end
   -- },
 
+  -- golang plugins
+  {
+    'fatih/vim-go', ft = "go",
+  },
   -- Ruby plugins
   { 'vim-ruby/vim-ruby',  ft = "rb" },
   --  { 'tpope/vim-rails' },
@@ -1922,7 +1940,7 @@ require('lazy').setup({
   -- Tab UIs
   {
     'akinsho/bufferline.nvim',
-    tag = "v4.2.0",
+    tag = "*",
     event = { "BufRead", "BufNewFile" },
     dependencies = 'nvim-tree/nvim-web-devicons',
     config = function()
@@ -1945,6 +1963,21 @@ require('lazy').setup({
       }
     end
   },
+  -- {
+  --   'romgrk/barbar.nvim',
+  --   dependencies = {
+  --     'lewis6991/gitsigns.nvim',     -- OPTIONAL: for git status
+  --     'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+  --   },
+  --   init = function() vim.g.barbar_auto_setup = false end,
+  --   opts = {
+  --     -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
+  --     -- animation = true,
+  --     -- insert_at_start = true,
+  --     -- …etc.
+  --   },
+  --   version = '^1.0.0', -- optional: only update when a new 1.x version is released
+  -- },
 
   {
     "simrat39/symbols-outline.nvim",
@@ -2002,24 +2035,24 @@ require('lazy').setup({
           end,
           size = { height = 0.5 },
         },
-        -- {
-        --   title = "Neo-Tree Git",
-        --   ft = "neo-tree",
-        --   filter = function(buf)
-        --     return vim.b[buf].neo_tree_source == "git_status"
-        --   end,
-        --   pinned = true,
-        --   open = "Neotree position=right git_status",
-        -- },
         {
-          title = "Neo-Tree Buffers",
+          title = "Neo-Tree Git",
           ft = "neo-tree",
           filter = function(buf)
-            return vim.b[buf].neo_tree_source == "buffers"
+            return vim.b[buf].neo_tree_source == "git_status"
           end,
           pinned = true,
-          open = "Neotree position=top buffers",
+          open = "Neotree position=right git_status",
         },
+        -- {
+        --   title = "Neo-Tree Buffers",
+        --   ft = "neo-tree",
+        --   filter = function(buf)
+        --     return vim.b[buf].neo_tree_source == "buffers"
+        --   end,
+        --   pinned = true,
+        --   open = "Neotree position=top buffers",
+        -- },
         {
           ft = "Outline",
           pinned = true,
@@ -2131,6 +2164,17 @@ require('lazy').setup({
       'nvim-neotest/neotest-go',
     },
     config = function()
+      -- get neotest namespace (api call creates or returns namespace)
+      local neotest_ns = vim.api.nvim_create_namespace("neotest")
+      vim.diagnostic.config({
+        virtual_text = {
+          format = function(diagnostic)
+            local message =
+                diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
+            return message
+          end,
+        },
+      }, neotest_ns)
       require("neotest").setup({
         adapters = {
           require("neotest-rspec")({
@@ -2163,7 +2207,8 @@ require('lazy').setup({
             end,
 
             results_path = "tmp/rspec.output"
-          })
+          }),
+          require("neotest-go"),
         },
       })
     end
