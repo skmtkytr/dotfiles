@@ -15,7 +15,7 @@ set -x PATH $HOME/.anyenv/bin $PATH
 set -x PATH $HOME/.cargo/bin $PATH
 
 set -x GOPATH $HOME/.go
-set -x GOROOT (brew --prefix golang)/libexec
+# set -x GOROOT (brew --prefix golang)/libexec
 set -x PATH $GOROOT/bin $GOPATH/bin $PATH
 set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
 set -x PATH $HOME/.local/bin $PATH
@@ -48,11 +48,11 @@ end
 
 # *env init 
 # status --is-interactive; and source (anyenv init -|psub)
-status --is-interactive; and source (pyenv init -|psub)
-status --is-interactive; and source (goenv init -|psub)
- set -x PATH $HOME/.rbenv/shims $PATH
- rbenv rehash >/dev/null ^&1
-eval rbenv init - | psub
+# status --is-interactive; and source (pyenv init -|psub)
+# status --is-interactive; and source (goenv init -|psub)
+# set -x PATH $HOME/.rbenv/shims $PATH
+# status --is-interactive; and rbenv rehash >/dev/null ^&1
+# status --is-interactive; and source (rbenv init - | psub)
 
 ### Added by the Bluemix CLI
 #source /usr/local/Bluemix/bx/zsh_autocomplete
@@ -74,7 +74,7 @@ set -x PYENV_ROOT $HOME/.pyenv
 # set -x PGDATA /usr/local/var/postgres
 
 # 初回シェル時のみ tmux実行
-bass ~/.config/fish/functions/tmux.bash.sh
+# bass ~/.config/fish/functions/tmux.bash.sh
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/kyo/Downloads/google-cloud-sdk/path.fish.inc' ]
