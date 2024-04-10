@@ -8,6 +8,10 @@ config/gcloud/logs/*
 config/gcloud/legacy_credentials
 config/hub
 config/fish/fishd*
+config/fish/completions
+config/fish/conf.d
+config/fish/functions
+
 config/fisherman
 *_tags
 
@@ -19,3 +23,6 @@ config/github-copilot/hosts.json
 config/github-copilot/versions.json
 config/nvim/lazy-lock.json
 config/fish/completions
+
+config/raycast
+

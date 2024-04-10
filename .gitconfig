@@ -1,6 +1,6 @@
 [user]
 	name = skmtkytr
-	email = skmtkytr@gmail.com
+	email = skmtkytr+github@gmail.com
 	signingkey = 88EF01124
 [core]
 	autoCRLF = false
@@ -55,3 +55,8 @@
   cmd = "nvim -d -c \"4wincmd w | wincmd J\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"  \"$MERGED\""
 [pull]
 	rebase = false
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
