@@ -1,1 +1,0 @@
-/Users/kyo/.config/fisherman/ghq/completions/ghq.fish
