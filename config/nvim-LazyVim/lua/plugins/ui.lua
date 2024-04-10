@@ -27,4 +27,33 @@ return {
       })
     end,
   },
+
+  -- fzf-lua
+  {
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = "Fzflua",
+    keys = {
+      { "<C-p>", "<cmd>lua require('fzf-lua').files()<CR>", { silent = true } },
+      { ";cb", "<cmd>lua require('fzf-lua').oldfiles()<CR>", { silent = true } },
+      { ";f", "<cmd>lua require('fzf-lua').live_grep_native()<CR>", { silent = true } },
+      { ";cf", "<cmd>lua require('fzf-lua').grep_cword()<CR>", { silent = true } },
+      { "<C-O>", "<cmd>lua require('fzf-lua').lsp_document_symbols()<CR>", { silent = true } },
+      { ";gst", "<cmd>lua require('fzf-lua').git_status()<CR>", { silent = true } },
+    },
+    config = function()
+      -- calling `setup` is optional for customization
+      require("fzf-lua").setup({
+        { "telescope" },
+        files = {
+          fd_opts = "-I --color=never --type f --hidden --follow --exclude .git",
+        },
+        -- fzf_opts = function()
+        --   local opts = { ["--no-separator"] = false }
+        --   return opts
+        -- end,
+      })
+    end,
+  },
 }
