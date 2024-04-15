@@ -16,7 +16,6 @@ return {
       --     { title = "LazyVim" }
       --   )
       -- end
-
       opts.left = opts.left or {}
       table.remove(opts.left, 2)
 
@@ -25,6 +24,26 @@ return {
         title = "Neotest Summary",
         ft = "neotest-summary",
       })
+
+      opts.options = opts.options or {}
+      opts.options["left"] = { size = 50 }
+      opts.options["buttom"] = { size = 10 }
+      opts.options["right"] = { size = 50 }
+      opts.options["top"] = { size = 10 }
+      -- table.insert(opts.options.left, {
+      --   size = 50,
+      -- })
+      -- table.insert(opts.options.buttom, {
+      --   size = 10,
+      -- })
+      -- table.insert(opts.options.right, {
+      --   size = 50,
+      -- })
+      -- table.insert(opts.options.top, {
+      --   size = 10,
+      -- })
+
+      print(vim.inspect(opts.options))
     end,
   },
 

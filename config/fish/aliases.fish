@@ -1,7 +1,7 @@
 ########################################
 # VIM
 if test -f $HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim'
-  alias nvim=$HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim  --startuptime /tmp/nvim-startuptime'
+    alias nvim=$HOME'/.ghq/github.com/neovim/neovim/build/bin/nvim  --startuptime /tmp/nvim-startuptime'
 end
 
 alias vim='nvim'
@@ -9,15 +9,15 @@ alias view='nvim -R'
 # aliases
 
 alias find='fd '
-alias ls='exa --icons'
+alias ls='eza --icons'
 alias top='btop'
 alias la='ls -a'
 alias ll='ls -l'
- 
+
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
- 
+
 alias mkdir='mkdir -p'
 
 alias lg='lazygit'
@@ -43,6 +43,5 @@ alias gst='git status '
 set -x FILTER peco
 
 function peco
-  command peco --layout=bottom-up $argv
+    command peco --layout=bottom-up $argv
 end
-

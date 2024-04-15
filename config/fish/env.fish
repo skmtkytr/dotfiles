@@ -10,7 +10,7 @@ if status is-interactive
     eval (/opt/homebrew/bin/brew shellenv)
 end
 set -x PATH /usr/local/bin $PATH
-set -x PATH /usr/local $PATH 
+set -x PATH /usr/local $PATH
 set -x PATH $HOME/.anyenv/bin $PATH
 set -x PATH $HOME/.cargo/bin $PATH
 
@@ -37,37 +37,37 @@ set -x EDITOR nvim
 # gem home 
 #set -x GEM_HOME ~/.gem
 
-set -x JAVA_HOME '/usr/libexec/java_home -v 1.8' 
+set -x JAVA_HOME '/usr/libexec/java_home -v 1.8'
 # vi 風キーバインドにする
 fish_vi_key_bindings
 # vi modeではなんか[I]みたいなの出るからオーバーライド
-function fish_mode_prompt 
+function fish_mode_prompt
 end
 function fish_default_mode_prompt
 end
 
 # *env init 
 # status --is-interactive; and source (anyenv init -|psub)
-# status --is-interactive; and source (pyenv init -|psub)
+status --is-interactive; and source (pyenv init -|psub)
 # status --is-interactive; and source (goenv init -|psub)
-# set -x PATH $HOME/.rbenv/shims $PATH
-# status --is-interactive; and rbenv rehash >/dev/null ^&1
-# status --is-interactive; and source (rbenv init - | psub)
+set -x PATH $HOME/.rbenv/shims $PATH
+status --is-interactive; and rbenv rehash >/dev/null ^&1
+status --is-interactive; and source (rbenv init - | psub)
 
 ### Added by the Bluemix CLI
 #source /usr/local/Bluemix/bx/zsh_autocomplete
 
 ### ssh agent
-if test -b ~/.ssh/gitlab 
-  ssh-add ~/.ssh/gitlab > /dev/null ^&1
+if test -b ~/.ssh/gitlab
+    ssh-add ~/.ssh/gitlab >/dev/null ^&1
 end
 
-if test -b ~/.ssh/id_rsa 
-  ssh-add  ~/.ssh/id_rsa > /dev/null ^&1
+if test -b ~/.ssh/id_rsa
+    ssh-add ~/.ssh/id_rsa >/dev/null ^&1
 end
 
 if test -b ~/.ssh/id_ed25519
-  ssh-add --apple-use-keychain ~/.ssh/id_ed25519 > /dev/null ^&1
+    ssh-add --apple-use-keychain ~/.ssh/id_ed25519 >/dev/null ^&1
 end
 # ssh-add -K ~/.ssh/pokeme_rsa
 set -x PYENV_ROOT $HOME/.pyenv
@@ -78,6 +78,5 @@ set -x PYENV_ROOT $HOME/.pyenv
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/kyo/Downloads/google-cloud-sdk/path.fish.inc' ]
-  source '/Users/kyo/Downloads/google-cloud-sdk/path.fish.inc'
+    source '/Users/kyo/Downloads/google-cloud-sdk/path.fish.inc'
 end
-
