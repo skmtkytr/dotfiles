@@ -73,12 +73,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        -- solargraph = {
-        --   settings = {
-        --     diagnostics = false,
-        --     formatting = false,
-        --   },
-        -- },
+        ruby_lsp = {},
         steep = {
           on_attach = function(client, bufnr)
             -- LSP関連のキーマップの基本定義

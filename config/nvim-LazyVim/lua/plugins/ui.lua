@@ -26,9 +26,9 @@ return {
       })
 
       opts.options = opts.options or {}
-      opts.options["left"] = { size = 50 }
+      opts.options["left"] = { size = 45 }
       opts.options["buttom"] = { size = 10 }
-      opts.options["right"] = { size = 50 }
+      opts.options["right"] = { size = 45 }
       opts.options["top"] = { size = 10 }
       -- table.insert(opts.options.left, {
       --   size = 50,
@@ -57,6 +57,7 @@ return {
       { "<C-p>", "<cmd>lua require('fzf-lua').files()<CR>", { silent = true } },
       { ";cb", "<cmd>lua require('fzf-lua').oldfiles()<CR>", { silent = true } },
       { ";f", "<cmd>lua require('fzf-lua').live_grep_native()<CR>", { silent = true } },
+      { "<leader>/", "<cmd>lua require('fzf-lua').live_grep_native()<CR>", { silent = true } },
       { ";cf", "<cmd>lua require('fzf-lua').grep_cword()<CR>", { silent = true } },
       { "<C-O>", "<cmd>lua require('fzf-lua').lsp_document_symbols()<CR>", { silent = true } },
       { ";gst", "<cmd>lua require('fzf-lua').git_status()<CR>", { silent = true } },
