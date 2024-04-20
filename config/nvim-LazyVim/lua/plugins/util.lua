@@ -1,6 +1,10 @@
 -- util settings
 
 return {
+  {
+    "sigmasd/deno-nvim",
+  },
+  { "vim-denops/denops.vim" },
 
   {
     "folke/which-key.nvim",

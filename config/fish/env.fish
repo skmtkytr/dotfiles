@@ -27,6 +27,10 @@ set -x PATH $HOME/.rvm/bin $PATH
 #set -x CPPFLAGS /usr/local/opt/openssl/include $CPPFLAGS
 #set -x PKG_CONFIG_PATH /usr/local/opt/openssl/lib/pkgconfig $PKG_CONFIG_PATH
 
+# deno setup
+set -x DENO_INSTALL ~/.deno
+set -x PATH $DENO_INSTALL/bin:$PATH
+
 eval (direnv hook fish)
 starship init fish | source
 
