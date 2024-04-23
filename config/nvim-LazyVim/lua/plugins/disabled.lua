@@ -1,5 +1,5 @@
 -- Disabled plugins
 
 return {
-  { "echasnovski/mini.pairs", disable = true },
+  { "echasnovski/mini.pairs", enabled = false },
 }
