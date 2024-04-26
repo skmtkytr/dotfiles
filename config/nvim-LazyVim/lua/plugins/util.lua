@@ -3,8 +3,11 @@
 return {
   {
     "sigmasd/deno-nvim",
+    lazy = true,
   },
-  { "vim-denops/denops.vim" },
+  { "vim-denops/denops.vim", lazy = true },
+
+  { "Omochice/yank-remote-url.vim", lazy = true },
 
   {
     "folke/which-key.nvim",
