@@ -11,5 +11,8 @@ return {
   },
 
   -- add monokai-pro
-  { "loctvl842/monokai-pro.nvim" },
+  {
+    "loctvl842/monokai-pro.nvim",
+    lazy = true,
+  },
 }
