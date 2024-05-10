@@ -33,35 +33,35 @@ draw_bold_text_with_bright_colors = true
 
 # monokai Pro
 [colors.primary]
-    background = '0x2D2A2E'
-    foreground = '0xfff1f3'
+background = '0x2D2A2E'
+foreground = '0xfff1f3'
 
 [colors.normal]
-    black =   '0x2c2525'
-    red =     '0xfd6883'
-    green =   '0xadda78'
-    yellow =  '0xf9cc6c'
-    blue =    '0xf38d70'
-    magenta = '0xa8a9eb'
-    cyan =    '0x85dacc'
-    white =   '0xfff1f3'
+black = '0x2c2525'
+red = '0xfd6883'
+green = '0xadda78'
+yellow = '0xf9cc6c'
+blue = '0xf38d70'
+magenta = '0xa8a9eb'
+cyan = '0x85dacc'
+white = '0xfff1f3'
 
 [colors.bright]
-    black =   '0x72696a'
-    red =     '0xfd6883'
-    green =   '0xadda78'
-    yellow =  '0xf9cc6c'
-    blue =    '0xf38d70'
-    magenta = '0xa8a9eb'
-    cyan =    '0x85dacc'
-    white =   '0xfff1f3'
+black = '0x72696a'
+red = '0xfd6883'
+green = '0xadda78'
+yellow = '0xf9cc6c'
+blue = '0xf38d70'
+magenta = '0xa8a9eb'
+cyan = '0x85dacc'
+white = '0xfff1f3'
 
 [env]
 TERM = "alacritty"
 
 [font]
 size = 14.0
-offset = {x = 0, y = 1}
+offset = { x = 0, y = 1 }
 # glyph_offset = {x = 2, y = 2}
 
 [font.bold]
@@ -86,17 +86,17 @@ family = 'UDEV Gothic 35NFLG'
 
 [keyboard]
 bindings = [
-  { action = "ResetFontSize",  key = "Key0",  mods = "Super" },
-  { action = "IncreaseFontSize",  key = "=",  mods = "Super" },
-  { action = "DecreaseFontSize",  key = "-",  mods = "Super"},
-  { action = "ClearHistory",  key = "K",  mods = "Super" },
-  { action = "Paste",  key = "V",  mods = "Super" },
-  { action = "Copy",  key = "C",  mods = "Super" },
-  { action = "Hide",  key = "H",  mods = "Super" },
-  { action = "Minimize",  key = "M",  mods = "Super" },
-  { action = "Quit",  key = "Q",  mods = "Super" },
-  { action = "Quit",  key = "W",  mods = "Super" },
-  { action = "ToggleFullscreen",  key = "F",  mods = "Command|Control" },
+  { action = "ResetFontSize", key = "Key0", mods = "Super" },
+  { action = "IncreaseFontSize", key = "=", mods = "Super" },
+  { action = "DecreaseFontSize", key = "-", mods = "Super" },
+  { action = "ClearHistory", key = "K", mods = "Super" },
+  { action = "Paste", key = "V", mods = "Super" },
+  { action = "Copy", key = "C", mods = "Super" },
+  { action = "Hide", key = "H", mods = "Super" },
+  { action = "Minimize", key = "M", mods = "Super" },
+  { action = "Quit", key = "Q", mods = "Super" },
+  { action = "Quit", key = "W", mods = "Super" },
+  { action = "ToggleFullscreen", key = "F", mods = "Command|Control" },
   # { key = '[', mods= 'Alt', chars= "[" },
   # { key = 'H', mods= 'Alt', chars= "H" },
   # { key = 'J', mods= 'Alt', chars= "J" },
@@ -122,6 +122,11 @@ semantic_escape_chars = ",│`| =\"' ()[]{}<>\t"
 [shell]
 # program = "/bin/zsh"
 program = "/opt/homebrew/bin/fish"
+args = [
+  "-l",
+  "-c",
+  'tmux a -t default || tmux new -s default\; source ~/.tmux.conf',
+]
 
 [window]
 decorations = "full"

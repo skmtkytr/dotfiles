@@ -46,6 +46,8 @@
 #	gpgsign = true
 [credential]
 	helper = osxkeychain
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
 [diff]
   tool = nvimdiff
   colorMoved = default
@@ -60,3 +62,5 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[credential "https://dev.azure.com"]
+	useHttpPath = true

@@ -7,3 +7,4 @@ ln -sf ~/dotfiles/config ~/.config
 ln -sf ~/dotfiles/.ctags ~/.ctags
 ln -sf ~/dotfiles/config/.wezterm.lua ~/.wezterm.lua
 
+ln -sf ~/dotfiles/.hammerspoon ~/.hammerspoon

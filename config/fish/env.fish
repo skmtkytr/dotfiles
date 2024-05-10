@@ -19,6 +19,7 @@ set -x GOPATH $HOME/.go
 set -x PATH $GOROOT/bin $GOPATH/bin $PATH
 set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
 set -x PATH $HOME/.local/bin $PATH
+set -x PATH /opt/homebrew/opt/llvm@15/bin $PATH
 #set -x SDKROOT (xcrun --sdk macosx --show-sdk-path)
 
 set -x PATH $HOME/.rvm/bin $PATH
@@ -26,6 +27,8 @@ set -x PATH $HOME/.rvm/bin $PATH
 #set -x LDFLAGS /usr/local/opt/openssl/lib $LDFLAGS
 #set -x CPPFLAGS /usr/local/opt/openssl/include $CPPFLAGS
 #set -x PKG_CONFIG_PATH /usr/local/opt/openssl/lib/pkgconfig $PKG_CONFIG_PATH
+set -gx LDFLAGS -L/opt/homebrew/opt/llvm@15/lib
+set -gx CPPFLAGS -I/opt/homebrew/opt/llvm@15/include
 
 # deno setup
 set -x DENO_INSTALL ~/.deno

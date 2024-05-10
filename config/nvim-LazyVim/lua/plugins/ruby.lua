@@ -45,7 +45,7 @@ return {
                 "compose",
                 "run",
                 "--rm",
-                "rails",
+                "app",
                 "bundle",
                 "exec",
                 "rspec",
@@ -74,16 +74,19 @@ return {
     opts = {
       servers = {
         ruby_lsp = {},
-        steep = {
-          on_attach = function(client, bufnr)
-            -- LSP関連のキーマップの基本定義
-            -- on_attach(client, bufnr)
-            -- Steepで型チェックを再実行するためのキーマップ定義
-            vim.keymap.set("n", "<space>ct", function()
-              client.request("$/typecheck", { guid = "typecheck-" .. os.time() }, function() end, bufnr)
-            end, { silent = true, buffer = bufnr })
-          end,
+        rubocop = {
+          cmd = { "bundle", "exec", "rubocop", "--lsp" },
         },
+        -- steep = {
+        --   on_attach = function(client, bufnr)
+        --     -- LSP関連のキーマップの基本定義
+        --     -- on_attach(client, bufnr)
+        --     -- Steepで型チェックを再実行するためのキーマップ定義
+        --     vim.keymap.set("n", "<space>ct", function()
+        --       client.request("$/typecheck", { guid = "typecheck-" .. os.time() }, function() end, bufnr)
+        --     end, { silent = true, buffer = bufnr })
+        --   end,
+        -- },
       },
     },
   },
