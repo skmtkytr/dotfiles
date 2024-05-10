@@ -121,17 +121,16 @@ semantic_escape_chars = ",│`| =\"' ()[]{}<>\t"
 
 [shell]
 # program = "/bin/zsh"
-program = "/opt/homebrew/bin/fish"
-args = [
-  "-l",
-  "-c",
-  'tmux a -t default || tmux new -s default\; source ~/.tmux.conf',
-]
+# program = "/opt/homebrew/bin/fish"
+program = "/opt/homebrew/bin/tmux"
+# args = ["-l", "-c", "tmux a || tmux"]
+args = ["new-session", "-A", "-D", "-s", "default"]
 
 [window]
 decorations = "full"
 dynamic_padding = false
-startup_mode = "Windowed"
+# startup_mode = "Windowed" | "Maximized" | "Fullscreen" | "SimpleFullscreen"
+startup_mode = "Maximized"
 opacity = 1.00
 dynamic_title = true
 option_as_alt = 'OnlyLeft'
