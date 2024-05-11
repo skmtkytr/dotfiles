@@ -30,7 +30,7 @@ return {
             { action = "ene | startinsert",                                        desc = " New File",        icon = " ", key = "n" },
             { action = "FzfLua oldfiles",                                       desc = " Recent Files",    icon = " ", key = "r" },
             { action = "FzfLua live_grep_native",                                      desc = " Find Text",       icon = " ", key = "g" },
-            { action = "FzfLua files ~/.config", desc = " Config",          icon = " ", key = "c" },
+            { action = "FzfLua files cwd=~/.config/nvim/", desc = " Config",          icon = " ", key = "c" },
             { action = 'lua require("persistence").load()',                        desc = " Restore Session", icon = " ", key = "s" },
             { action = "LazyExtras",                                               desc = " Lazy Extras",     icon = " ", key = "x" },
             { action = "Lazy",                                                     desc = " Lazy",            icon = "󰒲 ", key = "l" },

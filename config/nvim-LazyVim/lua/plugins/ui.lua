@@ -1,6 +1,15 @@
 -- ui settings
 
 return {
+  -- quickfix window better
+  {
+    "kevinhwang91/nvim-bqf",
+    ft = { "qf" },
+    dependencies = {
+      "junegunn/fzf",
+      run = ":call fzf#install()",
+    },
+  },
 
   -- edgy settings
   {
@@ -52,7 +61,7 @@ return {
     "ibhagwan/fzf-lua",
     -- optional for icon support
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    cmd = "Fzflua",
+    cmd = "FzfLua",
     keys = {
       { "<C-p>", "<cmd>lua require('fzf-lua').files()<CR>", { silent = true } },
       { ";cb", "<cmd>lua require('fzf-lua').oldfiles()<CR>", { silent = true } },
@@ -60,7 +69,10 @@ return {
       { "<leader>/", "<cmd>lua require('fzf-lua').live_grep_native()<CR>", { silent = true } },
       { ";cf", "<cmd>lua require('fzf-lua').grep_cword()<CR>", { silent = true } },
       { "<C-O>", "<cmd>lua require('fzf-lua').lsp_document_symbols()<CR>", { silent = true } },
+      { "<leader>xo", "<cmd>lua require('fzf-lua').lsp_document_diagnostics()<CR>", desc = "Show diagnostics" },
       { ";gst", "<cmd>lua require('fzf-lua').git_status()<CR>", { silent = true } },
+      { "<leader>/", "<cmd>lua require('fzf-lua').blines()<CR>", { silent = true } },
+      { "<leader>sk", "<cmd>lua require('fzf-lua').keymaps()<CR>", { silent = true } },
     },
     config = function()
       -- calling `setup` is optional for customization
@@ -126,6 +138,8 @@ return {
             plugin = true,
             lazy = true,
             TelescopePrompt = true,
+            FzfLua = true,
+            ["fzflua"] = true,
             [""] = true, -- because TelescopePrompt will set a empty ft, so add this.
             alpha = true,
             toggleterm = true,
@@ -144,6 +158,7 @@ return {
             DressingInput = true,
             spectre_panel = true,
             zsh = true,
+            sh = true,
             registers = true,
             startuptime = true,
             OverseerList = true,
@@ -205,6 +220,7 @@ return {
   {
     "Bekaboo/dropbar.nvim",
     event = { "UIEnter" },
+    keys = {},
     dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
   },
 }
