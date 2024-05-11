@@ -201,4 +201,10 @@ return {
       })
     end,
   },
+
+  {
+    "Bekaboo/dropbar.nvim",
+    event = { "UIEnter" },
+    dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
+  },
 }
