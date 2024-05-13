@@ -6,6 +6,7 @@ return {
     lazy = true,
   },
   { "vim-denops/denops.vim", lazy = true },
+  { "wakatime/vim-wakatime", lazy = false },
 
   { "Omochice/yank-remote-url.vim", lazy = true },
 
