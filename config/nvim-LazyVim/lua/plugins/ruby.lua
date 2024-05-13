@@ -73,9 +73,19 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        ruby_lsp = {},
+        -- ruby_lsp = {},
         rubocop = {
-          cmd = { "bundle", "exec", "rubocop", "--lsp" },
+          cmd = {
+            -- "docker",
+            -- "compose",
+            -- "run",
+            -- "--rm",
+            -- "app",
+            "bundle",
+            "exec",
+            "rubocop",
+            "--lsp",
+          },
         },
         -- steep = {
         --   on_attach = function(client, bufnr)

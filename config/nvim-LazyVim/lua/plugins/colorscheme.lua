@@ -13,6 +13,8 @@ return {
   -- add monokai-pro
   {
     "loctvl842/monokai-pro.nvim",
+    -- "skmtkytr/monokai-pro.nvim",
+    -- branch = "mybranch",
     lazy = true,
   },
 }

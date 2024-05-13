@@ -121,10 +121,18 @@ semantic_escape_chars = ",│`| =\"' ()[]{}<>\t"
 
 [shell]
 # program = "/bin/zsh"
-# program = "/opt/homebrew/bin/fish"
-program = "/opt/homebrew/bin/tmux"
+program = "/opt/homebrew/bin/fish"
+# program = "/opt/homebrew/bin/tmux"
 # args = ["-l", "-c", "tmux a || tmux"]
-args = ["new-session", "-A", "-D", "-s", "default"]
+# args = [
+#   "new-session",
+#   "-A",
+#   "-D",
+#   "-s",
+#   "default",
+#   "source-file",
+#   "~/.tmux.conf",
+# ]
 
 [window]
 decorations = "full"
