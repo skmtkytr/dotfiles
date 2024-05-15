@@ -87,16 +87,19 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        ruby_lsp = {},
+        ruby_lsp = {
+          mason = false,
+        },
         rubocop = {
+          mason = false,
           cmd = {
             -- "docker",
             -- "compose",
             -- "run",
             -- "--rm",
-            -- "app",
-            "bundle",
-            "exec",
+            -- "rails",
+            -- "bundle",
+            -- "exec",
             "rubocop",
             "--lsp",
           },
@@ -134,4 +137,16 @@ return {
       -- },
     },
   },
+  -- {
+  --   "nvimtools/none-ls.nvim",
+  --   opts = function(_, opts)
+  --     local nls = require("null-ls")
+  --     opts.root_dir = opts.root_dir
+  --       or require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git")
+  --     opts.sources = vim.list_extend(opts.sources or {}, {
+  --       nls.builtins.diagnostics.rubocop,
+  --       -- nls.builtins.formatting.rubyfmt,
+  --     })
+  --   end,
+  -- },
 }
