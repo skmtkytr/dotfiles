@@ -37,8 +37,22 @@ return {
       adapters = {
         ["neotest-rspec"] = {
           rspec_cmd = function()
-            local result = vim.fs.find("docker-compose.yml")
-            if #result ~= 0 then
+            local cw = vim.fs.find("dev-tools")
+            local docker = vim.fs.find("docker-compose.yml")
+
+            if #cw ~= 0 then
+              return vim.tbl_flatten({
+                -- docker compose run --rm rails bundle exec rspec
+                "docker",
+                "compose",
+                "run",
+                "--rm",
+                "rails",
+                "bundle",
+                "exec",
+                "rspec",
+              })
+            elseif #docker ~= 0 then
               return vim.tbl_flatten({
                 -- docker compose run --rm rails bundle exec rspec
                 "docker",
@@ -73,7 +87,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        -- ruby_lsp = {},
+        ruby_lsp = {},
         rubocop = {
           cmd = {
             -- "docker",
@@ -98,6 +112,26 @@ return {
         --   end,
         -- },
       },
+      -- setup = {
+      --   ruby_lsp = function(_, opts)
+      --     on_attach = function(client, _)
+      --       if client.name == "ruby_lsp" then
+      --         if not client.server_capabilities.semanticTokensProvider then
+      --           local semantic = client.config.capabilities.textDocument.semanticTokens
+      --           client.server_capabilities.semanticTokensProvider = nil
+      --           -- client.server_capabilities.semanticTokensProvider = {
+      --           --   full = true,
+      --           --   legend = {
+      --           --     tokenTypes = semantic.tokenTypes,
+      --           --     tokenModifiers = semantic.tokenModifiers,
+      --           --   },
+      --           --   range = true,
+      --           -- }
+      --         end
+      --       end
+      --     end
+      --   end,
+      -- },
     },
   },
 }
