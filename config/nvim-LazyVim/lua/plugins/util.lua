@@ -9,6 +9,12 @@ return {
   { "wakatime/vim-wakatime", lazy = false },
 
   { "Omochice/yank-remote-url.vim", lazy = true },
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
+  },
 
   {
     "folke/which-key.nvim",

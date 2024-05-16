@@ -42,4 +42,53 @@ return {
       })
     end,
   },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-nvim-lsp-document-symbol",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
+      "hrsh7th/cmp-cmdline",
+    },
+    opts = function(_, opts)
+      table.insert(opts.sources, { name = "nvim_lsp_signature_help" })
+      table.insert(opts.sources, { name = "nvim_lsp_document_symbol" })
+      table.insert(opts.sources, { name = "cmdline", option = { ignore_cmds = { "Man", "!" } } })
+    end,
+  },
+  {
+    "EthanJWright/toolwindow.nvim",
+  },
+  {
+    "glepnir/lspsaga.nvim",
+    event = { "LspAttach" },
+    keys = {
+      { "K", "<cmd>Lspsaga hover_doc<CR>" },
+      { "gr", "<cmd>Lspsaga finder<CR>" },
+      { "gd", "<cmd>Lspsaga peek_definition<CR>" },
+      { "gdv", ":vsplit | lua vim.lsp.buf.definition()<CR>" },
+      { "ga", "<cmd>Lspsaga code_action<CR>" },
+      { "gn", "<cmd>Lspsaga rename<CR>" },
+      { "<S-o>", "<cmd>Lspsaga outline<CR>" },
+      { "ge", "<cmd>Lspsaga show_line_diagnostics<CR>" },
+      { "[e", "<cmd>Lspsaga diagnostic_jump_next<CR>" },
+      { "]e", "<cmd>Lspsaga diagnostic_jump_prev<CR>" },
+    },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("lspsaga").setup()
+    end,
+  }, -- LSP UIs
+  -- {
+  --   "ray-x/navigator.lua",
+  --   event = { "LspAttach" },
+  --   config = function()
+  --     require("navigator").setup()
+  --   end,
+  -- },
 }

@@ -2,6 +2,7 @@
 return {
   {
     "icholy/lsplinks.nvim",
+    event = "LspAttach",
     config = function()
       local lsplinks = require("lsplinks")
       lsplinks.setup()
@@ -10,6 +11,7 @@ return {
   },
   {
     "vinnymeller/swagger-preview.nvim",
+    ft = "yaml",
     build = "npm install -g swagger-ui-watcher",
     config = function()
       require("swagger-preview").setup({

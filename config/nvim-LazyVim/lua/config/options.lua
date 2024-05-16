@@ -5,7 +5,7 @@
 -- 行末での折り返しを無効にする
 vim.opt.whichwrap = "<,>,[,],h,l"
 
-vim.opt.winblend = 5
+vim.opt.winblend = 10
 vim.opt.termguicolors = true
 
 -- local options = {
