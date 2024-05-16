@@ -35,10 +35,10 @@ return {
       })
 
       opts.options = opts.options or {}
-      opts.options["left"] = { size = 45 }
-      opts.options["buttom"] = { size = 10 }
-      opts.options["right"] = { size = 45 }
-      opts.options["top"] = { size = 10 }
+      opts.options["left"] = { size = 40 }
+      -- opts.options["buttom"] = { size = 10 }
+      opts.options["right"] = { size = 40 }
+      -- opts.options["top"] = { size = 10 }
       -- table.insert(opts.options.left, {
       --   size = 50,
       -- })
@@ -52,7 +52,7 @@ return {
       --   size = 10,
       -- })
 
-      print(vim.inspect(opts.options))
+      -- print(vim.inspect(opts.options))
     end,
   },
 

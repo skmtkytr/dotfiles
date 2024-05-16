@@ -4,8 +4,7 @@ logs/*
 **/**/logs/*
 **/.vscode/*
 **/**/.vscode/*
-config/gcloud/logs/*
-config/gcloud/legacy_credentials
+config/gcloud/
 config/hub
 config/fish/fishd*
 config/fish/completions

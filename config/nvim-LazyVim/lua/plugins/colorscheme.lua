@@ -6,7 +6,9 @@ return {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "monokai-pro-spectrum",
-      -- colorscheme = "tokyonight",
+      -- colorscheme = "tokyonight-night",
+      -- colorscheme = "catppuccin-mocha",
+      -- colorscheme = "cyberdream",
     },
   },
 
@@ -16,5 +18,24 @@ return {
     -- "skmtkytr/monokai-pro.nvim",
     -- branch = "mybranch",
     lazy = true,
+    -- opts = {
+    --   transparent_background = true,
+    -- },
   },
+  -- {
+  --   "scottmckendry/cyberdream.nvim",
+  --   lazy = true,
+  --   priority = 1000,
+  --   config = function()
+  --     require("cyberdream").setup({
+  --       -- Recommended - see "Configuring" below for more config options
+  --       transparent = true,
+  --       italic_comments = true,
+  --       hide_fillchars = true,
+  --       borderless_telescope = true,
+  --       terminal_colors = true,
+  --     })
+  --     vim.cmd("colorscheme cyberdream") -- set the colorscheme
+  --   end,
+  -- },
 }
