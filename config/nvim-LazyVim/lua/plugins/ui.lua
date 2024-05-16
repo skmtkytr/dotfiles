@@ -138,8 +138,7 @@ return {
             plugin = true,
             lazy = true,
             TelescopePrompt = true,
-            FzfLua = true,
-            ["fzflua"] = true,
+            fzf = true,
             [""] = true, -- because TelescopePrompt will set a empty ft, so add this.
             alpha = true,
             toggleterm = true,
