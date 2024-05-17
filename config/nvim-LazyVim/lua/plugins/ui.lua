@@ -1,6 +1,33 @@
 -- ui settings
 
 return {
+
+  {
+    "echasnovski/mini.indentscope",
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+          "help",
+          "alpha",
+          "dashboard",
+          "neo-tree",
+          "Trouble",
+          "trouble",
+          "lazy",
+          "mason",
+          "notify",
+          "toggleterm",
+          "lazyterm",
+          "fzf",
+          "fzf_exec",
+        },
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
+      })
+    end,
+  },
+
   -- quickfix window better
   {
     "kevinhwang91/nvim-bqf",
@@ -38,6 +65,31 @@ return {
         -- Please PR commonly ignored filetypes
         ignore_filetypes = { "NvimTree", "TelescopePrompt" },
       })
+    end,
+  },
+  {
+    "kevinhwang91/nvim-hlslens",
+    event = { "BufRead", "BufNewFile" },
+    config = function()
+      require("hlslens").setup({
+        build_position_cb = function(plist, _, _, _)
+          require("scrollbar.handlers.search").handler.show(plist.start_pos)
+        end,
+      })
+
+      vim.cmd([[
+        augroup scrollbar_search_hide
+            autocmd!
+            autocmd CmdlineLeave : lua require('scrollbar.handlers.search').handler.hide()
+        augroup END
+    ]])
+    end,
+  },
+  {
+    "petertriho/nvim-scrollbar",
+    lazy = true,
+    config = function()
+      require("scrollbar").setup()
     end,
   },
 

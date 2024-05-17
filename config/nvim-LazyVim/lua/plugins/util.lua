@@ -15,6 +15,11 @@ return {
       require("colorizer").setup()
     end,
   },
+  -- take screenshot in vim
+  {
+    "segeljakt/vim-silicon",
+    cmd = "Silicon",
+  },
 
   {
     "folke/which-key.nvim",
