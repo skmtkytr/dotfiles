@@ -39,6 +39,7 @@ return {
   },
   {
     "mvllow/modes.nvim",
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("modes").setup({
         colors = {
