@@ -44,6 +44,9 @@ abbr -a top btop
 # sudo の後のコマンドでエイリアスを有効にする
 alias sudo='sudo '
 
+# gentoo
+alias emerge='sudo emerge '
+
 # docker
 abbr -a do docker container
 abbr -a dop "docker container ps"

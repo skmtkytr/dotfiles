@@ -1,5 +1,4 @@
 set KEYTIMEOUT 0
-set -x SHELL /opt/homebrew/bin/fish
 # if status is-interactive
 #     eval (/opt/homebrew/bin/brew shellenv)
 # end
@@ -16,6 +15,7 @@ fish_add_path /usr/local/bin
 fish_add_path /usr/local
 fish_add_path /usr/.local/bin
 
+set -x SHELL $(which fish)
 # go
 set -gx GOPATH $HOME/go
 fish_add_path $GOPATH/bin

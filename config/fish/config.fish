@@ -9,6 +9,12 @@ set -x LC_ALL en_US.UTF-8
 set -q XDG_CONFIG_HOME || set -gx XDG_CONFIG_HOME $HOME/.config
 set -q XDG_DATA_HOME || set -gx XDG_DATA_HOME $HOME/.local/share
 set -q XDG_CACHE_HOME || set -gx XDG_CACHE_HOME $HOME/.cache
+set -x XDG_RUNTIME_DIR /tmp/(id -u)-runtime-dir/
+if test -b $XDG_RUNTIME_DIR
+else
+    mkdir $XDG_RUNTIME_DIR
+    chmod 0700 $XDG_RUNTIME_DIR
+end
 # define fish config paths
 set -g FISH_CONFIG_DIR $XDG_CONFIG_HOME/fish
 set -g FISH_CONFIG $FISH_CONFIG_DIR/config.fish
