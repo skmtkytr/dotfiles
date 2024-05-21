@@ -20,6 +20,7 @@ return {
           "lazyterm",
           "fzf",
           "fzf_exec",
+          "grep",
         },
         callback = function()
           vim.b.miniindentscope_disable = true
