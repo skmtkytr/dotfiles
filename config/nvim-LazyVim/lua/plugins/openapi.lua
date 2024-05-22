@@ -3,6 +3,7 @@ return {
   {
     "icholy/lsplinks.nvim",
     event = "LspAttach",
+    ft = { "yaml", "json" },
     config = function()
       local lsplinks = require("lsplinks")
       lsplinks.setup()

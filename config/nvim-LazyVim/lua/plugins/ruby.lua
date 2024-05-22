@@ -1,11 +1,19 @@
 -- ruby settings
 
 return {
+  { "jlcrochet/vim-rbs", ft = "rbs" },
   {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      { "RRethy/nvim-treesitter-endwise" },
+    },
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
         "ruby",
+      })
+      opts.endwise = opts.endwise or {}
+      vim.list_extend(opts.endwise, {
+        enable = true,
       })
     end,
   },
