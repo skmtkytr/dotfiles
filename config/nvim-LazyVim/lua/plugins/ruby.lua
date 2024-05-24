@@ -98,20 +98,20 @@ return {
         ruby_lsp = {
           mason = false,
         },
-        rubocop = {
-          mason = false,
-          cmd = {
-            -- "docker",
-            -- "compose",
-            -- "run",
-            -- "--rm",
-            -- "rails",
-            -- "bundle",
-            -- "exec",
-            "rubocop",
-            "--lsp",
-          },
-        },
+        -- rubocop = {
+        --   mason = false,
+        --   cmd = {
+        --     -- "docker",
+        --     -- "compose",
+        --     -- "run",
+        --     -- "--rm",
+        --     -- "rails",
+        --     -- "bundle",
+        --     -- "exec",
+        --     "rubocop",
+        --     "--lsp",
+        --   },
+        -- },
         -- steep = {
         --   on_attach = function(client, bufnr)
         --     -- LSP関連のキーマップの基本定義

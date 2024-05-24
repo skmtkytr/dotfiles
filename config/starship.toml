@@ -1,0 +1,21 @@
+[battery]
+full_symbol = "• "
+charging_symbol = "⇡ "
+discharging_symbol = "⇣ "
+unknown_symbol = "❓ "
+empty_symbol = "❗ "
+
+[erlang]
+symbol = "ⓔ "
+
+[nodejs]
+symbol = "[⬢](bold green) "
+
+[ruby]
+symbol = "[󰇈](bold red) "
+
+[pulumi]
+symbol = "🧊 "
+
+[typst]
+symbol = "t "

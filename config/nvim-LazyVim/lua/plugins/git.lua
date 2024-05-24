@@ -2,10 +2,14 @@
 return {
   {
     "tpope/vim-fugitive",
-    lazy = true,
+    -- lazy = true,
   },
   {
     "lewis6991/gitsigns.nvim",
+    opts = function(_, opts)
+      opts.current_line_blame = opts.current_line_blame or {}
+      table.insert(opts.current_line_blame, { true })
+    end,
     config = function()
       require("gitsigns").setup()
       require("scrollbar.handlers.gitsigns").setup()
@@ -13,6 +17,8 @@ return {
   },
   {
     "pwntester/octo.nvim",
+    cmd = { "Octo" },
+    lazy = true,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "ibhagwan/fzf-lua",

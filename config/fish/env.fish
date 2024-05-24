@@ -11,7 +11,6 @@ if status is-interactive
 end
 set -x PATH /usr/local/bin $PATH
 set -x PATH /usr/local $PATH
-set -x PATH $HOME/.anyenv/bin $PATH
 set -x PATH $HOME/.cargo/bin $PATH
 
 set -x GOPATH $HOME/.go
@@ -34,7 +33,7 @@ set -x PATH $HOME/.rvm/bin $PATH
 set -x DENO_INSTALL ~/.deno
 set -x PATH $DENO_INSTALL/bin:$PATH
 
-eval (direnv hook fish)
+asdf exec direnv hook fish | source
 starship init fish | source
 
 #nvim conf
@@ -54,12 +53,8 @@ function fish_default_mode_prompt
 end
 
 # *env init 
-# status --is-interactive; and source (anyenv init -|psub)
 status --is-interactive; and source (pyenv init -|psub)
 # status --is-interactive; and source (goenv init -|psub)
-set -x PATH $HOME/.rbenv/shims $PATH
-status --is-interactive; and rbenv rehash >/dev/null ^&1
-status --is-interactive; and source (rbenv init - | psub)
 
 ### Added by the Bluemix CLI
 #source /usr/local/Bluemix/bx/zsh_autocomplete
