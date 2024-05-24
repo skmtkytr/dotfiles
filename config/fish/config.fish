@@ -55,4 +55,6 @@ if not string match -q -- $PNPM_HOME $PATH
 end
 # pnpm end
 
-source /opt/homebrew/opt/asdf/libexec/asdf.fish
+# asdf exec direnv hook fish | source
+# source /opt/homebrew/opt/asdf/libexec/asdf.fish
+mise activate fish | source

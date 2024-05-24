@@ -33,7 +33,6 @@ set -x PATH $HOME/.rvm/bin $PATH
 set -x DENO_INSTALL ~/.deno
 set -x PATH $DENO_INSTALL/bin:$PATH
 
-asdf exec direnv hook fish | source
 starship init fish | source
 
 #nvim conf
@@ -77,6 +76,8 @@ set -x PYENV_ROOT $HOME/.pyenv
 
 # 初回シェル時のみ tmux実行
 # bass ~/.config/fish/functions/tmux.bash.sh
+
+fish_add_path ~/.local/share/mise/shims
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/kyo/Downloads/google-cloud-sdk/path.fish.inc' ]
