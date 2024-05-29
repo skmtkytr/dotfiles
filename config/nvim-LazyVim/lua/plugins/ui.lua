@@ -147,7 +147,8 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "FzfLua",
     keys = {
-      { "<C-p>", "<cmd>lua require('fzf-lua').files()<CR>", { silent = true } },
+      { "<C-p>", "<cmd>lua require('fzf-lua').git_files()<CR>", { silent = true } },
+      { "<leader><space>", "<cmd>lua require('fzf-lua').files()<CR>", { silent = true } },
       { ";cb", "<cmd>lua require('fzf-lua').oldfiles()<CR>", { silent = true } },
       { ";f", "<cmd>lua require('fzf-lua').live_grep_native()<CR>", { silent = true } },
       { "<leader>/", "<cmd>lua require('fzf-lua').live_grep_native()<CR>", { silent = true } },
