@@ -58,18 +58,18 @@ if [ -f '/Users/kyo/google-cloud-sdk/path.fish.inc' ]
 end
 # set -g fish_user_paths /usr/local/opt/openssl/bin $fish_user_paths
 
-set -gx VOLTA_HOME "$HOME/.volta"
-set -gx PATH "$VOLTA_HOME/bin" $PATH
+# set -gx VOLTA_HOME "$HOME/.volta"
+# set -gx PATH "$VOLTA_HOME/bin" $PATH
 
 # bun
-set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
+# set --export BUN_INSTALL "$HOME/.bun"
+# set --export PATH $BUN_INSTALL/bin $PATH
 
 # pnpm
-set -gx PNPM_HOME /Users/skmtkytr/Library/pnpm
-if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
-end
+# set -gx PNPM_HOME /Users/skmtkytr/Library/pnpm
+# if not string match -q -- $PNPM_HOME $PATH
+#     set -gx PATH "$PNPM_HOME" $PATH
+# end
 # pnpm end
 
 # Neovim
