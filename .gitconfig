@@ -38,6 +38,7 @@
 #  root = ~/.go/src
 [push]
 	default = upstream
+	autoSetupRemote = true
 [merge]
   tool = vimdiff
   conflictstyle = diff3
