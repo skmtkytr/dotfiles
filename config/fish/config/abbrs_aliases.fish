@@ -46,6 +46,7 @@ alias sudo='sudo '
 
 # gentoo
 alias emerge='sudo emerge '
+alias pbcopy='xclip -selection clipboard'
 
 # docker
 abbr -a do docker container

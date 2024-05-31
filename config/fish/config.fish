@@ -10,7 +10,7 @@ set -q XDG_CONFIG_HOME || set -gx XDG_CONFIG_HOME $HOME/.config
 set -q XDG_DATA_HOME || set -gx XDG_DATA_HOME $HOME/.local/share
 set -q XDG_CACHE_HOME || set -gx XDG_CACHE_HOME $HOME/.cache
 set -x XDG_RUNTIME_DIR /tmp/(id -u)-runtime-dir/
-if test -b $XDG_RUNTIME_DIR
+if test -d $XDG_RUNTIME_DIR
 else
     mkdir $XDG_RUNTIME_DIR
     chmod 0700 $XDG_RUNTIME_DIR
@@ -108,7 +108,10 @@ if test "$FISH_CONFIG" -nt "$CONFIG_CACHE"
     # tools
     # type -q direnv && direnv hook fish >>$CONFIG_CACHE
     type -q zoxide && zoxide init fish >>$CONFIG_CACHE
-    type -q pyenv && pyenv init - >>$CONFIG_CACHE
+    switch (uname)
+        case Darwin
+            type -q pyenv && pyenv init - >>$CONFIG_CACHE
+    end
     starship init fish >>$CONFIG_CACHE
 
     set_color brmagenta --bold --underline

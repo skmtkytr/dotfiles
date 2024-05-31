@@ -55,7 +55,8 @@
 [credential]
 	helper = osxkeychain
 	helper = 
-	helper = /usr/local/share/gcm-core/git-credential-manager
+	; helper = /usr/local/share/gcm-core/git-credential-manager
+	; helper = /usr/bin/git-credential-manager
 [diff]
   tool = nvimdiff
   colorMoved = default
@@ -72,3 +73,9 @@
 	required = true
 [credential "https://dev.azure.com"]
 	useHttpPath = true
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

@@ -14,6 +14,7 @@ fish_add_path $HOMEBREW_X86_64/bin
 fish_add_path /usr/local/bin
 fish_add_path /usr/local
 fish_add_path /usr/.local/bin
+fish_add_path /var/lib/snapd/snap/bin
 
 set -x SHELL $(which fish)
 # go
