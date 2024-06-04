@@ -59,9 +59,6 @@ return {
     end,
   },
   {
-    "EthanJWright/toolwindow.nvim",
-  },
-  {
     "glepnir/lspsaga.nvim",
     event = { "LspAttach" },
     keys = {

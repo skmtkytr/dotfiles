@@ -21,7 +21,7 @@
     navigate = true
 [alias]
 	co = checkout
-	br = branch
+	br = branch -vv
 	st = status
 	ba = branch -a
   # いい感じのグラフでログを表示
@@ -32,7 +32,8 @@
   stt = status -uno
   today = log --oneline --since='12 hour ago'
 	showpr = "!f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
-	openpr = "!f() { hub browse -- `git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1 | cut -f5 -d' ' | sed -e 's%#%pull/%'`; }; f"
+	; openpr = "!f() { hub browse -- `git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1 | cut -f5 -d' ' | sed -e 's%#%pull/%'`; }; f"
+	openpr = "!f() { gh pr view --web; }; f"
 [fetch]
 	prune = true
 [ghq]
@@ -75,7 +76,13 @@
 	useHttpPath = true
 [credential "https://github.com"]
 	helper = 
-	helper = !/usr/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/usr/bin/gh auth git-credential
+	helper = !gh auth git-credential
+[scalar]
+	repo = /Users/skmtkytr/.ghq/github.com/hello-ai/auto_reserve
+[maintenance]
+	repo = /Users/skmtkytr/.ghq/github.com/hello-ai/auto_reserve
+[protocol]
+	version = 2

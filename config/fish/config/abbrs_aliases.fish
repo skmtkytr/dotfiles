@@ -4,7 +4,7 @@ abbr -a nv nvim
 alias view='nvim -R'
 alias find='fd '
 abbr -a bash 'bash --norc'
-abbr -a ls 'eza --icons'
+abbr ls 'eza --icons'
 abbr ll 'ls -hl'
 abbr la 'ls -hlA'
 abbr lt 'ls --tree'

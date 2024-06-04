@@ -5,6 +5,15 @@ return {
     -- lazy = true,
   },
   {
+    "NeogitOrg/neogit",
+    cmd = "Neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+    },
+    config = true,
+  },
+  {
     "lewis6991/gitsigns.nvim",
     opts = function(_, opts)
       opts["current_line_blame"] = true
