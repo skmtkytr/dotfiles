@@ -110,7 +110,7 @@ if test "$FISH_CONFIG" -nt "$CONFIG_CACHE"
     type -q zoxide && zoxide init fish >>$CONFIG_CACHE
     switch (uname)
         case Darwin
-            type -q pyenv && pyenv init - >>$CONFIG_CACHE
+            # type -q pyenv && pyenv init - >>$CONFIG_CACHE
     end
     starship init fish >>$CONFIG_CACHE
 
