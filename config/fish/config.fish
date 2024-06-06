@@ -107,7 +107,7 @@ if test "$FISH_CONFIG" -nt "$CONFIG_CACHE"
 
     # tools
     # type -q direnv && direnv hook fish >>$CONFIG_CACHE
-    type -q zoxide && zoxide init fish >>$CONFIG_CACHE
+    type -q zoxide && zoxide init --cmd cd fish >>$CONFIG_CACHE
     switch (uname)
         case Darwin
             # type -q pyenv && pyenv init - >>$CONFIG_CACHE

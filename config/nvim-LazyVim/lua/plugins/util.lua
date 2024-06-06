@@ -2,6 +2,10 @@
 
 return {
   {
+    "lambdalisue/vim-manpager",
+    cmd = "ASMANPAGER",
+  },
+  {
     "sigmasd/deno-nvim",
     lazy = true,
   },
