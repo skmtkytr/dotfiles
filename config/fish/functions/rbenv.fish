@@ -1,1 +1,0 @@
-/Users/kyo/.config/fisherman/rbenv/functions/rbenv.fish

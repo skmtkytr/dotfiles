@@ -1,1 +1,0 @@
-/Users/kyotaro.sakamoto/.config/fisherman/pure/fish_mode_prompt.fish
