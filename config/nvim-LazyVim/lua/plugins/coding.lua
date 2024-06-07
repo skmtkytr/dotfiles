@@ -68,7 +68,7 @@ return {
       { "gdv", ":vsplit | lua vim.lsp.buf.definition()<CR>" },
       { "ga", "<cmd>Lspsaga code_action<CR>" },
       { "gn", "<cmd>Lspsaga rename<CR>" },
-      { "<S-o>", "<cmd>Lspsaga outline<CR>" },
+      { "<leader>uo", "<cmd>Lspsaga outline<CR>" },
       { "ge", "<cmd>Lspsaga show_line_diagnostics<CR>" },
       { "[e", "<cmd>Lspsaga diagnostic_jump_next<CR>" },
       { "]e", "<cmd>Lspsaga diagnostic_jump_prev<CR>" },
