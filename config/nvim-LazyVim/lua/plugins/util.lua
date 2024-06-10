@@ -5,6 +5,11 @@ return {
   --   "subnut/nvim-ghost.nvim",
   --   init = function()
   --     vim.g.nvim_ghost_autostart = 0
+  --     vim.g.nvim_ghost_use_script = 1
+  --     local handle = io.popen("which python3")
+  --     local result = handle:read("*a")
+  --     handle:close()
+  --     vim.g.nvim_ghost_python_executable = result
   --   end,
   --   config = function()
   --     vim.api.nvim_create_augroup("nvim_ghost_user_autocommands", { clear = true })
@@ -17,6 +22,13 @@ return {
   --     })
   --   end,
   -- },
+  {
+    "gamoutatsumi/dps-ghosttext.vim",
+    cmd = { "GhostStart" },
+    dependencies = {
+      { "vim-denops/denops.vim" },
+    },
+  },
   {
     "lambdalisue/vim-manpager",
     cmd = "ASMANPAGER",

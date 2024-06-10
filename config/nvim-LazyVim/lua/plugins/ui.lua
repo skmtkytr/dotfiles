@@ -86,6 +86,7 @@ return {
   },
   {
     "kevinhwang91/nvim-hlslens",
+    enabled = false,
     event = { "BufRead", "BufNewFile" },
     config = function()
       require("hlslens").setup({
@@ -235,6 +236,7 @@ return {
             NvimTree = true,
             ["neo-tree"] = true,
             ["neotest-summary"] = true,
+            ["neotest-attach"] = true,
             plugin = true,
             lazy = true,
             TelescopePrompt = true,
