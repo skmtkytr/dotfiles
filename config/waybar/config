@@ -1,60 +1,219 @@
-{
+{ 
   "layer": "top",
-    "modules-left": ["custom/gentoo", "hyprland/workspaces"],
-    "modules-center": ["clock"],
-    "modules-right": ["backlight", "pulseaudio", "bluetooth", "network", "battery"],
-    "custom/gentoo": {
-      "format": "  ",
-      "tooltip": false,
-      "on-click": "sh $HOME/.config/rofi/bin/powermenu"
-    },
-    "hyprland/workspaces": {
-      "format": "{name}",
-      "format": "{icon}",
-      "tooltip": false,
-      "all-outputs": true,
+  "height": 35,
+  "margin-top": 10,
+  "margin-left": 10,
+  "margin-bottom": 0,
+  "margin-right": 10,
+  "spacing": 0,
+
+  "modules-left": [
+    "custom/launcher",
+    "custom/separator",
+    "cpu",
+    "memory",
+    "temperature",
+    "custom/filler",
+    "custom/playerctl",
+    "custom/filler",
+    "disk",
+    "custom/filler",
+    "custom/pacman",
+    "hyprland/window",
+  ],
+  "modules-center": ["hyprland/workspaces"],
+  "modules-right": [
+    "battery",
+    "custom/dot",
+    "backlight",
+    "wireplumber",
+    "custom/dot",
+    "custom/separator",
+    "network",
+    "custom/dot",
+    "clock"
+  ], 
+  "custom/playerctl": {
+      "format": "[<span foreground='#46c880'>  </span> <span>{}</span> ]",
+      "return-type": "json",
+      "max-length": 55,
+      "exec": "playerctl -a metadata --format '{\"text\": \"{{playerName}}\"}' -F",
+      "on-click": "playerctl play-pause",
+      "on-click-middle": "playerctl previous",
+      "on-click-right": "playerctl next",
       "format-icons": {
-        "active": "",
-        "default": ""
-      }
-    },
-    "clock": {
-      "format": "<span color='#b4befe'> </span>{:%H:%M}",
-    },
-    "backlight": {
-      "device": "intel_backlight",
-      "format": "<span color='#b4befe'>{icon}</span> {percent}%",
-      "format-icons": ["", "", "", "", "", "", "", "", ""]
-    },
-    "pulseaudio": {
-      "format": "<span color='#b4befe'>{icon}</span> {volume}%",
-      "format-muted": "",
-      "tooltip": false,
-      "format-icons": {
-        "headphone": "",
-        "default": ["", "", "󰕾", "󰕾", "󰕾", "", "", ""]
+        "Playing": "<span foreground='#46c880'>  </span>",
+        "Paused": "<span foreground='#cdd6f4'> 󰏥 </span>",
       },
-      "scroll-step": 1,
     },
-    "bluetooth": {
-      "format": "<span color='#b4befe'></span> {status}",
-      "format-disabled": "", // an empty format will hide the module
-      "format-connected": "<span color='#b4befe'></span> {num_connections}",
-      "tooltip-format": "{device_enumerate}",
-      "tooltip-format-enumerate-connected": "{device_alias}   {device_address}"
+    "custom/uptime": {
+    "format": " {}",
+    "interval": 30,
+    "exec": "$HOME/.local/bin/upt2",
+    "on-click" : "",
+  },
+    "disk": {
+    "interval": 1,
+    "format": "<span color=\"#68b0d6\"> </span> {}%",
+    "on-click": "filelight /",
+    "on-click-right": "filelight /home/"
+  },
+  "hyprland/workspaces": {
+    "all-outputs": true,
+    "active-only": false,
+    "on-click": "activate",
+    "format": "{icon}",
+    "on-scroll-up": "hyprctl dispatch workspace e+1",
+    "on-scroll-down": "hyprctl dispatch workspace e-1",
+    "format-icons": {
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": "",
+      "urgent": "",
+      "active": "",
+      "default": ""
+    }
+  },
+  "hyprland/window": {
+      "format": "👉 {}",
+      "rewrite": {
+          "(.*) — Mozilla Firefox": "🌎 $1",
+          "(.*) — Microsoft Edge": "🌎 $1",
+          "(.*) - fish": "> [$1]"
+      },
+      "separate-outputs": true
+  },
+  "tray": {
+    "icon-size": 20,
+    "spacing": 8
+  },
+  "custom/filler": {
+    "format": " "
+  },
+  "custom/dot": {
+    "format": " "
+  },
+  "custom/clock-icon": {
+    "format": ""
+  },
+
+  "clock": {
+    "format": "<b>{:%I:%M %p }</b>",
+    "format-alt": "<b>{:%a.%d,%b}</b>",
+    "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>"
+  },
+
+  "cpu": {
+    "interval": 10,
+    "format": " {usage}% ",
+    "max-length": 10,
+    "on-click": "btop"
+  },
+  "memory": {
+    "interval": 30,
+    "format": " {}% ",
+    "format-alt": " {used:0.1f}G",
+    "max-length": 10,
+    "on-click-right": "btop"
+  },
+  "backlight": {
+    "device": "amdgpu_bl1",
+    "format": "{icon} {percent} ",
+    "tooltip": false,
+    "format-icons": ["", "", "", "", "", "", "", "", ""]
+  },
+  "network": {
+    "format-wifi": "󰒢 {essid}",
+    "format-alt" : "󰒢 {bandwidthTotalBits}",
+    "on-click": "kitty nmtui",
+    "on-click-right": "nm-connection-editor",
+    "format-ethernet": " wired",
+    "tooltip-format": "{essid} {signalStrength}%",
+    "format-disconnected": ""
+  },
+  "wireplumber": {
+      "format": "{volume}% {icon}",
+      "format-muted": "",
+      "on-click": "helvum",
+      "format-icons": ["", "", ""]
+  },
+  "pulseaudio": {
+    "format": "{icon} <b>{volume}</b>",
+    "format-bluetooth": " {volume}",
+    "format-bluetooth-muted": " ",
+    "tooltip": false,
+    "format-muted": "",
+    "format-icons": {
+      "default": ["󰝟", "", "󰕾" , ""]
     },
-    "network": {
-      "interface": "enp22s0",
-      "format": "{ifname}",
-      "format-wifi": "<span color='#b4befe'> </span>{essid}",
-      "format-ethernet": "{ipaddr}/{cidr} ",
-      "format-disconnected": "<span color='#b4befe'>󰖪 </span>No Network",
-      "tooltip": false,
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click-right": "pavucontrol"
+  },
+  "battery": {
+    "bat": "BAT0",
+    "interval": 10,
+    "states": {
+      "warning": 30,
+      "critical": 15
     },
-    "battery": {
-      "format": "<span color='#b4befe'>{icon}</span> {capacity}%",
-      "format-icons": ["", "", "", "", "", "", "", "", "", ""],
-      "format-charging": "<span color='#b4befe'></span> {capacity}%",
-      "tooltip": false,
-    },
+    "format": " {icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-icons": ["", "", "", "", "", "", "", "", "", ""],
+    "max-length": 25,
+    "tooltip": false
+  },
+  "custom/right-arr": {
+    "format": "  "
+  },
+  "custom/launcher": {
+    "format": " 󰣨"
+  },
+  "custom/separator": {
+    "format": " "
+  },
+  "custom/window-name": {
+    "format": " <b>{}</b>",
+    "interval": 1,
+    "exec": "hyprctl activewindow | grep class | awk '{print $2}'"
+  },
+
+ "custom/pacman": {
+   "format": "  ",
+   "on-click": "blueberry"
+ },
+  "custom-pacman-update-icon-background": {
+    "format": ""
+  },
+  "custom/pacman-update-icon": {
+    "format": ""
+  },
+  "custom/pacman-update": {
+    "format": " {}",
+    "interval": 3600,
+    "exec": "checkupdates | wc -l",
+    "signal": 8
+  },
+  "custom/window-icon": {},
+
+  "temperature": {
+    "thermal-zone": 0,
+    "hwmon-path": "/sys/class/hwmon/hwmon4/temp3_input",
+    "critical-threshold": 80,
+    "format-critical": " {temperatureC}°C",
+    "format": " {temperatureC}°C"
+  },
+
+  "custom/wrap-left": {
+    "format": "<b>[</b>"
+  },
+
+  "custom/wrap-right": {
+    "format": "<b>]</b>"
+  }
 }

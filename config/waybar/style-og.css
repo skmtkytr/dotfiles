@@ -1,61 +1,31 @@
-@use "sass:list";
-// This file followed by catppuccin color scheme
-
-// Color definition
-$Rosewater: #f4dbd6;
-$Flamingo: #f0c6c6;
-$Pink: #f5bde6;
-$Mauve: #c6a0f6;
-$Red: #ed8796;
-$Maroon: #ee99a0;
-$Peach: #f5a97f;
-$Yellow: #eed49f;
-$Green: #a6da95;
-$Teal: #8bd5ca;
-$Sky: #91d7e3;
-$Sapphire: #7dc4e4;
-$Blue: #8aadf4;
-$Lavender: #b7bdf8;
-$Text: #cad3f5;
-$Subtext1: #b8c0e0;
-$Subtext0: #a5adcb;
-$Overlay2: #939ab7;
-$Overlay1: #8087a2;
-$Overlay0: #6e738d;
-$Surface2: #5b6078;
-$Surface1: #494d64;
-$Surface0: #363a4f;
-$Base: #24273a;
-$Mantle: #1e2030;
-$Crust: #181926;
-
 * {
   padding: 0;
   margin: 0;
+  background-color: rgba(30,32,48,1);
   font-family: JetBrainsMono Nerd Font;
   font-size: 16px;
 }
 
 window#waybar {
-  background-color: #00000000;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .modules-left {
-  background-color: $Mantle;
+  background-color: #1e2030;
   border-radius: 8px;
   padding-right: 15px;
   padding-left: 15px;
 }
 
 .modules-center {
-  background-color: $Mantle;
+  background-color: #1e2030;
   border-radius: 8px;
   padding-right: 10px;
   padding-left: 10px;
 }
 
 .modules-right {
-  background-color: $Mantle;
+  background-color: #1e2030;
   border-radius: 8px;
   padding-right: 15px;
   padding-left: 15px;
@@ -71,35 +41,36 @@ window#waybar {
 #memory,
 #temperature {
   font-size: 14px;
-  background: $Surface0;
+  background: #363a4f;
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
 #cpu {
-  color: $Yellow;
+  color: #eed49f;
   padding: 0px 10px 0px 12px;
   border-radius: 5px 0px 0px 5px;
 }
 
 #memory {
-  color: $Green;
+  color: #a6da95;
   padding: 0px 10px 0px 0px;
 }
 
 #temperature {
-  color: $Blue;
+  color: #8aadf4;
   padding: 0px 12px 0px 0px;
   border-radius: 0px 5px 5px 0px;
 }
 
 #custom-window-name {
   margin-right: 10px;
+  color: #cad3f5;
 }
 
 #custom-pacman-update-icon {
-  background-color: $Teal;
-  color: $Crust;
+  background-color: #8bd5ca;
+  color: #181926;
   padding-left: 5px;
   padding-right: 5px;
   margin-top: 5px;
@@ -108,66 +79,99 @@ window#waybar {
 }
 
 #custom-pacman-update {
-  color: $Teal;
-  margin: 5px 10px 5px 0px;
+  color: #8bd5ca;
+  margin: 5px 5px 5px 0px;
 }
 
-$workspaces-color: $Blue, $Red, $Green, $Mauve, $Rosewater, $Peach;
-@each $color in $workspaces-color {
-  $index: list.index($workspaces-color, $color);
-  #workspaces button:nth-child(#{$index}) label {
-    color: $color;
-    margin: 0px 8px;
-  }
+#workspaces button:nth-child(1) label {
+  color: #8aadf4;
+  margin: 0px 8px;
+}
+
+#workspaces button:nth-child(2) label {
+  color: #ed8796;
+  margin: 0px 8px;
+}
+
+#workspaces button:nth-child(3) label {
+  color: #a6da95;
+  margin: 0px 8px;
+}
+
+#workspaces button:nth-child(4) label {
+  color: #c6a0f6;
+  margin: 0px 8px;
+}
+
+#workspaces button:nth-child(5) label {
+  color: #f4dbd6;
+  margin: 0px 8px;
+}
+
+#workspaces button:nth-child(6) label {
+  color: #f5a97f;
+  margin: 0px 8px;
 }
 
 #battery {
-  color: $Green;
+  color: #a6da95;
   margin: 0px 10px 0px 0px;
 }
 
 #pulseaudio,
 #backlight {
   font-size: 14px;
-  background: $Surface0;
+  background: #363a4f;
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
 #backlight {
-  color: $Yellow;
+  color: #eed49f;
   padding: 0px 10px 0px 10px;
   border-radius: 5px 0px 0px 5px;
 }
 
 #pulseaudio {
-  color: $Sky;
+  color: #91d7e3;
   padding: 0px 10px 0px 0px;
   border-radius: 0px 5px 5px 0px;
 }
+
 #custom-right-arr {
-  color: $Blue;
+  color: #8aadf4;
 }
 
 #network {
-  color: $Mauve;
+  color: #c6a0f6;
   margin-right: 10px;
 }
 
 #custom-dot {
-  color: $Overlay0;
+  color: #6e738d;
   padding-left: 10px;
   padding-right: 10px;
 }
+
+#custom-playerctl {
+	background: #0c0e0f;
+  padding: 0px 5px 0px 10px;
+	border-radius: 16px;
+  margin: 5px 7px;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 16px;
+}
+
 #custom-dot-alt {
-  color: $Subtext0;
+  color: #a5adcb;
   padding-left: 10px;
   padding-right: 10px;
 }
 
 #custom-clock-icon {
-  background-color: $Text;
-  color: $Crust;
+  background-color: #cad3f5;
+  color: #181926;
   padding-left: 10px;
   padding-right: 10px;
   margin-top: 5px;
@@ -177,4 +181,7 @@ $workspaces-color: $Blue, $Red, $Green, $Mauve, $Rosewater, $Peach;
 
 #clock {
   padding-left: 10px;
+  color: #cad3f5;
 }
+
+/*# sourceMappingURL=style.css.map */

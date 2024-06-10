@@ -1,0 +1,13 @@
+[Default Applications]
+text/html=microsoft-edge.desktop
+x-scheme-handler/http=microsoft-edge.desktop
+x-scheme-handler/https=microsoft-edge.desktop
+x-scheme-handler/about=microsoft-edge.desktop
+x-scheme-handler/unknown=microsoft-edge.desktop
+x-scheme-handler/mailto=userapp-Thunderbird-EZJFO2.desktop
+message/rfc822=userapp-Thunderbird-EZJFO2.desktop
+x-scheme-handler/mid=userapp-Thunderbird-EZJFO2.desktop
+
+[Added Associations]
+x-scheme-handler/mailto=userapp-Thunderbird-EZJFO2.desktop;
+x-scheme-handler/mid=userapp-Thunderbird-EZJFO2.desktop;

@@ -33,7 +33,7 @@ fish_add_path /opt/homebrew/opt/llvm@15/bin
 set SSH_SECRETIVE_SSH_SOCK $HOME/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh
 test -e $SSH_SECRETIVE_SSH_SOCK && set -x SSH_AUTH_SOCK $SSH_SECRETIVE_SSH_SOCK
 
-set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
+# set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
 #set -x SDKROOT (xcrun --sdk macosx --show-sdk-path)
 
 #set -x PATH (brew --prefix)/opt/openssl/bin $PATH
@@ -46,7 +46,7 @@ set -x PKG_CONFIG_PATH /usr/local/opt/imagemagick@6/lib/pkgconfig
 # mise
 fish_add_path ~/.local/share/mise/shims
 
-set -x JAVA_HOME '/usr/libexec/java_home -v 1.8'
+# set -x JAVA_HOME '/usr/libexec/java_home -v 1.8'
 # vi 風キーバインドにする
 fish_vi_key_bindings
 # vi modeではなんか[I]みたいなの出るからオーバーライド

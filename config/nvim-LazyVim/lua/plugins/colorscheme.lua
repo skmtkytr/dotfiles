@@ -5,6 +5,8 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
+      -- colorscheme = "onenord",
+      -- colorscheme = "everforest",
       colorscheme = "monokai-pro-spectrum",
       -- colorscheme = "tokyonight-night",
       -- colorscheme = "catppuccin-mocha",
@@ -12,7 +14,17 @@ return {
     },
   },
 
-  -- add monokai-pro
+  {
+    "rmehri01/onenord.nvim",
+    lazy = true,
+    config = function()
+      require("onenord").setup()
+    end,
+  },
+  {
+    "sainnhe/everforest",
+    lazy = true,
+  },
   {
     "loctvl842/monokai-pro.nvim",
     -- "skmtkytr/monokai-pro.nvim",
