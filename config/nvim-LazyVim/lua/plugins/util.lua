@@ -1,6 +1,7 @@
 -- util settings
 
 return {
+  { "dstein64/vim-startuptime" },
   -- {
   --   "subnut/nvim-ghost.nvim",
   --   init = function()
