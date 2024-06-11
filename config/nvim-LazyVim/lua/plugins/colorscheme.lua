@@ -16,6 +16,7 @@ return {
 
   {
     "rmehri01/onenord.nvim",
+    priority = 1000,
     lazy = true,
     config = function()
       require("onenord").setup()
@@ -23,12 +24,14 @@ return {
   },
   {
     "sainnhe/everforest",
+    priority = 1000,
     lazy = true,
   },
   {
     "loctvl842/monokai-pro.nvim",
     -- "skmtkytr/monokai-pro.nvim",
     -- branch = "mybranch",
+    priority = 1000,
     lazy = true,
     -- opts = {
     --   transparent_background = true,
