@@ -29,6 +29,10 @@ fish_add_path $HOME/.cargo/bin
 
 fish_add_path /opt/homebrew/opt/llvm@15/bin
 
+fish_add_path /opt/homebrew/opt/protobuf@3/bin
+set -gx LDFLAGS "-L/opt/homebrew/opt/protobuf@3/lib"
+set -gx CPPFLAGS "-I/opt/homebrew/opt/protobuf@3/include"
+
 # Secretive
 set SSH_SECRETIVE_SSH_SOCK $HOME/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh
 test -e $SSH_SECRETIVE_SSH_SOCK && set -x SSH_AUTH_SOCK $SSH_SECRETIVE_SSH_SOCK

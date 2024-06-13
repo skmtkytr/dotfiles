@@ -35,6 +35,15 @@ return {
   },
   {
     "nvim-neotest/neotest",
+    keys = {
+      {
+        "<leader>ta",
+        function()
+          require("neotest").run.attach()
+        end,
+        desc = "Attach test",
+      },
+    },
     optional = true,
     dependencies = {
       "olimorris/neotest-rspec",
@@ -60,7 +69,7 @@ return {
               })
             elseif #docker ~= 0 then
               return vim.tbl_flatten({
-                -- docker compose run --rm rails bundle exec rspec
+                -- docker compose run --rm app bundle exec rspec
                 "docker",
                 "compose",
                 "run",

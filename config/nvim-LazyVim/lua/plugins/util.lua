@@ -2,27 +2,6 @@
 
 return {
   { "dstein64/vim-startuptime" },
-  -- {
-  --   "subnut/nvim-ghost.nvim",
-  --   init = function()
-  --     vim.g.nvim_ghost_autostart = 0
-  --     vim.g.nvim_ghost_use_script = 1
-  --     local handle = io.popen("which python3")
-  --     local result = handle:read("*a")
-  --     handle:close()
-  --     vim.g.nvim_ghost_python_executable = result
-  --   end,
-  --   config = function()
-  --     vim.api.nvim_create_augroup("nvim_ghost_user_autocommands", { clear = true })
-  --     vim.api.nvim_create_autocmd("User", {
-  --       pattern = { "*github.com" },
-  --       group = "nvim_ghost_user_autocommands",
-  --       callback = function()
-  --         vim.opt.filetype = "markdown"
-  --       end,
-  --     })
-  --   end,
-  -- },
   {
     "gamoutatsumi/dps-ghosttext.vim",
     cmd = { "GhostStart" },
@@ -34,11 +13,6 @@ return {
     "lambdalisue/vim-manpager",
     cmd = "ASMANPAGER",
   },
-  {
-    "sigmasd/deno-nvim",
-    lazy = true,
-  },
-  { "vim-denops/denops.vim", lazy = true },
   { "wakatime/vim-wakatime", lazy = false },
 
   { "Omochice/yank-remote-url.vim", lazy = true },
@@ -74,7 +48,7 @@ return {
     "rgroli/other.nvim",
     cmd = { "Other", "OtherClear" },
     config = function()
-      rails_controller_patterns = {
+      local rails_controller_patterns = {
         { target = "/spec/controllers/%1_spec.rb", context = "spec" },
         { target = "/spec/requests/%1_spec.rb", context = "spec" },
         { target = "/spec/factories/%1.rb", context = "factories", transformer = "singularize" },

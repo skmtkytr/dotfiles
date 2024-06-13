@@ -1,24 +1,9 @@
 -- ui settings
 
 return {
-  {
-    "nvimdev/dashboard-nvim",
-    optional = true,
-    opts = function(_, opts)
-      local footer = function()
-        local stats = require("lazy").stats()
-        local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-        return {
-          "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms",
-          "⚡ Neovim version : " .. tostring(vim.version()),
-        }
-      end
-      opts.config.footer = footer
-    end,
-  },
+
   {
     "echasnovski/mini.indentscope",
-    enabled = false,
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = {
@@ -80,18 +65,20 @@ return {
 
         -- Disable modes highlights in specified filetypes
         -- Please PR commonly ignored filetypes
-        ignore_filetypes = { "NvimTree", "TelescopePrompt" },
+        ignore_filetypes = { "NvimTree", "TelescopePrompt", "neotest-attach" },
       })
     end,
   },
   {
     "kevinhwang91/nvim-hlslens",
-    enabled = false,
     event = { "BufRead", "BufNewFile" },
     config = function()
       require("hlslens").setup({
         build_position_cb = function(plist, _, _, _)
-          require("scrollbar.handlers.search").handler.show(plist.start_pos)
+          local ok, scrollbar = pcall(require, "scrollbar.handlers.search")
+          if ok then
+            scrollbar.handler.show(plist.start_pos)
+          end
         end,
       })
 
@@ -125,6 +112,7 @@ return {
       --     { title = "LazyVim" }
       --   )
       -- end
+
       opts.left = opts.left or {}
       table.remove(opts.left, 2)
 
@@ -175,17 +163,107 @@ return {
       { "<leader>/", "<cmd>lua require('fzf-lua').blines()<CR>", { silent = true } },
       { "<leader>sk", "<cmd>lua require('fzf-lua').keymaps()<CR>", { silent = true } },
     },
-    config = function()
-      -- calling `setup` is optional for customization
-      require("fzf-lua").setup({
-        { "telescope" },
+    opts = function(_, opts)
+      local config = require("fzf-lua.config")
+      local actions = require("fzf-lua.actions")
+
+      -- Quickfix
+      config.defaults.keymap.fzf["ctrl-q"] = "select-all+accept"
+      config.defaults.keymap.fzf["ctrl-u"] = "half-page-up"
+      config.defaults.keymap.fzf["ctrl-d"] = "half-page-down"
+      config.defaults.keymap.fzf["ctrl-x"] = "jump"
+      config.defaults.keymap.builtin["<c-f>"] = "preview-page-down"
+      config.defaults.keymap.builtin["<c-b>"] = "preview-page-up"
+
+      -- Trouble
+      config.defaults.actions.files["ctrl-t"] = require("trouble.sources.fzf").actions.open
+
+      -- Toggle root dir / cwd
+      config.defaults.actions.files["ctrl-r"] = function(_, ctx)
+        local o = vim.deepcopy(ctx.__call_opts)
+        o.root = o.root == false
+        o.cwd = nil
+        o.buf = ctx.__CTX.bufnr
+        LazyVim.pick.open(ctx.__INFO.cmd, o)
+      end
+      config.defaults.actions.files["alt-c"] = config.defaults.actions.files["ctrl-r"]
+      config.set_action_helpstr(config.defaults.actions.files["ctrl-r"], "toggle-root-dir")
+
+      -- use the same prompt for all
+      local defaults = require("fzf-lua.profiles.telescope")
+      local function fix(t)
+        t.prompt = t.prompt ~= nil and " " or nil
+        for _, v in pairs(t) do
+          if type(v) == "table" then
+            fix(v)
+          end
+        end
+      end
+      fix(defaults)
+
+      return vim.tbl_deep_extend("force", opts, defaults, {
+        fzf_colors = true,
+        fzf_opts = {
+          ["--no-scrollbar"] = true,
+        },
+        defaults = {
+          -- formatter = "path.filename_first",
+          formatter = "path.dirname_first",
+        },
+        -- Custom LazyVim option to configure vim.ui.select
+        ui_select = function(fzf_opts, items)
+          local title = vim.trim((fzf_opts.prompt or "Select"):gsub("%s*:%s*$", ""))
+          local width, height ---@type number?, number?
+          if fzf_opts.kind ~= "codeaction" then
+            width, height = 0.5, math.floor(math.min(vim.o.lines * 0.8, #items + 2) + 0.5)
+          end
+          return vim.tbl_deep_extend("force", fzf_opts, {
+            prompt = " ",
+            winopts = {
+              title = " " .. title .. " ",
+              title_pos = "center",
+              width = width,
+              height = height,
+            },
+          })
+        end,
+        winopts = {
+          width = 0.8,
+          height = 0.8,
+          row = 0.5,
+          col = 0.5,
+          preview = {
+            scrollchars = { "┃", "" },
+          },
+        },
         files = {
           fd_opts = "-I --color=never --type f --hidden --follow --exclude .git",
+          cwd_prompt = false,
+          actions = {
+            ["alt-i"] = { actions.toggle_ignore },
+            ["alt-h"] = { actions.toggle_hidden },
+          },
         },
-        -- fzf_opts = function()
-        --   local opts = { ["--no-separator"] = false }
-        --   return opts
-        -- end,
+        grep = {
+          actions = {
+            ["alt-i"] = { actions.toggle_ignore },
+            ["alt-h"] = { actions.toggle_hidden },
+          },
+        },
+        lsp = {
+          symbols = {
+            symbol_hl = function(s)
+              return "TroubleIcon" .. s
+            end,
+            symbol_fmt = function(s)
+              return s:lower() .. "\t"
+            end,
+            child_prefix = false,
+          },
+          code_actions = {
+            previewer = vim.fn.executable("delta") == 1 and "codeaction_native" or nil,
+          },
+        },
       })
     end,
   },
@@ -193,7 +271,6 @@ return {
   -- like indent-blankline
   {
     "shellRaining/hlchunk.nvim",
-    -- enabled = false,
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("hlchunk").setup({
@@ -235,8 +312,14 @@ return {
             mason = true,
             NvimTree = true,
             ["neo-tree"] = true,
+            Neotest = true,
+            NeotestSummary = true,
+            NeotestAttach = true,
+            ["neotest"] = true,
             ["neotest-summary"] = true,
             ["neotest-attach"] = true,
+            Terminal = true,
+            ["terminal"] = true,
             plugin = true,
             lazy = true,
             TelescopePrompt = true,

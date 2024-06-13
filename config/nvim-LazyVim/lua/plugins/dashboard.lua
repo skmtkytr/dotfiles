@@ -26,7 +26,7 @@ return {
           header = vim.split(logo, "\n"),
           -- stylua: ignore
           center = {
-            { action = LazyVim.telescope("files"),                                    desc = " Find File",       icon = " ", key = "f" },
+            { action = "FzfLua files",                                    desc = " Find File",       icon = " ", key = "f" },
             { action = "ene | startinsert",                                        desc = " New File",        icon = " ", key = "n" },
             { action = "FzfLua oldfiles",                                       desc = " Recent Files",    icon = " ", key = "r" },
             { action = "FzfLua live_grep_native",                                      desc = " Find Text",       icon = " ", key = "g" },
@@ -39,7 +39,10 @@ return {
           footer = function()
             local stats = require("lazy").stats()
             local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-            return { "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
+            return {
+              "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms",
+              "⚡ Neovim version : " .. tostring(vim.version()),
+            }
           end,
         },
       }

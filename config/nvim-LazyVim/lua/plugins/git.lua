@@ -7,6 +7,9 @@ return {
   {
     "NeogitOrg/neogit",
     cmd = "Neogit",
+    keys = {
+      { "<leader>gN", "<cmd>Neogit<cr>", mode = { "n" }, desc = "Neogit" },
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "sindrets/diffview.nvim",
@@ -20,7 +23,10 @@ return {
     end,
     config = function(_, opts)
       require("gitsigns").setup(opts)
-      require("scrollbar.handlers.gitsigns").setup()
+      local ok, scrollbar = pcall(require, "scrollbar.handlers.gitsigns")
+      if ok then
+        scrollbar.setup()
+      end
     end,
   },
   {

@@ -35,7 +35,10 @@ return {
   -- },
   {
     "Wansmer/treesj",
-    keys = { "<space>m", "<space>j" },
+    keys = {
+      { "<space>m", desc = "toggle treesj" },
+      { "<space>j", desc = "fold treesj" },
+    },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require("treesj").setup({--[[ your config ]]
