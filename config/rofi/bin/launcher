@@ -8,3 +8,9 @@ rofi \
 	-no-drun-show-actions \
 	-terminal foot \
 	-theme "$HOME"/.config/rofi/config/launcher.rasi
+# rofi \
+# 	-combi-modi window,drun,ssh \
+# 	-show combi \
+# 	-drun-match-fields all \
+# 	-terminal foot \
+# 	-theme solarized
