@@ -35,3 +35,8 @@ config/dconf
 config/discord
 config/google-chrome
 config/microsoft-edge
+
+config/gtk-3.0
+config/gtk-4.0
+config/unity3d
+config/fish/fish_variables

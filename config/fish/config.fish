@@ -54,14 +54,6 @@ end
 set -gx theme_nerd_fonts yes
 set -gx BIT_THEME monochrome
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/kyo/google-cloud-sdk/path.fish.inc' ]
-    if type source >/dev/null
-        source '/Users/kyo/google-cloud-sdk/path.fish.inc'
-    else
-        . '/Users/kyo/google-cloud-sdk/path.fish.inc'
-    end
-end
 # set -g fish_user_paths /usr/local/opt/openssl/bin $fish_user_paths
 
 # set -gx VOLTA_HOME "$HOME/.volta"
@@ -125,3 +117,8 @@ source $CONFIG_CACHE
 
 set -g NA_PACKAGE_MANAGER_LIST bun deno pnpm npm yarn mise
 set -g NA_FUZZYFINDER_OPTIONS --bind 'one:accept' --query '^'
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/skmtkytr/.ghq/github.com/skmtkytr/dotfiles/google-cloud-sdk/path.fish.inc' ]
+    . '/home/skmtkytr/.ghq/github.com/skmtkytr/dotfiles/google-cloud-sdk/path.fish.inc'
+end
