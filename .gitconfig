@@ -31,6 +31,7 @@
   difff = diff --word-diff
   stt = status -uno
   today = log --oneline --since='12 hour ago'
+  showfn = show --pretty="" --name-only
 	showpr = "!f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
 	; openpr = "!f() { hub browse -- `git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1 | cut -f5 -d' ' | sed -e 's%#%pull/%'`; }; f"
 	openpr = "!f() { gh pr view --web; }; f"

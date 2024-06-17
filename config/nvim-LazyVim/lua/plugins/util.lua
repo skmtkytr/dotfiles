@@ -13,7 +13,7 @@ return {
     "lambdalisue/vim-manpager",
     cmd = "ASMANPAGER",
   },
-  { "wakatime/vim-wakatime", lazy = false },
+  -- { "wakatime/vim-wakatime", lazy = false },
 
   { "Omochice/yank-remote-url.vim", lazy = true },
   {

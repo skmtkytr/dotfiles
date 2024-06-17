@@ -2,12 +2,6 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 
--- 行末での折り返しを無効にする
-vim.opt.whichwrap = "<,>,[,],h,l"
-
-vim.opt.winblend = 10
-vim.opt.termguicolors = true
-
 local options = {
   --   encoding = "utf-8",
   --   fileencoding = "utf-8",
@@ -27,7 +21,7 @@ local options = {
   --   smartcase = true,
   --   smartindent = true,
   --   swapfile = false,
-  --   termguicolors = true,
+  termguicolors = true,
   --   timeoutlen = 300,
   --   undofile = true,
   --   updatetime = 300,
@@ -43,9 +37,9 @@ local options = {
   --   relativenumber = true,
   --   numberwidth = 4,
   --   laststatus = 3,
-  --   signcolumn = "yes",
+  signcolumn = "yes",
   --   wrap = false,
-  --   winblend = 0,
+  winblend = 10,
   --   wildoptions = "pum",
   --   pumblend = 5,
   --   background = "dark",
@@ -57,6 +51,7 @@ local options = {
   --   splitbelow = false, -- オンのとき、ウィンドウを横分割すると新しいウィンドウはカレントウィンドウの下に開かれる
   --   splitright = false, -- オンのとき、ウィンドウを縦分割すると新しいウィンドウはカレントウィンドウの右に開かれる
   --   splitkeep = "screen",
+  whichwrap = "<,>,[,],h,l", -- 行末での折り返しを無効にする
   --   sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions",
 }
 --
