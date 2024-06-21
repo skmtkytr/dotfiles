@@ -9,6 +9,7 @@ return {
         "f",
         "<cmd>lua require('hop').hint_char1({ current_line_only = false })<CR>",
         desc = "start hop",
+        mode = {"n", "v"},
         { silent = true },
       },
       {
