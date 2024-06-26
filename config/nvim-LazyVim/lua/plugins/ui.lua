@@ -176,7 +176,9 @@ return {
       config.defaults.keymap.builtin["<c-b>"] = "preview-page-up"
 
       -- Trouble
-      config.defaults.actions.files["ctrl-t"] = require("trouble.sources.fzf").actions.open
+      if LazyVim.has("trouble.nvim") then
+        config.defaults.actions.files["ctrl-t"] = require("trouble.sources.fzf").actions.open
+      end
 
       -- Toggle root dir / cwd
       config.defaults.actions.files["ctrl-r"] = function(_, ctx)
@@ -201,7 +203,19 @@ return {
       end
       fix(defaults)
 
-      return vim.tbl_deep_extend("force", opts, defaults, {
+      local img_previewer ---@type string[]?
+      for _, v in ipairs({
+        { cmd = "ueberzug", args = {} },
+        { cmd = "chafa", args = { "{file}", "--format=symbols" } },
+        { cmd = "viu", args = { "-b" } },
+      }) do
+        if vim.fn.executable(v.cmd) == 1 then
+          img_previewer = vim.list_extend({ v.cmd }, v.args)
+          break
+        end
+      end
+
+      return vim.tbl_deep_extend("force", defaults, {
         fzf_colors = true,
         fzf_opts = {
           ["--no-scrollbar"] = true,
@@ -210,20 +224,46 @@ return {
           -- formatter = "path.filename_first",
           formatter = "path.dirname_first",
         },
+        previewers = {
+          builtin = {
+            extensions = {
+              ["png"] = img_previewer,
+              ["jpg"] = img_previewer,
+              ["jpeg"] = img_previewer,
+              ["gif"] = img_previewer,
+              ["webp"] = img_previewer,
+            },
+            ueberzug_scaler = "fit_contain",
+          },
+        },
         -- Custom LazyVim option to configure vim.ui.select
         ui_select = function(fzf_opts, items)
-          local title = vim.trim((fzf_opts.prompt or "Select"):gsub("%s*:%s*$", ""))
-          local width, height ---@type number?, number?
-          if fzf_opts.kind ~= "codeaction" then
-            width, height = 0.5, math.floor(math.min(vim.o.lines * 0.8, #items + 2) + 0.5)
-          end
           return vim.tbl_deep_extend("force", fzf_opts, {
             prompt = " ",
             winopts = {
-              title = " " .. title .. " ",
+              title = " " .. vim.trim((fzf_opts.prompt or "Select"):gsub("%s*:%s*$", "")) .. " ",
               title_pos = "center",
-              width = width,
-              height = height,
+            },
+          }, fzf_opts.kind == "codeaction" and {
+            winopts = {
+              layout = "vertical",
+              -- height is number of items minus 15 lines for the preview, with a max of 80% screen height
+              height = math.floor(math.min(vim.o.lines * 0.8 - 16, #items + 2) + 0.5) + 16,
+              width = 0.5,
+              preview = not vim.tbl_isempty(LazyVim.lsp.get_clients({ bufnr = 0, name = "vtsls" })) and {
+                layout = "vertical",
+                vertical = "down:15,border-top",
+                hidden = "hidden",
+              } or {
+                layout = "vertical",
+                vertical = "down:15,border-top",
+              },
+            },
+          } or {
+            winopts = {
+              width = 0.5,
+              -- height is number of items, with a max of 80% screen height
+              height = math.floor(math.min(vim.o.lines * 0.8, #items + 2) + 0.5),
             },
           })
         end,
@@ -237,7 +277,6 @@ return {
           },
         },
         files = {
-          fd_opts = "-I --color=never --type f --hidden --follow --exclude .git",
           cwd_prompt = false,
           actions = {
             ["alt-i"] = { actions.toggle_ignore },
