@@ -38,7 +38,7 @@ return {
     },
     opts = function(_, opts)
       if LazyVim.has("noice.nvim") then
-        opts.defaults["<leader>o"] = { name = "+Other" }
+        opts.spec = { "<leader>o", name = "+Other" }
       end
     end,
   },
