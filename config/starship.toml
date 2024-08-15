@@ -19,3 +19,7 @@ symbol = "🧊 "
 
 [typst]
 symbol = "t "
+
+[gcloud]
+format = '[$symbol$active]($style) '
+# style = 'bold yellow'
