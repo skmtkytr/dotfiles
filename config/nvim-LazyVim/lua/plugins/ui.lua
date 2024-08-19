@@ -148,7 +148,7 @@ return {
   {
     "ibhagwan/fzf-lua",
     -- optional for icon support
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "FzfLua",
     keys = {
       { "<C-p>", "<cmd>lua require('fzf-lua').git_files()<CR>", { silent = true } },
