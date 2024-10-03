@@ -27,4 +27,16 @@ return {
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
+  {
+    "zbirenbaum/copilot.lua",
+    opts = {
+      suggestion = { enable = true },
+      panel = { enable = true },
+      filetypes = {
+        markdown = true,
+        help = true,
+      },
+      copilot_node_command = "~/.local/share/mise/installs/node/22.2/bin/node",
+    },
+  },
 }
