@@ -51,4 +51,16 @@ return {
       { "<leader>gY", "<cmd>GitLink!<cr>", mode = { "n", "v" }, desc = "Open git link" },
     },
   },
+  {
+    "zbirenbaum/copilot.lua",
+    opts = {
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+      filetype = {
+        markdown = true,
+        help = true,
+      },
+      copilot_node_command = "/Users/skmtkytr/.local/share/mise/installs/node/22/bin/node",
+    },
+  },
 }
