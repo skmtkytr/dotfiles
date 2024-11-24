@@ -145,6 +145,12 @@ return {
       -- print(vim.inspect(opts.options))
     end,
   },
+  {
+    'vim-fall/fall.vim',
+    dependencies = {
+      { "vim-denops/denops.vim" },
+    }
+  },
 
   -- fzf-lua
   {
