@@ -60,7 +60,7 @@ return {
         markdown = true,
         help = true,
       },
-      copilot_node_command = "/Users/skmtkytr/.local/share/mise/installs/node/22/bin/node",
+      copilot_node_command = vim.fn.expand('$HOME') .. "/.local/share/mise/installs/node/22/bin/node",
     },
   },
 }
