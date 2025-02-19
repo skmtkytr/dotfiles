@@ -45,8 +45,12 @@ abbr -a top btop
 alias sudo='sudo '
 
 # gentoo
-alias emerge='sudo emerge '
-alias pbcopy='xclip -selection clipboard'
+if type -q emerge
+    alias emerge='sudo emerge '
+end
+if not type -q pbcopy
+    alias pbcopy='xclip -selection clipboard'
+end
 
 # docker
 abbr -a do docker container
