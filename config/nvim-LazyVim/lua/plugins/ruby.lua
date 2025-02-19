@@ -88,6 +88,8 @@ return {
             end
           end,
 
+          formatter = "json",
+
           transform_spec_path = function(path)
             local prefix = require("neotest-rspec").root(path)
             return string.sub(path, string.len(prefix) + 2, -1)
