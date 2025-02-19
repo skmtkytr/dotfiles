@@ -99,6 +99,24 @@ return {
       require("scrollbar").setup()
     end,
   },
+  {
+    "folke/snacks.nvim",
+    keys = {
+      { "<leader>gg", "<cmd>lua require('snacks').lazygit()<CR>" },
+    },
+
+    opts = {
+      lazygit = {},
+      indent = { enabled = true },
+      input = { enabled = true },
+      notifier = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = true },
+      statuscolumn = { enabled = false }, -- we set this in options.lua
+      toggle = { map = LazyVim.safe_keymap_set },
+      words = { enabled = true },
+    },
+  },
 
   -- edgy settings
   {
@@ -146,10 +164,10 @@ return {
     end,
   },
   {
-    'vim-fall/fall.vim',
+    "vim-fall/fall.vim",
     dependencies = {
       { "vim-denops/denops.vim" },
-    }
+    },
   },
 
   -- fzf-lua
@@ -170,6 +188,7 @@ return {
       { ";gst", "<cmd>lua require('fzf-lua').git_status()<CR>", { silent = true } },
       { "<leader>/", "<cmd>lua require('fzf-lua').blines()<CR>", { silent = true } },
       { "<leader>sk", "<cmd>lua require('fzf-lua').keymaps()<CR>", { silent = true } },
+      { "<leader>zo", "<cmd>lua FzfLua.zoxide()<CR>", desc = "change cwd, zoxide list" },
     },
     -- opts = function(_, opts)
     --   local config = require("fzf-lua.config")
