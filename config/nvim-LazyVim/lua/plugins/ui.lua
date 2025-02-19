@@ -104,19 +104,43 @@ return {
     -- stylua: ignore
     keys = {
       { "<leader>gg", "<cmd>lua Snacks.lazygit()<CR>" },
+      { "<leader>ps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Bufer" },
+      { "<c-/>",      function() Snacks.terminal({"fish"}, { cwd = LazyVim.root(), interactive = true, win = { style = "terminal" } }) end, desc = "Terminal" },
     },
+    opts = function(_, opts)
+      -- Toggle the profiler
+      Snacks.toggle.profiler():map("<leader>pp")
+      -- Toggle the profiler highlights
+      Snacks.toggle.profiler_highlights():map("<leader>ph")
 
-    opts = {
-      lazygit = {},
-      indent = { enabled = true },
-      input = { enabled = true },
-      notifier = { enabled = true },
-      scope = { enabled = true },
-      scroll = { enabled = false },
-      statuscolumn = { enabled = false }, -- we set this in options.lua
-      toggle = { map = LazyVim.safe_keymap_set },
-      words = { enabled = true },
-    },
+      opts.scroll = { enabled = true }
+      opts.indent = {
+        enabled = false,
+        char = " ",
+        only_scope = true,
+        only_current = true,
+      }
+      Snacks.config.style("terminal", {
+        width = 0.9,
+        height = 0.9,
+        border = "rounded",
+        title = " Terminal ",
+        title_pos = "center",
+        ft = "terminal",
+      })
+    end,
+    --   {
+    --   lazygit = {},
+    --   indent = { enabled = true },
+    --   input = { enabled = true },
+    --   notifier = { enabled = true },
+    --   scope = { enabled = true },
+    --   scroll = { enabled = false },
+    --   statuscolumn = { enabled = false }, -- we set this in options.lua
+    --   toggle = { map = LazyVim.safe_keymap_set },
+    --   words = { enabled = true },
+    --   profiler = { enabled = true },
+    -- },
   },
 
   -- edgy settings
@@ -135,13 +159,23 @@ return {
       -- end
 
       opts.left = opts.left or {}
-      table.remove(opts.left, 2)
-
       opts.right = opts.right or {}
-      table.insert(opts.right, {
-        title = "Neotest Summary",
-        ft = "neotest-summary",
-      })
+      opts.top = opts.top or {}
+      opts.bottom = opts.bottom or {}
+      for i = #opts.bottom, 1, -1 do
+        if opts.bottom[i].ft == "snacks_terminal" then
+          table.remove(opts.bottom, i)
+        end
+      end
+      -- for i = #opts.left, 1, -1 do
+      --   if opts.left[i].title == "Neotest Summary" then
+      --     table.remove(opts.left, i)
+      --     table.insert(opts.right, {
+      --       title = "Neotest Summary",
+      --       ft = "neotest-summary",
+      --     })
+      --   end
+      -- end
 
       opts.options = opts.options or {}
       opts.options["left"] = { size = 40 }
