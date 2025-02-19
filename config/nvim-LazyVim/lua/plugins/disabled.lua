@@ -2,6 +2,8 @@
 
 return {
   -- { "echasnovski/mini.pairs", enabled = false },
+  { "vim-skk/skkeleton", enabled = false, optional = true },
+  { "vim-fall/fall.vim", enabled = false, optional = true },
   { "lukas-reineke/indent-blankline.nvim", enabled = false, optional = true },
   { "folke/flash.nvim", enabled = false, optional = true },
   { "echasnovski/mini.indentscope", enabled = false, optional = true },
