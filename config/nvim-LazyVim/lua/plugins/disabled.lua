@@ -2,6 +2,7 @@
 
 return {
   -- { "echasnovski/mini.pairs", enabled = false },
+  { "tpope/vim-fugitive", enabled = false, optional = true },
   { "vim-skk/skkeleton", enabled = false, optional = true },
   { "vim-fall/fall.vim", enabled = false, optional = true },
   { "lukas-reineke/indent-blankline.nvim", enabled = false, optional = true },
