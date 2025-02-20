@@ -37,6 +37,17 @@ return {
     --   transparent_background = true,
     -- },
   },
+  {
+    "nuvic/flexoki-nvim",
+    name = "flexoki",
+    priority = 1000,
+    lazy = true,
+  },
+  {
+    "olimorris/onedarkpro.nvim",
+    priority = 1000, -- Ensure it loads first
+    lazy = true,
+  },
   -- {
   --   "scottmckendry/cyberdream.nvim",
   --   lazy = true,
