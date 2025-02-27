@@ -224,7 +224,7 @@ return {
       { ";gst", "<cmd>lua require('fzf-lua').git_status()<CR>", { silent = true } },
       { "<leader>/", "<cmd>lua require('fzf-lua').blines()<CR>", { silent = true } },
       { "<leader>sk", "<cmd>lua require('fzf-lua').keymaps()<CR>", { silent = true } },
-      { "<leader>zo", "<cmd>lua FzfLua.zoxide()<CR>", desc = "change cwd, zoxide list" },
+      { "<leader>zo", "<cmd>lua require('fzf-lua').zoxide()<CR>", desc = "change cwd, zoxide list" },
     },
     -- opts = function(_, opts)
     --   local config = require("fzf-lua.config")

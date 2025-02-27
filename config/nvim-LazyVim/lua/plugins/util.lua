@@ -1,6 +1,7 @@
 -- util settings
 
 return {
+  { "pteroctopus/faster.nvim" },
   { "dstein64/vim-startuptime" },
   {
     "gamoutatsumi/dps-ghosttext.vim",
