@@ -131,22 +131,11 @@ return {
   },
   {
     "olimorris/codecompanion.nvim",
-    -- config = true,
+    cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat" },
     keys = {
-      {
-        "<leader>cpc",
-        function()
-          require("codecompanion").toggle()
-        end,
-        desc = "Toggle CodeCompanion",
-      },
-      {
-        "<leader>cpa",
-        function(opts)
-          require("codecompanion").actions(opts)
-        end,
-        desc = "open CodeCompanion Action",
-      },
+      { "<leader>cpc", "<Cmd>CodeCompanionChat Toggle<CR>", mode = { "n" } },
+      { "<leader>cpc", "<Cmd>CodeCompanionChat<CR>", mode = { "v" } },
+      { "<leader>cpa", "<Cmd>CodeCompanionActions<CR>", mode = { "n", "x" } },
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
