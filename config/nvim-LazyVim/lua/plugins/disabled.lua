@@ -2,6 +2,7 @@
 
 return {
   -- { "echasnovski/mini.pairs", enabled = false },
+  { "CopilotC-Nvim/CopilotChat.nvim", enabled = false, optional = true },
   { "tpope/vim-fugitive", enabled = false, optional = true },
   { "vim-skk/skkeleton", enabled = false, optional = true },
   { "vim-fall/fall.vim", enabled = false, optional = true },

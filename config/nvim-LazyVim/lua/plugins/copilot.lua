@@ -129,4 +129,84 @@ return {
       },
     },
   },
+  {
+    "olimorris/codecompanion.nvim",
+    -- config = true,
+    keys = {
+      {
+        "<leader>cpc",
+        function()
+          require("codecompanion").toggle()
+        end,
+        desc = "Toggle CodeCompanion",
+      },
+      {
+        "<leader>cpa",
+        function(opts)
+          require("codecompanion").actions(opts)
+        end,
+        desc = "open CodeCompanion Action",
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {
+      adapters = {
+        ollama = function()
+          return require("codecompanion.adapters").extend("ollama", {
+            schema = {
+              model = {
+                default = "codellama:7b",
+              },
+            },
+          })
+        end,
+      },
+      strategies = {
+        chat = {
+          -- adapter = "anthropic",
+          adapter = "copilot",
+          slash_commands = {
+            ["buffer"] = {
+              opts = {
+                provider = "snacks",
+              },
+            },
+            ["file"] = {
+              opts = {
+                provider = "snacks",
+              },
+            },
+            ["help"] = {
+              opts = {
+                provider = "snacks",
+              },
+            },
+            ["symbols"] = {
+              opts = {
+                provider = "snacks",
+              },
+            },
+            ["workspace"] = {
+              opts = {
+                provider = "snacks",
+              },
+            },
+          },
+        },
+        inline = {
+          adapter = "copilot",
+        },
+        agent = {
+          -- adapter = "openai",
+          adapter = "copilot",
+        },
+      },
+      opts = {
+        language = "Japanese",
+      },
+    },
+  },
 }
