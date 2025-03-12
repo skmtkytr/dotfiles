@@ -69,15 +69,23 @@ return {
           border = "rounded",
         },
       },
+      file_selector = {
+        --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string | fun(params: avante.file_selector.IParams|nil): nil
+        provider = "snacks",
+        -- Options override for custom providers
+        provider_opts = {},
+      },
       -- providers-setting
       claude = {
-        model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
+        model = "claude-3-5-sonnet-20241022", -- $3/$15, maxtokens=8000
         -- model = "claude-3-opus-20240229",  -- $15/$75
         -- model = "claude-3-haiku-20240307", -- $0.25/1.25
         max_tokens = 8000,
       },
       copilot = {
-        model = "gpt-4o-2024-05-13",
+        -- model = "gpt-4o-2024-05-13",
+        -- model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
+        model = "claude-3.5-sonnet", -- $3/$15, maxtokens=8000
         -- model = "gpt-4o-mini",
         max_tokens = 4096,
       },
@@ -148,6 +156,19 @@ return {
             schema = {
               model = {
                 default = "codellama:7b",
+              },
+            },
+          })
+        end,
+        copilot = function()
+          return require("codecompanion.adapters").extend("copilot", {
+            schema = {
+              model = {
+                -- default = "gpt-4o-2024-05-13",
+                default = "claude-3.5-sonnet", -- $3/$15, maxtokens=8000
+                -- default = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
+                -- default = "claude-3-5-sonnet", -- $3/$15, maxtokens=8000
+                -- default = "gpt-4o-mini",
               },
             },
           })
