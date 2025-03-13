@@ -30,13 +30,13 @@ return {
   {
     "zbirenbaum/copilot.lua",
     opts = {
-      suggestion = { enable = true },
-      panel = { enable = true },
+      suggestion = { enabled = true },
+      panel = { enabled = true },
       filetypes = {
         markdown = true,
         help = true,
       },
-      copilot_node_command = "~/.local/share/mise/installs/node/22.2/bin/node",
+      copilot_node_command = vim.fn.expand("$HOME") .. "/.local/share/mise/installs/node/22/bin/node",
     },
   },
   {
@@ -104,8 +104,8 @@ return {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
-      "echasnovski/mini.pick", -- for file_selector provider mini.pick
-      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+      -- "echasnovski/mini.pick", -- for file_selector provider mini.pick
+      -- "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
       "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
       "ibhagwan/fzf-lua", -- for file_selector provider fzf
       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons

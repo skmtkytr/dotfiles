@@ -7,14 +7,14 @@ return {
     keys = {
       {
         "f",
-        "<cmd>lua require('hop').hint_char1({ current_line_only = false })<CR>",
+        "<cmd>lua require('hop').hint_char2({ current_line_only = false })<CR>",
         desc = "start hop",
-        mode = {"n", "v"},
+        mode = { "n", "v" },
         { silent = true },
       },
       {
         "F",
-        "<cmd>lua require('hop').hint_char1({ direction = require('hop.hint').HintDirection.AFTER_CURSOR, current_line_only = false })<CR>",
+        "<cmd>lua require('hop').hint_char2({ direction = require('hop.hint').HintDirection.AFTER_CURSOR, current_line_only = false })<CR>",
         desc = "start hop AFTER_CURSOR",
         { silent = true },
       },

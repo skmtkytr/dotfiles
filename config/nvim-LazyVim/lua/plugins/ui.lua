@@ -105,7 +105,7 @@ return {
     keys = {
       { "<leader>gg", "<cmd>lua Snacks.lazygit()<CR>" },
       { "<leader>ps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Bufer" },
-      { "<c-/>",      function() Snacks.terminal({"fish"}, { cwd = LazyVim.root(), interactive = true, win = { style = "terminal" } }) end, desc = "Terminal" },
+      { "<c-/>",      function() Snacks.terminal({"tmux", "new-session", "-A", "-s", "main" }, { cwd = LazyVim.root(), interactive = true, win = { style = "terminal" } }) end, desc = "Terminal" },
       -- { "<leader>fp", function() Snacks.picker.projects({ dev = { "~/.ghq/github.com/" }}) end, desc = "Projects"},
     },
     opts = function(_, opts)

@@ -30,6 +30,10 @@ return {
     end,
   },
   {
+    "singrets/diffview.nvim",
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
+  },
+  {
     "pwntester/octo.nvim",
     cmd = { "Octo" },
     lazy = true,
@@ -38,8 +42,11 @@ return {
       "ibhagwan/fzf-lua",
       -- "nvim-tree/nvim-web-devicons",
     },
-    config = function()
-      require("octo").setup()
+    opts = function(_, opts)
+      opts.picker = "fzf-lua"
+    end,
+    config = function(_, opts)
+      require("octo").setup(opts)
     end,
   },
   {
@@ -60,7 +67,7 @@ return {
         markdown = true,
         help = true,
       },
-      copilot_node_command = vim.fn.expand('$HOME') .. "/.local/share/mise/installs/node/22/bin/node",
+      copilot_node_command = vim.fn.expand("$HOME") .. "/.local/share/mise/installs/node/22/bin/node",
     },
   },
 }
