@@ -30,7 +30,7 @@ return {
     end,
   },
   {
-    "singrets/diffview.nvim",
+    "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
   },
   {
