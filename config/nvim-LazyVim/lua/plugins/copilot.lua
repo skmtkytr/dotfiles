@@ -71,7 +71,7 @@ return {
       },
       file_selector = {
         --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string | fun(params: avante.file_selector.IParams|nil): nil
-        provider = "snacks",
+        provider = "fzf",
         -- Options override for custom providers
         provider_opts = {},
       },

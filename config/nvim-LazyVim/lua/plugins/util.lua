@@ -19,6 +19,7 @@ return {
   { "Omochice/yank-remote-url.vim", lazy = true },
   {
     "norcalli/nvim-colorizer.lua",
+    event = "BufRead",
     config = function()
       require("colorizer").setup()
     end,
