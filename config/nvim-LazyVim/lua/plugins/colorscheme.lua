@@ -13,7 +13,13 @@ return {
       -- colorscheme = "cyberdream",
     },
   },
-
+  {
+    "nyoom-engineering/oxocarbon.nvim",
+    -- Add in any other configuration;
+    --   event = foo,
+    --   config = bar
+    --   end,
+  },
   {
     "rmehri01/onenord.nvim",
     priority = 1000,

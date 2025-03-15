@@ -1,3 +1,11 @@
+if vim.env.VSCODE then
+  vim.g.vscode = true
+end
+
+if vim.loader then
+  vim.loader.enable()
+end
+
 if vim.env.PROF then
   -- example for lazy.nvim
   -- change this to the correct path for your plugin manager
@@ -5,7 +13,7 @@ if vim.env.PROF then
   vim.opt.rtp:append(snacks)
   require("snacks.profiler").startup({
     startup = {
-      event = "VimEnter", -- stop profiler on this event. Defaults to `VimEnter`
+      -- event = "VimEnter", -- stop profiler on this event. Defaults to `VimEnter`
       -- event = "UIEnter",
       -- event = "VeryLazy",
     },
