@@ -15,8 +15,25 @@ return {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = { "LspAttach" },
     priority = 1000,
-    config = function()
-      require("tiny-inline-diagnostic").setup()
+    opts = {
+      -- Style preset for diagnostic messages
+      -- Available options:
+      -- "modern", "classic", "minimal", "powerline",
+      -- "ghost", "simple", "nonerdfont", "amongus"
+      preset = "powerline",
+      transparent_bg = false, -- Set the background of the diagnostic to transparent
+      options = {
+        multilines = {
+          -- Enable multiline diagnostic messages
+          enabled = true,
+
+          -- Always show messages on all lines for multiline diagnostics
+          always_show = true,
+        },
+      },
+    },
+    config = function(_, opts)
+      require("tiny-inline-diagnostic").setup(opts)
       vim.diagnostic.config({ virtual_text = false })
     end,
   },
