@@ -56,8 +56,8 @@ magenta = '0xa8a9eb'
 cyan = '0x85dacc'
 white = '0xfff1f3'
 
-[env]
-TERM = "alacritty"
+# [env]
+# TERM = "alacritty"
 
 [font]
 size = 13.0
