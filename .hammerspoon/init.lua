@@ -1,7 +1,8 @@
 local double_press = require("altDoublePress")
 
 local open_alacritty = function()
-	local appName = "Alacritty"
+	-- local appName = "Alacritty"
+	local appName = "Neovide"
 	local app = hs.application.find(appName, true)
 
 	if app == nil or app:isHidden() or not (app:isFrontmost()) then
