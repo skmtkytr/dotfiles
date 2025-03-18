@@ -122,6 +122,10 @@ return {
       Snacks.toggle.profiler_highlights():map("<leader>ph")
 
       opts.scroll = { enabled = true }
+      opts.input = {
+        enabled = true,
+        expand = true,
+      }
       opts.indent = {
         enabled = false,
         char = " ",
