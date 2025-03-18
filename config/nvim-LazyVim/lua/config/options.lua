@@ -4,6 +4,7 @@
 if vim.g.neovide then
   vim.o.guifont = "UDEV Gothic 35NFLG,Symbols Nerd Font Mono:h40"
   vim.g.neovide_scale_factor = 0.3
+  vim.opt.linespace = 1
   vim.g.neovide_input_macos_option_key_is_meta = "only_left"
   vim.g.neovide_cursor_antialiasing = true
 end
