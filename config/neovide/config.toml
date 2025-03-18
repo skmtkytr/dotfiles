@@ -18,4 +18,4 @@ normal = [
   "UDEV Gothic 35NFLG",
   "Symbols Nerd Font Mono",
 ] # Will use the bundled Fira Code Nerd Font by default
-size = 42.0
+size = 13.0
