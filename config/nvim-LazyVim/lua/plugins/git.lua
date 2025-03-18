@@ -1,10 +1,6 @@
 -- git plugins
 return {
   {
-    "tpope/vim-fugitive",
-    -- lazy = true,
-  },
-  {
     "NeogitOrg/neogit",
     cmd = "Neogit",
     keys = {
@@ -56,18 +52,6 @@ return {
     keys = {
       { "<leader>gy", "<cmd>GitLink<cr>", mode = { "n", "v" }, desc = "Yank git link" },
       { "<leader>gY", "<cmd>GitLink!<cr>", mode = { "n", "v" }, desc = "Open git link" },
-    },
-  },
-  {
-    "zbirenbaum/copilot.lua",
-    opts = {
-      suggestion = { enabled = false },
-      panel = { enabled = false },
-      filetype = {
-        markdown = true,
-        help = true,
-      },
-      copilot_node_command = vim.fn.expand("$HOME") .. "/.local/share/mise/installs/node/22/bin/node",
     },
   },
 }

@@ -5,32 +5,6 @@ return {
     "vim-skk/skkeleton",
   },
   {
-    "echasnovski/mini.indentscope",
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "trouble",
-          "lazy",
-          "mason",
-          "notify",
-          "toggleterm",
-          "lazyterm",
-          "fzf",
-          "fzf_exec",
-          "grep",
-        },
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
-      })
-    end,
-  },
-  {
     "folke/zen-mode.nvim",
     opts = {
       -- your configuration comes here
@@ -216,7 +190,17 @@ return {
       { "vim-denops/denops.vim" },
     },
   },
-
+  {
+    "stevearc/oil.nvim",
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
+  },
   -- fzf-lua
   {
     "ibhagwan/fzf-lua",
@@ -393,6 +377,7 @@ return {
           use_treesitter = true,
           -- details about support_filetypes and exclude_filetypes in https://github.com/shellRaining/hlchunk.nvim/blob/main/lua/hlchunk/utils/filetype.lua
           support_filetypes = {
+            "*.svelte",
             "*.ts",
             "*.tsx",
             "*.js",
@@ -513,7 +498,6 @@ return {
       })
     end,
   },
-
   {
     "Bekaboo/dropbar.nvim",
     event = { "UIEnter" },

@@ -50,7 +50,7 @@ return {
       -- provider = "openai",
       auto_suggestions_provider = "copilot",
       behaviour = {
-        auto_suggestions = true,
+        auto_suggestions = false,
         auto_set_highlight_group = true,
         auto_set_keymaps = true,
         auto_apply_diff_after_generation = true,
@@ -87,12 +87,12 @@ return {
         -- model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
         model = "claude-3.5-sonnet", -- $3/$15, maxtokens=8000
         -- model = "gpt-4o-mini",
-        max_tokens = 4096,
+        max_tokens = 8000,
       },
       openai = {
         model = "gpt-4o", -- $2.5/$10
         -- model = "gpt-4o-mini", -- $0.15/$0.60
-        max_tokens = 4096,
+        max_tokens = 8000,
       },
     },
 
@@ -100,6 +100,7 @@ return {
     build = "make",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
+      "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",

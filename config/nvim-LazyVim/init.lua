@@ -6,6 +6,10 @@ if vim.loader then
   vim.loader.enable()
 end
 
+_G.dd = function(...)
+  require("snacks.debug").inspect(...)
+end
+
 if vim.env.PROF then
   -- example for lazy.nvim
   -- change this to the correct path for your plugin manager
@@ -20,4 +24,17 @@ if vim.env.PROF then
   })
 end
 -- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
+require("config.lazy").load({
+  -- debug = false,
+  profiling = {
+    loader = false,
+    require = true,
+  },
+})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    require("util").version()
+  end,
+})

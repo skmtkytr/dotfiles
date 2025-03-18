@@ -1,6 +1,11 @@
 -- util settings
 
 return {
+  {
+    "m4xshen/hardtime.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    opts = {},
+  },
   { "pteroctopus/faster.nvim" },
   { "dstein64/vim-startuptime" },
   {
@@ -48,7 +53,7 @@ return {
   -- other.vim
   {
     "rgroli/other.nvim",
-    cmd = { "Other", "OtherClear" },
+    cmd = { "Other", "OtherClear", "OtherSplit", "OtherVSplit" },
     config = function()
       local rails_controller_patterns = {
         { target = "/spec/controllers/%1_spec.rb", context = "spec" },
@@ -57,6 +62,11 @@ return {
         { target = "/app/models/%1.rb", context = "models", transformer = "singularize" },
         { target = "/app/controllers/%1.rb", context = "controllers", transformer = "singularize" },
         { target = "/app/views/%1/**/*.html.*", context = "view" },
+      }
+      local sveltekit_target = {
+        { target = "/%1/%+%2.svelte", context = "view" },
+        { target = "/%1/%+%2\\(*.ts\\|*.js\\)", context = "script", transform = "remove_server" },
+        { target = "/%1/%+%2\\(*.ts\\|*.js\\)", context = "script", transform = "add_server" },
       }
       require("other-nvim").setup({
         mappings = {
@@ -166,6 +176,27 @@ return {
               { target = "/lib/%1.rb", context = "lib" },
               { target = "/sig/%1.rbs", context = "sig" },
             },
+          },
+          -- sveltekit
+          {
+            pattern = "/(.*)/%+(.*).server.ts$",
+            target = sveltekit_target,
+          },
+          {
+            pattern = "/(.*)/%+(.*).server.js$",
+            target = sveltekit_target,
+          },
+          {
+            pattern = "/(.*)/%+(.*).ts$",
+            target = sveltekit_target,
+          },
+          {
+            pattern = "/(.*)/%+(.*).js$",
+            target = sveltekit_target,
+          },
+          {
+            pattern = "/(.*)/%+(.*).svelte$",
+            target = sveltekit_target,
           },
         },
         transformers = {

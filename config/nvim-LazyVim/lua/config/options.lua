@@ -1,8 +1,16 @@
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
+if vim.g.neovide then
+  vim.o.guifont = "UDEV Gothic 35NFLG,Symbols Nerd Font Mono:h34"
+  vim.g.neovide_scale_factor = 0.3
+end
 
 local options = {
+  backup = true,
+  cmdheight = 0,
+  backupdir = vim.fn.stdpath("state") .. "/backup",
+  mousescroll = "ver:1,hor:4",
   --   encoding = "utf-8",
   --   fileencoding = "utf-8",
   --   title = true,
@@ -63,3 +71,9 @@ for k, v in pairs(options) do
 end
 
 vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
+
+vim.g.deprecation_warnings = true
+-- better coop with fzf-lua
+vim.env.FZF_DEFAULT_OPTS = ""
+vim.g.ai_cmp = false
+vim.g.lazyvim_blink_main = not jit.os:find("Windows")
