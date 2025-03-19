@@ -11,6 +11,13 @@ if vim.g.neovide then
   vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
   vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
   vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
+
+  vim.api.nvim_set_keymap("v", "<sc-c>", '"+y', { noremap = true })
+  vim.api.nvim_set_keymap("n", "<sc-v>", 'l"+P', { noremap = true })
+  vim.api.nvim_set_keymap("v", "<sc-v>", '"+P', { noremap = true })
+  vim.api.nvim_set_keymap("c", "<sc-v>", '<C-o>l<C-o>"+<C-o>P<C-o>l', { noremap = true })
+  vim.api.nvim_set_keymap("i", "<sc-v>", '<ESC>l"+Pli', { noremap = true })
+  vim.api.nvim_set_keymap("t", "<sc-v>", '<C-\\><C-n>"+Pi', { noremap = true })
 end
 
 -- Allow clipboard copy paste in neovim

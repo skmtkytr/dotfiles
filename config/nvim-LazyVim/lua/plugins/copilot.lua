@@ -45,6 +45,7 @@ return {
     lazy = false,
     version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
     opts = {
+      -- provider = "ollama",
       provider = "copilot",
       -- provider = "claude",
       -- provider = "openai",
@@ -55,6 +56,7 @@ return {
         auto_set_keymaps = true,
         auto_apply_diff_after_generation = true,
         support_paste_from_clipboard = true,
+        enable_cursor_planning_mode = true, -- enable cursor planning mode!
       },
       windows = {
         position = "right",
@@ -76,6 +78,9 @@ return {
         provider_opts = {},
       },
       -- providers-setting
+      ollama = {
+        model = "phi4",
+      },
       claude = {
         model = "claude-3-5-sonnet-20241022", -- $3/$15, maxtokens=8000
         -- model = "claude-3-opus-20240229",  -- $15/$75
@@ -85,7 +90,8 @@ return {
       copilot = {
         -- model = "gpt-4o-2024-05-13",
         -- model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
-        model = "claude-3.5-sonnet", -- $3/$15, maxtokens=8000
+        -- model = "claude-3.5-sonnet", -- $3/$15, maxtokens=8000
+        model = "claude-3.7-sonnet", -- $3/$15, maxtokens=8000
         -- model = "gpt-4o-mini",
         max_tokens = 8000,
       },
@@ -156,7 +162,8 @@ return {
           return require("codecompanion.adapters").extend("ollama", {
             schema = {
               model = {
-                default = "codellama:7b",
+                default = "phi4",
+                -- default = "codellama:7b",
               },
             },
           })
