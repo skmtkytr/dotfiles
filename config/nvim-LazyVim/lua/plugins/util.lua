@@ -3,6 +3,7 @@
 return {
   {
     "m4xshen/hardtime.nvim",
+    event = "VeryLazy",
     dependencies = { "MunifTanjim/nui.nvim" },
     opts = {
       disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "oil" },
@@ -10,27 +11,7 @@ return {
         ["<Up>"] = {},
         ["<Space>"] = { "n", "x" },
       },
-      hints = {
-        ["k%^"] = {
-          message = function()
-            return "Use - instead of k^" -- return the hint message you want to display
-          end,
-          length = 2, -- the length of actual key strokes that matches this pattern
-        },
-        ["d[tTfF].i"] = { -- this matches d + {t/T/f/F} + {any character} + i
-          message = function(keys) -- keys is a string of key strokes that matches the pattern
-            return "Use " .. "c" .. keys:sub(2, 3) .. " instead of " .. keys
-            -- example: Use ct( instead of dt(i
-          end,
-          length = 4,
-        },
-      },
     },
-    setup = function()
-      vim.g.hardtime_default_on = 1
-      vim.g.hardtime_allow_different_key = 1
-      vim.g.hardtime_default_timeout = 500
-    end,
     config = function(_, opts)
       require("hardtime").setup(opts)
     end,
@@ -48,7 +29,6 @@ return {
     "lambdalisue/vim-manpager",
     cmd = "ASMANPAGER",
   },
-  -- { "wakatime/vim-wakatime", lazy = false },
 
   { "Omochice/yank-remote-url.vim", lazy = true },
   {
