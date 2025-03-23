@@ -91,7 +91,7 @@ if test "$FISH_CONFIG" -nt "$CONFIG_CACHE"
 
     # ruby
     # type -q brew && echo "fish_add_path $(brew --prefix)/opt/ruby/bin" >>$CONFIG_CACHE
-    type -q mise && mise activate fish >>$CONFIG_CACHE
+    type -q mise && mise activate --shims fish >>$CONFIG_CACHE
     type -q mise && echo "fish_add_path $(mise where ruby)/bin" >>$CONFIG_CACHE
     type -q gem && echo "fish_add_path $(gem environment gemdir)/bin" >>$CONFIG_CACHE
     # asdf exec direnv hook fish | source
