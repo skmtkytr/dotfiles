@@ -8,8 +8,8 @@ return {
     opts = {
       disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "oil" },
       disabled_keys = {
-        ["<Up>"] = {},
-        ["<Space>"] = { "n", "x" },
+        -- ["<Up>"] = {},
+        -- ["<Space>"] = { "n", "x" },
       },
     },
     config = function(_, opts)
