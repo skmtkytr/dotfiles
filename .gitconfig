@@ -87,3 +87,8 @@
 	repo = /Users/skmtkytr/.ghq/github.com/hello-ai/auto_reserve
 [protocol]
 	version = 2
+[url "git@github.com:"]
+	pushInsteadOf = git://github.com/
+	pushInsteadOf = https://github.com/
+[url "git://github.com/"]
+	insteadOf = https://github.com/
