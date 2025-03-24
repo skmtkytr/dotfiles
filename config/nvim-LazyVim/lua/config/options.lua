@@ -1,8 +1,9 @@
--- Options are automatically loaded before lazy.nvim startup
+-- Options are automatically loaded before lazy.nvim startupUDEV Gothic 35NFLG,Symbols Nerd Font Mono:h12
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 if vim.g.neovide then
-  vim.o.guifont = "UDEV Gothic 35NFLG,Symbols Nerd Font Mono:h13"
+  -- vim.o.guifont = "UDEV Gothic 35NFLG,Symbols Nerd Font Mono:h12"
+  vim.o.guifont = "UDEV Gothic 35NFLG:h12"
   vim.g.neovide_scale_factor = 1
   vim.opt.linespace = 1
   vim.g.neovide_input_macos_option_key_is_meta = "only_left"
@@ -75,6 +76,7 @@ end
 
 vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 
+vim.g.editorconfig = true
 vim.g.deprecation_warnings = true
 -- better coop with fzf-lua
 vim.env.FZF_DEFAULT_OPTS = ""
