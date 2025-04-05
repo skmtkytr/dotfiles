@@ -1,9 +1,10 @@
 -- eazymotion plugins
 return {
   {
-    "hadronized/hop.nvim",
+    -- "hadronized/hop.nvim",
+    "smoka7/hop.nvim",
+    version = "*",
     lazy = true,
-    branch = "v2", -- optional but strongly recommended
     keys = {
       {
         "f",
