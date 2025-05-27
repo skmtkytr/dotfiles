@@ -10,6 +10,6 @@ return {
   { "kevinhwang91/nvim-hlslens", enabled = false, optional = true },
   { "nvim-telescope/telescope.nvim", enabled = false, optional = true },
   { "shellRaining/hlchunk.nvim", enabled = false, optional = true },
-  { "pteroctopus/faster.nvim" enabled = false, optional = true },
+  { "pteroctopus/faster.nvim", enabled = false, optional = true },
   -- { "petertriho/nvim-scrollbar", enabled = false, optional = true },
 }
