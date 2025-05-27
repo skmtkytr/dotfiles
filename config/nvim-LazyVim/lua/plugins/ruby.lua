@@ -12,7 +12,7 @@ return {
         "ruby",
       })
 
-      opts["endwise"] = { enable = true }
+      -- opts["endwise"] = { enable = true }
     end,
   },
   -- {

@@ -95,13 +95,16 @@ return {
       -- Toggle the profiler highlights
       Snacks.toggle.profiler_highlights():map("<leader>ph")
 
-      opts.scroll = { enabled = true }
+      opts.scroll = { enabled = false }
+      opts.bigfile = {
+        enabled = false,
+      }
       opts.input = {
         enabled = true,
         expand = true,
       }
       opts.indent = {
-        enabled = false,
+        enabled = true,
         char = " ",
         only_scope = true,
         only_current = true,

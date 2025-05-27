@@ -22,4 +22,8 @@ return {
       vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
     end,
   },
+  {
+    "renerocksai/telekasten.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+  },
 }
