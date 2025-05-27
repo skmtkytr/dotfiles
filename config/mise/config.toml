@@ -1,5 +1,6 @@
 [tools]
 bat = "latest"
+bun = "latest"
 delta = "latest"
 eza = "latest"
 fd = "latest"
@@ -16,3 +17,6 @@ starship = "latest"
 tmux = "latest"
 usage = "latest"
 zoxide = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["ruby"]

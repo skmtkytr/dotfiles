@@ -11,3 +11,6 @@ customCommands:
     command: "gh pr create --fill --web"
     context: "global"
     loadingText: "Creating pull request on GitHub"
+
+os:
+  open: 'nvim --server "$HOME/.nvim-server.sock" --remote-send "<C-\><C-N>:execute \"lua Snacks.lazygit() \" | e {{filename}}<CR>"'
