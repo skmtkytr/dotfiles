@@ -104,7 +104,7 @@ return {
         expand = true,
       }
       opts.indent = {
-        enabled = true,
+        enabled = false,
         char = " ",
         only_scope = true,
         only_current = true,
@@ -369,6 +369,20 @@ return {
   },
 
   -- like indent-blankline
+
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "VeryLazy",
+    main = "ibl",
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = function (_, opts)
+      return require("indent-rainbowline").make_opts(opts)
+    end,
+    dependencies = {
+      "TheGLander/indent-rainbowline.nvim"
+    },
+  },
   {
     "shellRaining/hlchunk.nvim",
     event = { "BufReadPre", "BufNewFile" },
