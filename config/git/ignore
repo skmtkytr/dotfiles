@@ -19,3 +19,5 @@ node_modules/*
 .pryrc
 
 **/config/direnv/allow
+
+**/.claude/settings.local.json
