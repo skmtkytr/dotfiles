@@ -1,7 +1,16 @@
 [user]
 	name = Kyotaro Sakamoto / skmtkytr
 	email = skmtkytr+github@gmail.com
-	signingkey = 88EF01124
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAtLJNrHZ1GVPt76xOt/TpIYqDDZxVLFkz973076aUHh
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[commit]
+  gpgsign = true
 [core]
 	autoCRLF = false
 	safecrlf = true
