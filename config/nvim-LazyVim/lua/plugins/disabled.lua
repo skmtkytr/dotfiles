@@ -12,4 +12,6 @@ return {
   { "shellRaining/hlchunk.nvim", enabled = false, optional = true },
   { "pteroctopus/faster.nvim", enabled = false, optional = true },
   -- { "petertriho/nvim-scrollbar", enabled = false, optional = true },
+  --
+  { "yetone/avante.nvim", enabled = false, optional = true },
 }

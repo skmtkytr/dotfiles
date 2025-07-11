@@ -56,6 +56,29 @@ return {
     },
   },
   {
+    "coder/claudecode.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    config = true,
+    keys = {
+      { "<leader>a", nil, desc = "AI/Claude Code" },
+      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+      { "<leader>ar", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
+      { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+      {
+        "<leader>as",
+        "<cmd>ClaudeCodeTreeAdd<cr>",
+        desc = "Add file",
+        ft = { "NvimTree", "neo-tree", "oil" },
+      },
+      -- Diff management
+      { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+    },
+  },
+  {
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
@@ -65,6 +88,31 @@ return {
       provider = "copilot",
       -- provider = "claude",
       -- provider = "openai",
+      providers = {
+        ollama = {
+          model = "phi4",
+        },
+        claude = {
+          -- model = "claude-3-5-sonnet-20241022", -- $3/$15, maxtokens=8000
+          -- model = "claude-3-opus-20240229",  -- $15/$75
+          -- model = "claude-3-haiku-20240307", -- $0.25/1.25
+          model = "claude-4-sonnet", -- $3/$15, maxtokens=8000
+          -- max_tokens = 8000,
+        },
+        copilot = {
+          -- model = "gpt-4o-2024-05-13",
+          -- model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
+          -- model = "claude-3.5-sonnet", -- $3/$15, maxtokens=8000
+          model = "claude-4-sonnet", -- $3/$15, maxtokens=8000
+          -- model = "gpt-4o-mini",
+          -- max_tokens = 8000,
+        },
+        openai = {
+          model = "gpt-4o", -- $2.5/$10
+          -- model = "gpt-4o-mini", -- $0.15/$0.60
+          -- max_tokens = 8000,
+        },
+      }, -- or "copilot" for Copilot Chat
       auto_suggestions_provider = "copilot",
       behaviour = {
         auto_suggestions = false,
@@ -94,28 +142,6 @@ return {
         provider_opts = {},
       },
       -- providers-setting
-      ollama = {
-        model = "phi4",
-      },
-      claude = {
-        model = "claude-3-5-sonnet-20241022", -- $3/$15, maxtokens=8000
-        -- model = "claude-3-opus-20240229",  -- $15/$75
-        -- model = "claude-3-haiku-20240307", -- $0.25/1.25
-        max_tokens = 8000,
-      },
-      copilot = {
-        -- model = "gpt-4o-2024-05-13",
-        -- model = "claude-3-5-sonnet-20240620", -- $3/$15, maxtokens=8000
-        -- model = "claude-3.5-sonnet", -- $3/$15, maxtokens=8000
-        model = "claude-3.7-sonnet", -- $3/$15, maxtokens=8000
-        -- model = "gpt-4o-mini",
-        max_tokens = 8000,
-      },
-      openai = {
-        model = "gpt-4o", -- $2.5/$10
-        -- model = "gpt-4o-mini", -- $0.15/$0.60
-        max_tokens = 8000,
-      },
       -- system_prompt as function ensures LLM always has latest MCP server state
       -- This is evaluated for every message, even in existing chats
       system_prompt = function()
