@@ -46,7 +46,11 @@ function devup --description "Start mono-local devcontainer"
             return 1
         end
         echo "==> chezmoi apply inside container..."
-        docker exec -u vscode $cid \
+        set -l tok ""
+        if command -v gh >/dev/null 2>&1
+            set tok (gh auth token 2>/dev/null)
+        end
+        docker exec -u vscode -e GITHUB_TOKEN=$tok $cid \
             bash -lc 'PATH=/usr/local/bin:$PATH chezmoi apply --no-tty --force'
         return $status
     end
@@ -96,6 +100,17 @@ function devup --description "Start mono-local devcontainer"
     done' &
     disown $last_pid 2>/dev/null
     echo "  open bridge: localhost:12346 → host $open_cmd"
+
+    # --- Pull GITHUB_TOKEN from gh so the container avoids API rate limits ---
+    if not set -q GITHUB_TOKEN
+        if command -v gh >/dev/null 2>&1
+            set -l tok (gh auth token 2>/dev/null)
+            if test -n "$tok"
+                set -gx GITHUB_TOKEN $tok
+                echo "  exported GITHUB_TOKEN from gh auth"
+            end
+        end
+    end
 
     # --- devcontainer up ---
     echo "==> starting container..."

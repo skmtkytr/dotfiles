@@ -20,7 +20,8 @@
   "containerEnv": {
     "TZ": "Asia/Tokyo",
     "SSH_AUTH_SOCK": "/home/vscode/.ssh/ssh-agent-bridge.sock",
-    "HOST_HOME": "${localEnv:HOME}"
+    "HOST_HOME": "${localEnv:HOME}",
+    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}"
   },
   "remoteUser": "vscode",
   "postCreateCommand": ""
