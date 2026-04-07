@@ -1,0 +1,114 @@
+[user]
+	name = {{ .git.name | quote }}
+	email = {{ .git.email | quote }}
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAtLJNrHZ1GVPt76xOt/TpIYqDDZxVLFkz973076aUHh
+
+[gpg]
+	format = ssh
+
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
+{{- if eq .chezmoi.os "darwin" }}
+	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+{{- else if stat "/opt/1Password/op-ssh-sign" }}
+	program = "/opt/1Password/op-ssh-sign"
+{{- else }}
+	program = ssh-keygen
+{{- end }}
+
+[commit]
+	gpgsign = true
+
+[core]
+	autocrlf = false
+	safecrlf = true
+	editor = "nvim "
+	pager = delta
+{{- if or (eq .chezmoi.os "darwin") (stat "/opt/1Password/op-ssh-sign") }}
+	fsmonitor = true
+{{- else }}
+	fsmonitor = false
+{{- end }}
+	untrackedcache = true
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	light = false
+	side-by-side = true
+	plus-style = "syntax #012800"
+	minus-style = "syntax #340001"
+	syntax-theme = Monokai Extended
+
+[alias]
+	co = checkout
+	br = branch -vv
+	st = status
+	ba = branch -a
+	graph = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	gr = graph
+	difff = diff --word-diff
+	stt = status -uno
+	today = log --oneline --since='12 hour ago'
+	showfn = show --pretty="" --name-only
+	showpr = "!f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
+	openpr = "!f() { gh pr view --web; }; f"
+	pushf = push --force-with-lease --force-if-includes
+
+[fetch]
+	prune = true
+
+[ghq]
+	root = ~/.ghq
+
+[push]
+	default = upstream
+	autoSetupRemote = true
+
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+
+[mergetool]
+	path = nvim
+
+[difftool]
+	path = nvim
+
+[diff]
+	tool = nvimdiff
+	colorMoved = default
+
+[difftool "nvimdiff"]
+	cmd = "nvim -R -d -c \"wincmd l\" -d \"$LOCAL\" \"$REMOTE\""
+
+[mergetool "nvimdiff"]
+	cmd = "nvim -d -c \"4wincmd w | wincmd J\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"  \"$MERGED\""
+
+[pull]
+	rebase = false
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+{{- if eq .chezmoi.os "darwin" }}
+
+[credential]
+	helper = osxkeychain
+	helper =
+{{- end }}
+
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+[protocol]
+	version = 2
