@@ -7,3 +7,8 @@
 
 # macOS
 .DS_Store
+
+# Runtime / cache files that get copied alongside configs
+*.log
+**/backup
+**/automatic_backups/

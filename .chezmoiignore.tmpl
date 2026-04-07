@@ -4,6 +4,13 @@
   例: dot_config/karabiner というソースは .config/karabiner として記述する。
 */}}
 
+{{/* リポジトリメタファイル — デプロイ対象外 */}}
+README.md
+docs
+
+{{/* 旧リポジトリから移植する際に紛れ込むゴミ */}}
+.config/alacritty/backup
+
 {{- if ne .chezmoi.os "darwin" }}
 .config/karabiner
 .config/Brewfile
