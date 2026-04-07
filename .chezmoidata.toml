@@ -9,3 +9,6 @@ user = "skmtkytr"
 # 1Password CLI が利用可能な環境かどうか。
 # devcontainer など op が動かない環境では override で false にする。
 secrets_available = true
+# devcontainer 内で chezmoi apply されているかどうか。
+# host のデフォルトは false。container の chezmoi.toml で true に上書きする。
+in_devcontainer = false
