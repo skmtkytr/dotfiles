@@ -1,12 +1,11 @@
-# dotfiles-v2
+# dotfiles
 
 [chezmoi](https://www.chezmoi.io/) managed dotfiles.
-Migration target from [`skmtkytr/dotfiles`](https://github.com/skmtkytr/dotfiles).
 
 ## Bootstrap a new machine
 
 ```sh
-sh -c "$(curl -fsSL https://chezmoi.io/get)" -- init --apply skmtkytr/dotfiles-v2
+sh -c "$(curl -fsSL https://chezmoi.io/get)" -- init --apply skmtkytr/dotfiles
 ```
 
 This installs `chezmoi`, clones this repository, and applies it to `$HOME`.
@@ -28,7 +27,3 @@ This installs `chezmoi`, clones this repository, and applies it to `$HOME`.
 - **Secrets**: `{{ onepasswordRead "op://Vault/Item/field" }}` で 1Password から取得
 - **Out of scope**: `~/.claude/projects/*/memory/` はランタイム書き込みのため chezmoi 管理外。
   必要なら `~/.claude/CLAUDE.md` にサマリして永続化する運用。
-
-## Migration status
-
-WIP. See `docs/migration.md` for the plan and progress.
