@@ -47,7 +47,7 @@ function devup --description "Start mono-local devcontainer"
         end
         echo "==> chezmoi apply inside container..."
         docker exec -u vscode $cid \
-            bash -lc 'PATH=/usr/local/bin:$PATH chezmoi apply --no-tty'
+            bash -lc 'PATH=/usr/local/bin:$PATH chezmoi apply --no-tty --force'
         return $status
     end
 

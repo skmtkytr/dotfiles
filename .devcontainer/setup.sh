@@ -88,9 +88,10 @@ echo "  installed ssh-agent-bridge helper"
 
 # -------------------------------------------------------------------
 # 4. chezmoi apply — deploys all dot_config files into ~/.config etc.
+# --force: non-interactive overwrite of any drift (no TTY here)
 # -------------------------------------------------------------------
 echo "==> chezmoi apply"
-chezmoi apply --no-tty
+chezmoi apply --no-tty --force
 
 # -------------------------------------------------------------------
 # 5. devcontainer-specific mise tools
