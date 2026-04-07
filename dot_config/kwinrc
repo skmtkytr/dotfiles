@@ -5,6 +5,7 @@ Rows=1
 
 [Plugins]
 focus-parentEnabled=true
+blurEnabled=true
 
 [Tiling][cf175004-271d-4b41-a865-5d049513c4d0][a32d25ad-85cb-42ca-b75e-ecba8ef263e2]
 padding=4
