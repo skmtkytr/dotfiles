@@ -1,0 +1,11 @@
+[git]
+name = "Kyotaro Sakamoto / skmtkytr"
+email = "skmtkytr+github@gmail.com"
+
+[github]
+user = "skmtkytr"
+
+[features]
+# 1Password CLI が利用可能な環境かどうか。
+# devcontainer など op が動かない環境では override で false にする。
+secrets_available = true

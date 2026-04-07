@@ -1,0 +1,9 @@
+# chezmoi state files
+.chezmoiremove
+
+# Editor temp
+*.swp
+*~
+
+# macOS
+.DS_Store

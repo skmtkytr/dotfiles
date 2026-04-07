@@ -1,0 +1,65 @@
+{{/*
+  .chezmoiignore.tmpl
+  ターゲット側パス（"~/" 起点）でマッチする。
+  例: dot_config/karabiner というソースは .config/karabiner として記述する。
+*/}}
+
+{{- if ne .chezmoi.os "darwin" }}
+.config/karabiner
+.config/Brewfile
+Brewfile
+{{- end }}
+
+{{- if ne .chezmoi.os "linux" }}
+.config/autostart
+.config/chrome-flags.conf
+.config/dolphinrc
+.config/dunst
+.config/environment.d
+.config/eww
+.config/fcitx5
+.config/foot
+.config/hypr
+.config/kdeglobals
+.config/kglobalshortcutsrc
+.config/kwinrc
+.config/mimeapps.list
+.config/openrazer
+.config/plasmarc
+.config/rofi
+.config/spectaclerc
+.config/start_Hyprland.sh
+.config/user-dirs.dirs
+.config/user-dirs.locale
+.config/waybar
+{{- end }}
+
+{{/* ============================================================
+     ランタイム生成物 / キャッシュ — どの OS でも追跡しない
+     ============================================================ */}}
+.config/fish/completions
+.config/fish/functions
+.config/fish/conf.d/autopair.fish
+.config/fish/conf.d/abbr_tips.fish
+.config/fish/conf.d/fzf.fish
+.config/fish/conf.d/ghq_key_bindings.fish
+.config/fish/fish_variables
+.config/nvim/lazy-lock.json
+.config/btop/btop.log
+.config/karabiner/automatic_backups
+.config/fcitx5/conf/cached_layouts
+
+{{/*
+  Claude Code: projects 配下の memory ディレクトリは Claude 自身が
+  ランタイムで書き込むため chezmoi 管理外。memory は CLAUDE.md に
+  サマリして蓄積していく運用。
+*/}}
+.claude/projects
+
+{{/* ============================================================
+     1Password の op CLI が無い環境では secret テンプレを skip
+     ============================================================ */}}
+{{- if not .features.secrets_available }}
+.config/stripe
+.config/gws
+{{- end }}
