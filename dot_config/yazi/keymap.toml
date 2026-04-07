@@ -1,0 +1,46 @@
+# === bunny (hop menu) ===
+[[mgr.prepend_keymap]]
+on   = ";"
+run  = "plugin bunny"
+desc = "Bunny hop menu"
+
+[[mgr.prepend_keymap]]
+on   = "'"
+run  = "plugin bunny fuzzy"
+desc = "Bunny fuzzy search"
+
+# === yamb (persistent bookmarks) ===
+[[mgr.prepend_keymap]]
+on   = ["m", "a"]
+run  = "plugin yamb -- save"
+desc = "Add bookmark"
+
+[[mgr.prepend_keymap]]
+on   = ["m", "g"]
+run  = "plugin yamb -- jump_by_key"
+desc = "Jump bookmark by key"
+
+[[mgr.prepend_keymap]]
+on   = ["m", "G"]
+run  = "plugin yamb -- jump_by_fzf"
+desc = "Jump bookmark by fzf"
+
+[[mgr.prepend_keymap]]
+on   = ["m", "d"]
+run  = "plugin yamb -- delete_by_key"
+desc = "Delete bookmark by key"
+
+[[mgr.prepend_keymap]]
+on   = ["m", "D"]
+run  = "plugin yamb -- delete_by_fzf"
+desc = "Delete bookmark by fzf"
+
+[[mgr.prepend_keymap]]
+on   = ["m", "r"]
+run  = "plugin yamb -- rename_by_key"
+desc = "Rename bookmark by key"
+
+[[mgr.prepend_keymap]]
+on   = ["m", "R"]
+run  = "plugin yamb -- rename_by_fzf"
+desc = "Rename bookmark by fzf"
