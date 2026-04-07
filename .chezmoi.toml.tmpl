@@ -1,0 +1,6 @@
+{{- /* Per-machine prompts. Stored in ~/.config/chezmoi/chezmoi.toml after first init. */ -}}
+{{- $alacrittyFontSize := promptIntOnce . "alacritty.fontSize" "Alacritty font size" 12 -}}
+
+[data]
+    [data.alacritty]
+    fontSize = {{ $alacrittyFontSize }}
