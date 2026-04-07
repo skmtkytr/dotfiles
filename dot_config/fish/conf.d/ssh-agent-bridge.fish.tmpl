@@ -1,0 +1,13 @@
+# Bring the host's 1Password SSH agent socket into this container.
+# devup.fish on the host runs `socat TCP-LISTEN:12345 ... ~/.ssh/agent.sock`
+# and --network=host lets us reach 127.0.0.1:12345 directly.
+# The helper script is installed by .devcontainer/setup.sh.
+#
+# This file is only deployed when .features.in_devcontainer is true
+# (gated via .chezmoiignore.tmpl).
+
+if status is-interactive
+    if test -x "$HOME/.local/bin/ssh-agent-bridge.sh"
+        bash "$HOME/.local/bin/ssh-agent-bridge.sh" >/dev/null 2>&1
+    end
+end

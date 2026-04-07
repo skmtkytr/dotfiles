@@ -1,0 +1,29 @@
+{
+  "name": "dotfiles-mono-local",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": ["--network=host"],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+    "ghcr.io/devcontainers/features/go:1": {},
+    "ghcr.io/devcontainers/features/rust:1": {}
+  },
+  "workspaceMount": "",
+  "workspaceFolder": "/home/vscode",
+  "mounts": [
+    "source=devcontainer-mise-data,target=/home/vscode/.local/share/mise,type=volume",
+    "source=devcontainer-nvim-data,target=/home/vscode/.local/share/nvim,type=volume",
+    "source=devcontainer-fish-data,target=/home/vscode/.local/share/fish,type=volume",
+    "source=devcontainer-tmux-data,target=/home/vscode/.local/share/tmux,type=volume",
+    "source=${localEnv:HOME}/.ghq,target=/home/vscode/.ghq,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.local/share/chezmoi,target=/home/vscode/.local/share/chezmoi,type=bind,consistency=cached"
+  ],
+  "containerEnv": {
+    "TZ": "Asia/Tokyo",
+    "SSH_AUTH_SOCK": "/home/vscode/.ssh/ssh-agent-bridge.sock",
+    "HOST_HOME": "${localEnv:HOME}"
+  },
+  "remoteUser": "vscode",
+  "postCreateCommand": ""
+}

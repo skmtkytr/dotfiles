@@ -63,3 +63,10 @@ Brewfile
 {{- if not .features.secrets_available }}
 .config/gws
 {{- end }}
+
+{{/* ============================================================
+     devcontainer 内でのみデプロイするファイル (host では skip)
+     ============================================================ */}}
+{{- if not .features.in_devcontainer }}
+.config/fish/conf.d/ssh-agent-bridge.fish
+{{- end }}
