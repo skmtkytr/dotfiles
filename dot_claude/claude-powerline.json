@@ -1,0 +1,29 @@
+{
+  "display": {
+    "style": "minimal",
+    "charset": "unicode",
+    "padding": 1,
+    "lines": [
+      {
+        "segments": {
+          "model": { "enabled": false },
+          "context": { "enabled": true, "displayStyle": "bar", "percentageMode": "used" },
+          "session": { "enabled": true, "type": "cost" },
+          "today": { "enabled": true, "type": "cost" },
+          "directory": { "enabled": false },
+          "git": { "enabled": false },
+          "metrics": { "enabled": false },
+          "tmux": { "enabled": false },
+          "sessionId": { "enabled": false },
+          "version": { "enabled": false },
+          "block": { "enabled": true, "type": "cost" }
+        }
+      }
+    ]
+  },
+  "budget": {
+    "session": { "warningThreshold": 80 },
+    "today": { "warningThreshold": 80, "amount": 50 },
+    "block": { "warningThreshold": 80, "amount": 15 }
+  }
+}
