@@ -18,7 +18,19 @@ echo "==> dotfiles devcontainer setup (chezmoi-native)"
 
 # -------------------------------------------------------------------
 # 1. Fix ownership of named volumes (created as root by docker)
+#
+# Docker also creates the parent dirs (~/.local, ~/.local/share) as root
+# when mounting volumes underneath, so vscode can't create siblings like
+# ~/.local/share/uv. Chown those parents non-recursively first.
 # -------------------------------------------------------------------
+for parent in ~/.local ~/.local/share
+do
+    if [ -d "$parent" ]; then
+        sudo chown "$(id -u):$(id -g)" "$parent" 2>/dev/null \
+            && echo "  fixed ownership: $parent"
+    fi
+done
+
 for vol_dir in \
     ~/.local/share/mise \
     ~/.local/share/nvim \
