@@ -1,0 +1,47 @@
+[env]
+_.file = "~/.config/mise/.env"
+# powerline-status 2.7 は Python 3.14 の argparse と非互換のため 3.13 を指定
+# mise install 時に UV_PYTHON として効く
+UV_PYTHON = "3.13"
+
+[settings]
+trusted_config_paths = ["~"]
+node.verify = false
+
+# Base tools — used on both local host and devcontainer
+[tools]
+bat = "latest"
+delta = "latest"
+eza = "latest"
+fastfetch = "latest"
+fd = "latest"
+fzf = "latest"
+gh = "latest"
+ghq = "latest"
+glow = "latest"
+hyperfine = "latest"
+jj = "latest"
+jq = "latest"
+lazydocker = "latest"
+lazygit = "latest"
+node = "25.6.1"
+"npm:@anthropic-ai/claude-code" = "latest"
+"npm:ccusage" = "latest"
+"npm:@devcontainers/cli" = "latest"
+pipx = "latest"
+"pipx:powerline-status" = "latest"
+ripgrep = "latest"
+starship = "latest"
+stylua = "latest"
+usage = "latest"
+uv = "latest"
+zellij = "latest"
+zoxide = "latest"
+"npm:@github/copilot" = "latest"
+"npm:@continuedev/cli" = "latest"
+go = "latest"
+"npm:@marp-team/marp-cli" = "latest"
+bun = "latest"
+yazi = "latest"
+"npm:opencode-ai" = "latest"
+"npm:@googleworkspace/cli" = "latest"

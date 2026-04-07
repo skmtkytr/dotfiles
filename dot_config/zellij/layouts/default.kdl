@@ -1,0 +1,213 @@
+// Default layout with zjstatus — slanted powerline style
+// Based on: https://github.com/dj95/zjstatus/blob/main/examples/slanted.kdl
+
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="https://github.com/dj95/zjstatus/releases/download/v0.22.0/zjstatus.wasm" {
+                // --- Format ---
+                format_left   "{mode}#[fg=#1e1e2e,bg=#89b4fa,bold] {session} #[fg=#89b4fa,bg=#1e1e2e]{tabs}"
+                format_right  "{command_git_branch}#[fg=#313244,bg=#1e1e2e]#[fg=#cdd6f4,bg=#313244] {command_cpu} #[fg=#45475a,bg=#313244]#[fg=#cdd6f4,bg=#45475a] {command_mem} #[fg=#89b4fa,bg=#45475a]#[fg=#1e1e2e,bg=#89b4fa,bold] {datetime} "
+                format_space  "#[bg=#1e1e2e]"
+                format_hide_on_overlength "true"
+                format_precedence "lrc"
+
+                // --- Border ---
+                border_enabled  "false"
+
+                // --- Never show pane frames ---
+                hide_frame_for_single_pane "false"
+
+                // --- Mode indicator (slanted powerline) ---
+                mode_normal        "#[bg=#a6e3a1,fg=#1e1e2e,bold] NORMAL #[fg=#a6e3a1,bg=#89b4fa]"
+                mode_tmux          "#[bg=#f9e2af,fg=#1e1e2e,bold] PREFIX #[fg=#f9e2af,bg=#89b4fa]"
+                mode_locked        "#[bg=#f38ba8,fg=#1e1e2e,bold] LOCKED #[fg=#f38ba8,bg=#89b4fa]"
+                mode_resize        "#[bg=#fab387,fg=#1e1e2e,bold] RESIZE #[fg=#fab387,bg=#89b4fa]"
+                mode_scroll        "#[bg=#89b4fa,fg=#1e1e2e,bold] SCROLL #[fg=#89b4fa,bg=#89b4fa]"
+                mode_enter_search  "#[bg=#cba6f7,fg=#1e1e2e,bold] SEARCH #[fg=#cba6f7,bg=#89b4fa]"
+                mode_search        "#[bg=#cba6f7,fg=#1e1e2e,bold] SEARCH #[fg=#cba6f7,bg=#89b4fa]"
+                mode_rename_tab    "#[bg=#fab387,fg=#1e1e2e,bold] RENAME #[fg=#fab387,bg=#89b4fa]"
+                mode_session       "#[bg=#cba6f7,fg=#1e1e2e,bold] SESSION #[fg=#cba6f7,bg=#89b4fa]"
+                mode_default_to_mode "normal"
+
+                // --- Tabs (slanted separators) ---
+                tab_normal              "#[fg=#1e1e2e,bg=#45475a] #[fg=#cdd6f4,bg=#45475a]{index}  {name} #[fg=#45475a,bg=#1e1e2e]"
+                tab_normal_fullscreen   "#[fg=#1e1e2e,bg=#45475a] #[fg=#cdd6f4,bg=#45475a]{index}  {name} [] #[fg=#45475a,bg=#1e1e2e]"
+                tab_normal_sync         "#[fg=#1e1e2e,bg=#45475a] #[fg=#cdd6f4,bg=#45475a]{index}  {name} <> #[fg=#45475a,bg=#1e1e2e]"
+                tab_active              "#[fg=#1e1e2e,bg=#89b4fa,bold,italic] {index}  {name} #[fg=#89b4fa,bg=#1e1e2e]"
+                tab_active_fullscreen   "#[fg=#1e1e2e,bg=#89b4fa,bold,italic] {index}  {name} [] #[fg=#89b4fa,bg=#1e1e2e]"
+                tab_active_sync         "#[fg=#1e1e2e,bg=#89b4fa,bold,italic] {index}  {name} <> #[fg=#89b4fa,bg=#1e1e2e]"
+
+                // --- CPU (macOS: top / Linux: /proc/stat) ---
+                command_cpu_command     "sh -c 'bash $HOME/.config/zellij/scripts/cpu.sh'"
+                command_cpu_format      "#[fg=#a6e3a1] CPU {stdout}"
+                command_cpu_interval    "5"
+                command_cpu_rendermode  "static"
+
+                // --- Memory (macOS: vm_stat / Linux: /proc/meminfo) ---
+                command_mem_command     "sh -c 'bash $HOME/.config/zellij/scripts/mem.sh'"
+                command_mem_format      "#[fg=#f9e2af] MEM {stdout}"
+                command_mem_interval    "5"
+                command_mem_rendermode  "static"
+
+                // --- Git branch ---
+                command_git_branch_command     "sh -c 'git rev-parse --abbrev-ref HEAD 2>/dev/null || true'"
+                command_git_branch_format      "#[fg=#cba6f7]  {stdout} "
+                command_git_branch_interval    "5"
+                command_git_branch_rendermode  "static"
+
+                // --- DateTime ---
+                datetime          "{format}"
+                datetime_format   "%m/%d %H:%M"
+                datetime_timezone "Asia/Tokyo"
+            }
+        }
+    }
+
+    // === Swap tiled layouts: cycle with Alt-[ / Alt-] ===
+
+    swap_tiled_layout name="spread" {
+        tab max_panes=1 {
+            pane
+        }
+        tab exact_panes=2 {
+            pane split_direction="vertical" {
+                pane
+                pane
+            }
+        }
+        tab exact_panes=3 {
+            pane split_direction="vertical" {
+                pane
+                pane split_direction="horizontal" {
+                    pane
+                    pane
+                }
+            }
+        }
+        tab exact_panes=4 {
+            pane split_direction="vertical" {
+                pane split_direction="horizontal" {
+                    pane
+                    pane
+                }
+                pane split_direction="horizontal" {
+                    pane
+                    pane
+                }
+            }
+        }
+        tab min_panes=5 {
+            pane split_direction="vertical" {
+                pane split_direction="horizontal" {
+                    pane
+                    pane
+                    pane
+                }
+                pane split_direction="horizontal" {
+                    pane
+                    pane
+                }
+            }
+        }
+    }
+
+    swap_tiled_layout name="columns" {
+        tab max_panes=1 {
+            pane
+        }
+        tab exact_panes=2 {
+            pane split_direction="vertical" {
+                pane
+                pane
+            }
+        }
+        tab exact_panes=3 {
+            pane split_direction="vertical" {
+                pane
+                pane
+                pane
+            }
+        }
+        tab exact_panes=4 {
+            pane split_direction="vertical" {
+                pane
+                pane
+                pane
+                pane
+            }
+        }
+        tab min_panes=5 {
+            pane split_direction="vertical" {
+                pane
+                pane
+                pane
+                pane
+                pane
+            }
+        }
+    }
+
+    swap_tiled_layout name="rows" {
+        tab max_panes=1 {
+            pane
+        }
+        tab exact_panes=2 {
+            pane
+            pane
+        }
+        tab exact_panes=3 {
+            pane
+            pane
+            pane
+        }
+        tab exact_panes=4 {
+            pane
+            pane
+            pane
+            pane
+        }
+        tab min_panes=5 {
+            pane
+            pane
+            pane
+            pane
+            pane
+        }
+    }
+
+    // === Swap floating layouts: large centered panes ===
+
+    swap_floating_layout name="default" {
+        floating_panes max_panes=1 {
+            pane { x "10%"; y "10%"; width "80%"; height "80%"; }
+        }
+        floating_panes max_panes=2 {
+            pane { x "5%"; y "10%"; width "43%"; height "80%"; }
+            pane { x "52%"; y "10%"; width "43%"; height "80%"; }
+        }
+        floating_panes max_panes=3 {
+            pane { x "5%"; y "10%"; width "28%"; height "80%"; }
+            pane { x "36%"; y "10%"; width "28%"; height "80%"; }
+            pane { x "67%"; y "10%"; width "28%"; height "80%"; }
+        }
+        floating_panes exact_panes=4 {
+            pane { x "2%"; y "10%"; width "22%"; height "80%"; }
+            pane { x "26%"; y "10%"; width "22%"; height "80%"; }
+            pane { x "50%"; y "10%"; width "22%"; height "80%"; }
+            pane { x "74%"; y "10%"; width "22%"; height "80%"; }
+        }
+        floating_panes min_panes=5 {
+            pane { x "2%"; y "5%"; width "46%"; height "43%"; }
+            pane { x "52%"; y "5%"; width "46%"; height "43%"; }
+            pane { x "2%"; y "52%"; width "30%"; height "43%"; }
+            pane { x "35%"; y "52%"; width "30%"; height "43%"; }
+            pane { x "68%"; y "52%"; width "30%"; height "43%"; }
+        }
+    }
+
+    tab name="main" focus=true {
+        pane
+    }
+}

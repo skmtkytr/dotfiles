@@ -1,0 +1,17 @@
+# Additional tools for devcontainer — language runtimes & dev utilities
+[tools]
+bun = "latest"
+deck = "latest"
+deno = "latest"
+"npm:@marp-team/marp-cli" = "latest"
+"npm:@openai/codex" = "latest"
+"npm:codex" = "latest"
+"npm:wscat" = "latest"
+python = "latest"
+ruby = "latest"
+# rust = "nightly"
+uv = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["ruby"]
+python_compile = true  # prebuilt freethreaded binary is missing lib/
