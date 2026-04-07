@@ -61,6 +61,5 @@ Brewfile
      1Password の op CLI が無い環境では secret テンプレを skip
      ============================================================ */}}
 {{- if not .features.secrets_available }}
-.config/stripe
 .config/gws
 {{- end }}
