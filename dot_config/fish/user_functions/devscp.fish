@@ -1,42 +1,35 @@
-function devscp --description "Copy files to/from devcontainer"
-    # Ensure docker is available
-    _ensure_commands_exist docker; or return 1
+function devscp --description "Copy files to/from mono-local devcontainer"
     if contains -- --help $argv; or test (count $argv) -eq 0
-        echo "Usage: devscp <local-path> [container-path] [owner/repo]"
-        echo "       devscp --get <container-path> [local-path] [owner/repo]"
+        echo "Usage: devscp <local-path> [container-path]"
+        echo "       devscp --get <container-path> [local-path]"
         echo ""
-        echo "Copy files between local machine and devcontainer."
-        echo "Searches per-repo container first, then mono container."
-        echo "Default container path is /workspace/ (per-repo) or ghq path (mono)."
+        echo "Copy files between host and the mono-local devcontainer."
+        echo "Default container destination is /home/vscode/."
         echo ""
-        echo "  devscp ./file.txt                      # → container"
-        echo "  devscp --get /workspace/file.txt        # ← from container"
+        echo "Note: ~/.ghq and ~/.local/share/chezmoi are bind-mounted, so files"
+        echo "in those trees are already shared without copying."
         return 0
     end
 
-    # --- Parse arguments ---
-    set -l get_mode 0
-    set -l project ""
-    set -l src ""
-    set -l dest ""
+    set -l cid (docker ps -q --filter "label=devcontainer.project=mono-local" 2>/dev/null)
+    if test -z "$cid"
+        echo "No running mono-local container." >&2
+        return 1
+    end
 
+    set -l get_mode 0
     set -l positionals
     for arg in $argv
         switch $arg
             case --get
                 set get_mode 1
-            case '*/*'
-                if string match -qr '^[^./][^/]*/[^/]+$' -- $arg; and not test -e $arg
-                    set project $arg
-                else
-                    set -a positionals $arg
-                end
             case '*'
                 set -a positionals $arg
         end
     end
 
-    set src $positionals[1]
+    set -l src $positionals[1]
+    set -l dest ""
     if test (count $positionals) -ge 2
         set dest $positionals[2]
     end
@@ -46,38 +39,18 @@ function devscp --description "Copy files to/from devcontainer"
         return 1
     end
 
-    if test -z "$project"
-        _detect_project_from_cwd
-        set project $_detected_project
-    end
-
-    if test -z "$project"
-        echo "Error: cannot detect project. Specify owner/repo or run from a ghq directory." >&2
-        return 1
-    end
-
-    if not _find_container_for_project $project
-        echo "Error: no running container for $project" >&2
-        return 1
-    end
-
     if test $get_mode -eq 1
         if test -z "$dest"
             set dest .
         end
-        echo "==> Copying $src from container to $dest"
-        $_found_docker_cmd cp "$_found_cid:$src" "$dest"
-        and $_found_docker_cmd exec -u vscode "$_found_cid" chown -R (id -u):(id -g) "$src" 2>/dev/null
-        or true
+        echo "==> copying $src from container to $dest"
+        docker cp "$cid:$src" "$dest"
     else
         if test -z "$dest"
-            set dest "$_found_workdir/"
+            set dest /home/vscode/
         end
-        echo "==> Copying $src to container:$dest"
-        $_found_docker_cmd cp "$src" "$_found_cid:$dest"
-        $_found_docker_cmd exec $_found_cid chown -R vscode:vscode "$dest" 2>/dev/null
+        echo "==> copying $src to container:$dest"
+        docker cp "$src" "$cid:$dest"
+        and docker exec $cid chown -R vscode:vscode "$dest" 2>/dev/null
     end
-
-    and echo "Done."
-    or echo "Error: copy failed" >&2
 end

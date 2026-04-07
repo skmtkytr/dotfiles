@@ -1,86 +1,27 @@
-function devls --description "List remote devcontainers"
-    # Ensure docker is available (used to detect container status)
-    _ensure_commands_exist docker; or return 1
+function devls --description "Show mono-local devcontainer status"
     if contains -- --help -h $argv
         echo "Usage: devls"
         echo ""
-        echo "List all registered remote devcontainers and their status."
-        echo "Includes both per-repo and mono containers."
-        echo ""
-        echo "Output columns: PROJECT  STATUS  HOST  CLONE_URL"
+        echo "Show the mono-local devcontainer status (running / stopped / absent)."
         return 0
     end
 
-    set -l base_dir "$HOME/.devcontainers"
-
-    if not test -d "$base_dir"
-        echo "No devcontainers found (no ~/.devcontainers/ directory)"
+    set -l cid (docker ps -q --filter "label=devcontainer.project=mono-local" 2>/dev/null)
+    if test -n "$cid"
+        set -l image (docker inspect --format '{{.Config.Image}}' $cid 2>/dev/null)
+        set -l started (docker inspect --format '{{.State.StartedAt}}' $cid 2>/dev/null)
+        printf "%-12s  %s\n" mono-local running
+        printf "  cid:     %s\n" (string sub -l 12 $cid)
+        printf "  image:   %s\n" $image
+        printf "  started: %s\n" $started
         return 0
     end
 
-    set -l found 0
-
-    printf "%-30s  %-8s  %-30s  %s\n" PROJECT STATUS HOST CLONE_URL
-    echo (string repeat -n 100 -)
-
-    # Per-repo containers
-    for meta_file in $base_dir/*/*/.devup-meta
-        if not test -f "$meta_file"
-            continue
-        end
-
-        set found (math $found + 1)
-
-        set -l project (string match -r 'PROJECT=(.+)' < $meta_file)[2]
-        set -l docker_host (string match -r 'DOCKER_HOST=(.+)' < $meta_file)[2]
-        set -l clone_url (string match -r 'CLONE_URL=(.+)' < $meta_file)[2]
-
-        set -l docker_cmd docker
-        if test -n "$docker_host" -a "$docker_host" != local
-            set docker_cmd docker -H $docker_host
-        end
-
-        set -l cid ($docker_cmd ps -q --filter "label=devcontainer.project=$project" 2>/dev/null)
-        set -l status_str stopped
-        if test -n "$cid"
-            set status_str running
-        end
-
-        set -l host_str local
-        if test -n "$docker_host" -a "$docker_host" != local
-            set host_str $docker_host
-        end
-
-        printf "%-30s  %-8s  %-30s  %s\n" $project $status_str $host_str $clone_url
+    set -l stopped_cid (docker ps -aq --filter "label=devcontainer.project=mono-local" 2>/dev/null)
+    if test -n "$stopped_cid"
+        printf "%-12s  %s\n" mono-local stopped
+        return 0
     end
 
-    # Mono container
-    set -l mono_meta "$base_dir/mono/.devup-meta"
-    if test -f "$mono_meta"
-        set found (math $found + 1)
-
-        set -l docker_host (string match -r 'DOCKER_HOST=(.+)' < $mono_meta)[2]
-
-        set -l docker_cmd docker
-        if test -n "$docker_host" -a "$docker_host" != local
-            set docker_cmd docker -H $docker_host
-        end
-
-        set -l cid ($docker_cmd ps -q --filter "label=devcontainer.project=mono" 2>/dev/null)
-        set -l status_str stopped
-        if test -n "$cid"
-            set status_str running
-        end
-
-        set -l host_str local
-        if test -n "$docker_host" -a "$docker_host" != local
-            set host_str $docker_host
-        end
-
-        printf "%-30s  %-8s  %-30s  %s\n" "mono (shared)" $status_str $host_str "(ghq)"
-    end
-
-    if test $found -eq 0
-        echo "No devcontainers found"
-    end
+    echo "No mono-local devcontainer (run: devup)"
 end
