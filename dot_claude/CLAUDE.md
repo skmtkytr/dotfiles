@@ -14,13 +14,19 @@
 | Editor | neovim (LazyVim) |
 | Tool管理 | mise |
 | GitHub CLI | gh |
-| Container | devcontainer (remote) |
-| Config管理 | `~/.config` → `dotfiles/config` symlink |
+| Container | devcontainer (mono-local, local docker) |
+| Config管理 | chezmoi (source: `~/.local/share/chezmoi`) |
 
 ## 開発環境
 
-リモート devcontainer 上で開発。ローカル Mac はターミナル + nvim client のみ。
-**Claude Code はコンテナ内で実行する。** 詳細は `.claude/rules/devcontainer.md` 参照。
+CachyOS デスクトップ + macOS の併用。両方とも local docker で mono-local devcontainer
+を起動して使う (`devup` で起動、`devfish` で入る)。
+
+dotfiles は chezmoi で管理。コンテナ内では `~/.local/share/chezmoi` を bind-mount し、
+コンテナ起動時に `chezmoi apply` で `~/.config` 配下を展開する。`~/.ghq` も bind-mount
+されているのでホストのプロジェクトリポジトリにそのままアクセスできる。
+
+詳細は `.claude/rules/devcontainer.md` 参照。
 
 ## 行動原則（常に守ること）
 
