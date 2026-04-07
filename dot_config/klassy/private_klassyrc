@@ -1,0 +1,8 @@
+[Global]
+LookAndFeelSet=org.kde.breezedark.desktop
+RefreshedConfig=6.5.3
+
+[Windeco]
+ButtonIconStyle=StyleArk
+ButtonShape=ShapeFullHeightRoundedRectangle
+WindowCornerRadius=15
