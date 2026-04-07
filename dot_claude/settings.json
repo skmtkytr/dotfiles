@@ -17,12 +17,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$HOME/.config/claude/hooks/validate-commit.sh\"",
+            "command": "bash \"$HOME/.claude/hooks/validate-commit.sh\"",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": "bash \"$HOME/.config/claude/hooks/validate-rm.sh\"",
+            "command": "bash \"$HOME/.claude/hooks/validate-rm.sh\"",
             "timeout": 10
           }
         ]
@@ -34,7 +34,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$HOME/.config/claude/hooks/post-format.sh\"",
+            "command": "bash \"$HOME/.claude/hooks/post-format.sh\"",
             "timeout": 15
           }
         ]
@@ -46,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$HOME/.config/claude/hooks/session-init.sh\"",
+            "command": "bash \"$HOME/.claude/hooks/session-init.sh\"",
             "timeout": 10
           }
         ]
@@ -57,7 +57,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$HOME/.config/claude/hooks/backup-transcript.sh\"",
+            "command": "bash \"$HOME/.claude/hooks/backup-transcript.sh\"",
             "timeout": 10
           }
         ]
@@ -68,7 +68,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$HOME/.config/claude/hooks/post-compact.sh\"",
+            "command": "bash \"$HOME/.claude/hooks/post-compact.sh\"",
             "timeout": 10
           }
         ]
@@ -79,7 +79,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$HOME/.config/claude/hooks/enforce-tests.sh\"",
+            "command": "bash \"$HOME/.claude/hooks/enforce-tests.sh\"",
             "timeout": 120
           }
         ]
