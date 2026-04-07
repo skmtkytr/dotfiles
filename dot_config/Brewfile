@@ -1,0 +1,53 @@
+# --- Core (mise で管理できないもののみ) ---
+brew "fish"
+brew "neovim"
+brew "tmux"
+brew "tmux-mem-cpu-load"
+brew "mise"
+brew "git"
+brew "git-lfs"
+
+# --- Docker ---
+brew "docker"
+brew "docker-compose"
+brew "docker-buildx"
+
+# --- System utilities (mise にないもの) ---
+brew "xdg-ninja"
+brew "btop"
+brew "bit-git"
+brew "curl"
+brew "wget"
+brew "socat"
+brew "cmake"
+brew "luarocks"
+brew "terminal-notifier"
+brew "nkf"
+brew "pstree"
+
+# --- Apps ---
+cask "1password"
+cask "1password-cli"
+cask "alacritty"
+cask "ghostty"
+cask "google-japanese-ime"
+cask "appcleaner"
+cask "brave-browser"
+cask "chatgpt"
+cask "claude"
+cask "discord"
+cask "hammerspoon"
+cask "karabiner-elements"
+cask "neovide-app"
+cask "notion"
+cask "obsidian"
+cask "orbstack"
+cask "raycast"
+cask "readdle-spark"
+cask "stats"
+cask "tailscale-app"
+cask "visual-studio-code"
+cask "vlc"
+
+# --- Fonts ---
+cask "font-udev-gothic-nf"
