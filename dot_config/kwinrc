@@ -3,9 +3,28 @@ Id_1=cf175004-271d-4b41-a865-5d049513c4d0
 Number=1
 Rows=1
 
+[NightColor]
+Active=true
+NightTemperature=6000
+
 [Plugins]
-focus-parentEnabled=true
 blurEnabled=true
+cubeEnabled=true
+diminactiveEnabled=true
+fadedesktopEnabled=true
+focus-parentEnabled=true
+glideEnabled=true
+magiclampEnabled=true
+translucencyEnabled=true
+wobblywindowsEnabled=true
+
+[TabBox]
+MinimizedMode=1
+OrderMinimizedMode=1
+
+[TabBoxAlternative]
+MinimizedMode=1
+OrderMinimizedMode=1
 
 [Tiling][cf175004-271d-4b41-a865-5d049513c4d0][a32d25ad-85cb-42ca-b75e-ecba8ef263e2]
 padding=4

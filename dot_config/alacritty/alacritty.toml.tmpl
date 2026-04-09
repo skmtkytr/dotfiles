@@ -96,7 +96,11 @@ bindings = [
   { action = "ClearHistory", key = "K", mods = "Super" },
   { action = "Paste", key = "V", mods = "Super" },
   { action = "Copy", key = "C", mods = "Super" },
+{{- if eq .chezmoi.os "darwin" }}
   { action = "Hide", key = "H", mods = "Super" },
+{{- else }}
+  { action = "Minimize", key = "H", mods = "Super" },
+{{- end }}
   { action = "Minimize", key = "M", mods = "Super" },
   { action = "Quit", key = "Q", mods = "Super" },
   { action = "Quit", key = "W", mods = "Super" },
