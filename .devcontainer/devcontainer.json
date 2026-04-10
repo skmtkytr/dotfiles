@@ -14,6 +14,7 @@
     "source=devcontainer-nvim-data,target=/home/vscode/.local/share/nvim,type=volume",
     "source=devcontainer-fish-data,target=/home/vscode/.local/share/fish,type=volume",
     "source=devcontainer-tmux-data,target=/home/vscode/.local/share/tmux,type=volume",
+    "source=devcontainer-claude-data,target=/home/vscode/.claude,type=volume",
     "source=${localEnv:HOME}/.ghq,target=/home/vscode/.ghq,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.local/share/chezmoi,target=/home/vscode/.local/share/chezmoi,type=bind,consistency=cached"
   ],

@@ -35,7 +35,8 @@ for vol_dir in \
     ~/.local/share/mise \
     ~/.local/share/nvim \
     ~/.local/share/fish \
-    ~/.local/share/tmux
+    ~/.local/share/tmux \
+    ~/.claude
 do
     if [ -d "$vol_dir" ]; then
         sudo chown -R "$(id -u):$(id -g)" "$vol_dir" 2>/dev/null \
@@ -99,6 +100,24 @@ chmod +x "$HOME/.local/bin/ssh-agent-bridge.sh"
 echo "  installed ssh-agent-bridge helper"
 
 # -------------------------------------------------------------------
+# 3b. GitHub host key + gh auth (uses GITHUB_TOKEN from host)
+# -------------------------------------------------------------------
+echo "==> configuring GitHub auth"
+
+# SSH known_hosts for github.com
+mkdir -p "$HOME/.ssh"
+ssh-keyscan -t ed25519,rsa github.com >> "$HOME/.ssh/known_hosts" 2>/dev/null \
+    && echo "  added github.com to known_hosts"
+
+# gh CLI auth via GITHUB_TOKEN (passed from host's `gh auth token`)
+if [ -n "${GITHUB_TOKEN:-}" ]; then
+    echo "$GITHUB_TOKEN" | gh auth login --with-token 2>/dev/null \
+        && echo "  gh auth: logged in via GITHUB_TOKEN"
+    gh auth setup-git 2>/dev/null \
+        && echo "  gh auth: configured git credential helper"
+fi
+
+# -------------------------------------------------------------------
 # 4. chezmoi apply — deploys all dot_config files into ~/.config etc.
 # --force: non-interactive overwrite of any drift (no TTY here)
 # -------------------------------------------------------------------
@@ -106,14 +125,18 @@ echo "==> chezmoi apply"
 chezmoi apply --no-tty --force
 
 # -------------------------------------------------------------------
-# 5. devcontainer-specific mise tools
+# 5. mise install — base tools + devcontainer extras
 # -------------------------------------------------------------------
 export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
-if command -v mise >/dev/null 2>&1 \
-    && [ -f "$HOME/.config/mise/config.devcontainer.toml" ]; then
-    echo "==> mise install (devcontainer extras)"
-    mise install --file "$HOME/.config/mise/config.devcontainer.toml" -y \
+if command -v mise >/dev/null 2>&1; then
+    echo "==> mise install (base tools)"
+    mise install -y \
         || echo "  WARN: mise install had errors (non-fatal)"
+    if [ -f "$HOME/.config/mise/config.devcontainer.toml" ]; then
+        echo "==> mise install (devcontainer extras)"
+        mise install --file "$HOME/.config/mise/config.devcontainer.toml" -y \
+            || echo "  WARN: mise install had errors (non-fatal)"
+    fi
 fi
 
 # -------------------------------------------------------------------

@@ -142,7 +142,7 @@ function devup --description "Start mono-local devcontainer"
     docker update --restart unless-stopped $cid 2>/dev/null
 
     echo "==> running setup.sh..."
-    docker exec -u vscode $cid \
+    docker exec -u vscode -e GITHUB_TOKEN="$GITHUB_TOKEN" $cid \
         bash /home/vscode/.local/share/chezmoi/.devcontainer/setup.sh
     or echo "  WARN: setup.sh had errors (non-fatal)"
 

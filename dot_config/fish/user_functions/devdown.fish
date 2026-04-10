@@ -33,7 +33,7 @@ function devdown --description "Stop and remove mono-local devcontainer"
 
     if test $keep_volumes -eq 0
         echo "==> removing named volumes..."
-        for vol in devcontainer-mise-data devcontainer-nvim-data devcontainer-fish-data devcontainer-tmux-data
+        for vol in devcontainer-mise-data devcontainer-nvim-data devcontainer-fish-data devcontainer-tmux-data devcontainer-claude-data
             if docker volume rm $vol 2>/dev/null
                 echo "  removed: $vol"
             end
