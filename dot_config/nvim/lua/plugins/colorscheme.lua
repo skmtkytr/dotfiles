@@ -44,9 +44,9 @@ return {
     -- branch = "mybranch",
     priority = 1000,
     lazy = true,
-    -- opts = {
-    --   transparent_background = true,
-    -- },
+    opts = {
+      transparent_background = true,
+    },
   },
   {
     "nuvic/flexoki-nvim",
