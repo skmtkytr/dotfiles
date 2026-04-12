@@ -5,7 +5,7 @@ layout {
     default_tab_template {
         children
         pane size=1 borderless=true {
-            plugin location="file:~/.local/share/zellij/plugins/zjstatus.wasm" {
+            plugin location="zjstatus:" {
                 // --- Format ---
                 format_left   "{mode}#[fg=#1e1e2e,bg=#89b4fa,bold] {session} #[fg=#89b4fa,bg=#1e1e2e]{tabs}"
                 format_right  "{command_git_branch}#[fg=#313244,bg=#1e1e2e]#[fg=#cdd6f4,bg=#313244] {command_cpu} #[fg=#45475a,bg=#313244]#[fg=#cdd6f4,bg=#45475a] {command_mem} #[fg=#89b4fa,bg=#45475a]#[fg=#1e1e2e,bg=#89b4fa,bold] {datetime} "
