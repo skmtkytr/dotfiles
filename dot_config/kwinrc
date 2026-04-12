@@ -3,6 +3,9 @@ Id_1=cf175004-271d-4b41-a865-5d049513c4d0
 Number=1
 Rows=1
 
+[Effect-diminactive]
+Strength=10
+
 [NightColor]
 Active=true
 NightTemperature=6000
@@ -10,7 +13,6 @@ NightTemperature=6000
 [Plugins]
 blurEnabled=true
 cubeEnabled=true
-diminactiveEnabled=true
 fadedesktopEnabled=true
 focus-parentEnabled=true
 glideEnabled=true
@@ -31,8 +33,8 @@ padding=4
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][cf175004-271d-4b41-a865-5d049513c4d0][cb605621-e201-4239-bb73-903a3995d78d]
-padding=4
-tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+padding=1
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3630813953488372},{"width":0.3869186046511628},{"width":0.25}]}
 
 [Wayland]
 InputMethod[$e]=/usr/share/applications/org.fcitx.Fcitx5.desktop
