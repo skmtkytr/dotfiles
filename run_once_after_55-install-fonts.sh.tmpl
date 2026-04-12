@@ -23,7 +23,7 @@ fi
 
 if has yay; then
     info "installing ttf-udev-gothic via yay"
-    yay -S --needed --noconfirm ttf-udev-gothic
+    yay -S --needed --noconfirm --answerclean None --answerdiff None ttf-udev-gothic
 elif has paru; then
     info "installing ttf-udev-gothic via paru"
     paru -S --needed --noconfirm ttf-udev-gothic
