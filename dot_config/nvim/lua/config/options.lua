@@ -76,3 +76,8 @@ vim.g.deprecation_warnings = true
 vim.env.FZF_DEFAULT_OPTS = ""
 vim.g.ai_cmp = false
 vim.g.lazyvim_blink_main = false
+
+if vim.g.neovide then
+  vim.g.neovide_opacity = 0.8
+  vim.g.neovide_normal_opacity = 0.8
+end
