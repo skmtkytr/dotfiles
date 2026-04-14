@@ -154,6 +154,7 @@ Theme=Papirus-Dark
 [KDE]
 AnimationDurationFactor=0.125
 LookAndFeelPackage=org.kde.breezedark.desktop
+ShowDeleteCommand=false
 contrast=4
 frameContrast=0.2
 
