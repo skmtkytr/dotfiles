@@ -176,7 +176,7 @@ keybinds clear-defaults=true {
 
 // --- Plugin aliases (needed for correct resurrection) ---
 plugins {
-    zjstatus location="file:~/.local/share/zellij/plugins/zjstatus.wasm"
+    zjstatus location="file:{{ .chezmoi.homeDir }}/.local/share/zellij/plugins/zjstatus.wasm"
 }
 
 // --- Options ---
