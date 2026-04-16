@@ -58,7 +58,7 @@ return {
 
         -- Disable modes highlights in specified filetypes
         -- Please PR commonly ignored filetypes
-        ignore_filetypes = { "NvimTree", "TelescopePrompt", "neotest-attach" },
+        ignore = { "NvimTree", "TelescopePrompt", "neotest-attach" },
       })
     end,
   },
@@ -386,11 +386,17 @@ return {
     main = "ibl",
     ---@module "ibl"
     ---@type ibl.config
-    opts = function (_, opts)
-      return require("indent-rainbowline").make_opts(opts)
+    opts = function(_, opts)
+      local ok, rainbow = pcall(require, "indent-rainbowline")
+      if ok then
+        return rainbow.make_opts(opts, {
+          color_transparency = 0.25,
+        })
+      end
+      return opts
     end,
     dependencies = {
-      "TheGLander/indent-rainbowline.nvim"
+      "TheGLander/indent-rainbowline.nvim",
     },
   },
   {
