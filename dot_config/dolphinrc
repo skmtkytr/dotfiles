@@ -2,14 +2,17 @@ MenuBar=Disabled
 
 [DetailsMode]
 PreviewSize=32
+RightPadding=0
+UseSystemFont=false
+ViewFont=UDEV Gothic 35NFLG,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
 
 [General]
 Version=202
-ViewPropsTimestamp=2024,5,20,14,20,10.518
+ViewPropsTimestamp=2026,4,12,22,0,0.000
 
 [IconsMode]
 IconSize=22
-PreviewSize=32
+PreviewSize=144
 TextWidthIndex=0
 
 [KFileDialog Settings]

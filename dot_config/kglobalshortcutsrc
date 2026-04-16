@@ -224,6 +224,7 @@ stopmedia=Media Stop,Media Stop,Stop media playback
 
 [org.chromium.Chromium]
 124BFB9086B31FA384DEA329EE44E4CE-=,none,Electron shortcut\s
+6F43899B18AF170D7499F5DEEC31EFD8-Ctrl+Alt+Space=,none,Electron shortcut Ctrl+Alt+Space
 D3C85B0A3AFC329D72AC920596D2B6B0-=,none,Electron shortcut\s
 _k_friendly_name=org.chromium.Chromium
 
@@ -276,7 +277,3 @@ toggle do not disturb=,,Toggle do not disturb
 
 [services][com.mitchellh.ghostty.desktop]
 _launch=
-
-[services][org.kde.spectacle.desktop]
-CurrentMonitorScreenShot=
-OpenWithoutScreenshot=
