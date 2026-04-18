@@ -189,6 +189,8 @@ copy_on_select true
 // Session persistence (replaces tmux-resurrect / tmux-continuum)
 session_serialization true
 serialize_pane_viewport true
+serialization_interval 10
+on_force_close "detach"
 
 // Disable pane frames (zjstatus manages visibility)
 pane_frames false
