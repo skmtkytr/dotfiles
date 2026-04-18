@@ -35,7 +35,14 @@ end
 # ###############
 set -l CONFIG_CACHE $FISH_CACHE_DIR/config.fish
 set -l _stale no
-for f in $FISH_CONFIG_DIR/config/*.fish $FISH_CONFIG_DIR/conf.d/*.fish
+# mise upgrade bumps mtime on installs/<tool> when adding version subdirs,
+# so include them — init output bakes in an absolute versioned binary path.
+set -l _stale_sources $FISH_CONFIG_DIR/config/*.fish $FISH_CONFIG_DIR/conf.d/*.fish
+for tool in starship zoxide
+    set -l d $HOME/.local/share/mise/installs/$tool
+    test -d $d && set -a _stale_sources $d
+end
+for f in $_stale_sources
     test "$f" -nt "$CONFIG_CACHE" && set _stale yes && break
 end
 if test "$_stale" = yes
