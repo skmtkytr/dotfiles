@@ -36,3 +36,8 @@ dotfiles は chezmoi で管理。コンテナ内では `~/.local/share/chezmoi` 
 4. **品質ゲート**: lint/型チェック エラー0、テスト全pass、既存テストは消さない
 5. **commit は最後**: 全ゲート通過後にのみ commit。push 後は CI 確認
 6. **PR は自動作成**: push したら言われる前に PR を作る。テスト必須
+7. **推測を断定するな**: 観察事実（ログ・コード・出力）と推論を必ず分けて伝える。因果・メカニズムの断言はコード/公式ドキュメントで確認できた場合のみ。確認できていない場合は「可能性がある（根拠：X）」「仮説：〜、検証するには〜」と書く
+
+## 環境固有の注意
+
+- **1Password transient failure**: `chezmoi apply` や `git commit` で "Could not connect to socket" が出たらまず同じコマンドをリトライ。環境の問題ではなく 1Password 側の一時的な IPC 競合。リトライで通常解決する。
