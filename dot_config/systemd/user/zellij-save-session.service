@@ -1,0 +1,23 @@
+[Unit]
+Description=Save zellij session state before logout
+# PartOf + WantedBy ties lifecycle to graphical-session.
+# After=graphical-session.target makes us stop EARLY at logout (before the
+# target fully stops). We intentionally DO NOT depend on foot-server.service:
+# that dependency creates an ordering cycle (graphical-session-pre.target →
+# graphical-session.target → foot-server.socket → sockets.target → basic.target
+# → graphical-session-pre.target) which systemd resolves by dropping our
+# constraint, causing zellij to die before our ExecStop.
+# Instead, save-sessions.sh is resilient: it reads fish cwds via /proc and
+# injects into the last auto-saved layout even if zellij is already dead.
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/true
+ExecStop=/bin/sh %h/.config/zellij/scripts/save-sessions.sh
+TimeoutStopSec=30
+
+[Install]
+WantedBy=graphical-session.target
