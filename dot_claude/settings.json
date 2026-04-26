@@ -90,5 +90,16 @@
     "type": "command",
     "command": "npx -y @owloops/claude-powerline@latest"
   },
-  "skipDangerousModePermissionPrompt": true
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "enabledPlugins": {
+    "discord@claude-plugins-official": true
+  }
 }
