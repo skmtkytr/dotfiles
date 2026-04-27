@@ -56,7 +56,7 @@ return {
             local docker = vim.fs.find("docker-compose.yml")
 
             if #cw ~= 0 then
-              return vim.tbl_flatten({
+              return {
                 -- docker compose run --rm rails bundle exec rspec
                 "docker",
                 "compose",
@@ -66,9 +66,9 @@ return {
                 "bundle",
                 "exec",
                 "rspec",
-              })
+              }
             elseif #docker ~= 0 then
-              return vim.tbl_flatten({
+              return {
                 -- docker compose run --rm app bundle exec rspec
                 "docker",
                 "compose",
@@ -78,13 +78,13 @@ return {
                 "bundle",
                 "exec",
                 "rspec",
-              })
+              }
             else
-              return vim.tbl_flatten({
+              return {
                 "bundle",
                 "exec",
                 "rspec",
-              })
+              }
             end
           end,
 
