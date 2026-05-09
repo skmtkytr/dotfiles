@@ -35,7 +35,10 @@ starship = "latest"
 stylua = "latest"
 usage = "latest"
 uv = "latest"
-zellij = "latest"
+# zellij: managed via cargo build from ~/.ghq/github.com/zellij-org/zellij
+# (branch fix/serialize-single-pane-tab, PR #5046). mise stable 0.44.1 lacks
+# the single-pane-tab serialization fix needed for zjstatus resurrection.
+# Re-enable once PR #5046 is merged upstream.
 zoxide = "latest"
 "npm:@github/copilot" = "latest"
 "npm:@continuedev/cli" = "latest"
