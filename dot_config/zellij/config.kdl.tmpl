@@ -179,15 +179,6 @@ plugins {
     zjstatus location="file:{{ .chezmoi.homeDir }}/.local/share/zellij/plugins/zjstatus.wasm"
 }
 
-// --- Eagerly preload plugins at server startup ---
-// Without this, zjstatus is instantiated lazily on first tab focus. Resurrected
-// tabs whose layout apply runs before the lazy load finishes get a plugin pane
-// slot but no rendering — observed as a blank status bar after session restore.
-// `plugins` above is just an alias mapping; `load_plugins` triggers actual load.
-load_plugins {
-    "file:{{ .chezmoi.homeDir }}/.local/share/zellij/plugins/zjstatus.wasm"
-}
-
 // --- Options ---
 
 mouse_mode true
