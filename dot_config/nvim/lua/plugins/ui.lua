@@ -536,5 +536,16 @@ return {
     event = { "UIEnter" },
     keys = {},
     dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
+    opts = {
+      bar = {
+        update_events = {
+          buf = {
+            "FileChangedShellPost",
+            "TextChanged",
+            "ModeChanged",
+          },
+        },
+      },
+    },
   },
 }
