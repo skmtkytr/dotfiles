@@ -126,5 +126,116 @@ for layout in "$SESSION_INFO_DIR"/*/session-layout.kdl; do
         }
         print STDERR "injected=$injected skipped=$skipped panes_seen=$idx\n";
     ' "$layout" 2>>"$LOG"
+
+    # 5. Restore zjstatus plugin config block. zellij'\''s serialize drops the
+    #    plugin block'\''s config children (only the location is preserved); on
+    #    next resurrect zjstatus shows "No configuration found". The config
+    #    only lives in default.kdl'\''s default_tab_template, so we copy it
+    #    over every `pane size=1 borderless=true { plugin ...zjstatus... }`
+    #    block in the saved layout.
+    DEFAULT_KDL="${HOME}/.config/zellij/layouts/default.kdl"
+    if [ -f "$DEFAULT_KDL" ]; then
+        # NOTE: do NOT use `perl -i` here. The output is built into @out and
+        # written after the input loop ends — and `perl -i`'\''s STDOUT
+        # redirection to the input file is deactivated as soon as <> exhausts.
+        # `print @out` after that point would go to script STDOUT (journald
+        # under systemd), and the file would be left truncated to 0 bytes.
+        # Use explicit open/read, then open/write to avoid the trap.
+        DEFAULT_KDL="$DEFAULT_KDL" LAYOUT="$layout" perl -e '
+            use strict;
+            # 1. Extract canonical pane block from default.kdl.
+            open my $fh, "<", $ENV{DEFAULT_KDL} or die $!;
+            my @canon_lines;
+            my ($in_block, $depth, $is_zjstatus) = (0, 0, 0);
+            while (my $line = <$fh>) {
+                if (!$in_block) {
+                    if ($line =~ /^(\s*)pane size=1 borderless=true \{/) {
+                        @canon_lines = ($line);
+                        $in_block = 1;
+                        $depth = 1;
+                        $is_zjstatus = 0;
+                    }
+                    next;
+                }
+                push @canon_lines, $line;
+                $is_zjstatus = 1 if $line =~ /plugin location="(?:zjstatus|file:[^"]*zjstatus\.wasm)"/;
+                $depth += () = $line =~ /\{/g;
+                $depth -= () = $line =~ /\}/g;
+                if ($depth <= 0) {
+                    last if $is_zjstatus;
+                    $in_block = 0;
+                    @canon_lines = ();
+                }
+            }
+            close $fh;
+
+            # Read layout file fully before reopening for write.
+            open my $in, "<", $ENV{LAYOUT} or die $!;
+            my @lines = <$in>;
+            close $in;
+
+            unless ($is_zjstatus && @canon_lines) {
+                # No canonical block found — pass through unchanged.
+                open my $out_fh, ">", $ENV{LAYOUT} or die $!;
+                print $out_fh @lines;
+                close $out_fh;
+                exit 0;
+            }
+            # Strip leading horizontal whitespace (will re-indent per call site).
+            # Use [ \t] not \s — \s includes newlines and would eat blank lines.
+            my $canon_indent = ($canon_lines[0] =~ /^([ \t]*)/) ? length($1) : 0;
+            my @canon_stripped;
+            for my $l (@canon_lines) {
+                my $stripped = $l;
+                $stripped =~ s/^[ \t]{0,$canon_indent}//;
+                push @canon_stripped, $stripped;
+            }
+
+            # 2. Process layout: replace any pane block with zjstatus plugin
+            #    inside it with the canonical version (re-indented).
+            my @out;
+            my @buf;
+            my ($in_pane, $pane_depth, $pane_indent, $buf_is_zjstatus) = (0, 0, "", 0);
+            my $replaced = 0;
+            for my $line (@lines) {
+                if (!$in_pane) {
+                    if ($line =~ /^(\s*)pane size=1 borderless=true \{/) {
+                        @buf = ($line);
+                        $in_pane = 1;
+                        $pane_depth = 1;
+                        $pane_indent = $1;
+                        $buf_is_zjstatus = 0;
+                    } else {
+                        push @out, $line;
+                    }
+                    next;
+                }
+                push @buf, $line;
+                $buf_is_zjstatus = 1 if $line =~ /plugin location="(?:zjstatus|file:[^"]*zjstatus\.wasm)"/;
+                $pane_depth += () = $line =~ /\{/g;
+                $pane_depth -= () = $line =~ /\}/g;
+                if ($pane_depth <= 0) {
+                    if ($buf_is_zjstatus) {
+                        for my $cl (@canon_stripped) {
+                            # Don'\''t indent blank/whitespace-only lines.
+                            push @out, ($cl =~ /^\s*$/) ? $cl : ($pane_indent . $cl);
+                        }
+                        $replaced++;
+                    } else {
+                        push @out, @buf;
+                    }
+                    @buf = ();
+                    $in_pane = 0;
+                }
+            }
+            # Trailing partial buffer (malformed layout — emit as-is).
+            push @out, @buf if @buf;
+
+            open my $out_fh, ">", $ENV{LAYOUT} or die $!;
+            print $out_fh @out;
+            close $out_fh;
+            print STDERR "zjstatus_blocks_restored=$replaced\n";
+        ' 2>>"$LOG"
+    fi
 done
 log "=== end ==="
