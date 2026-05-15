@@ -101,28 +101,53 @@ for layout in "$SESSION_INFO_DIR"/*/session-layout.kdl; do
         my $home = $ENV{HOME} // "";
         my $idx = 0;
         my ($injected, $skipped) = (0, 0);
+        # Track brace depth + whether we are inside a top-level `tab` block.
+        # cwds[] is keyed by pane_id order across the running session, so it
+        # should be matched only against panes that appear in real tabs —
+        # ignore template/swap_tiled_layout `pane` declarations entirely.
+        my $cur_depth = 0;
+        my $in_top_tab = 0;
+        my $tab_indent = "";
         while (my $line = <>) {
-            # Match terminal pane lines we want to inject cwd= into.
-            # Skip:
-            #  - pane that already has cwd=
-            #  - status bar pane (size=1 borderless=true ... { plugin ... })
-            #  - tab/floating_panes/swap_*_layout container lines
-            if ($line =~ /^\s+pane\b/
-                && $line !~ /\bcwd=/
-                && $line !~ /^\s+pane size=1\b/
-                && ($line =~ /\bcommand=/ || $line =~ /\bcontents_file=/)) {
-                my $cwd = $cwds[$idx] // "";
-                $cwd =~ s/^\s+|\s+$//g;
-                if ($cwd && $cwd ne $home && -d $cwd) {
-                    (my $safe = $cwd) =~ s/"/\\"/g;
-                    $line =~ s/^(\s+pane )/$1cwd="$safe" /;
-                    $injected++;
-                } else {
-                    $skipped++;
+            if ($cur_depth == 1 && $line =~ /^(\s+)tab\b.*\{\s*$/) {
+                $in_top_tab = 1;
+                $tab_indent = $1;
+            }
+            # Within a top-level tab, every non-status-bar `pane` line
+            # consumes one cwds[] slot — whether or not we inject — so the
+            # index stays aligned even when zellij already wrote `cwd=`.
+            # Inject when the pane has no `cwd=` of its own; otherwise it
+            # falls back to the layout-level cwd at resurrect, which is the
+            # common prefix of all panes and almost always wrong for any
+            # pane that lived in a deeper directory at save time. This
+            # covers both bare `pane` lines (zellij emits these for panes
+            # whose cwd matched the common prefix exactly, or when no
+            # scrollback was serialized) and `pane command=…` /
+            # `pane contents_file=…` lines.
+            if ($in_top_tab
+                && $line =~ /^\s+pane\b/
+                && $line !~ /^\s+pane size=1\b/) {
+                if ($line !~ /\bcwd=/) {
+                    my $cwd = $cwds[$idx] // "";
+                    $cwd =~ s/^\s+|\s+$//g;
+                    if ($cwd && $cwd ne $home && -d $cwd) {
+                        (my $safe = $cwd) =~ s/"/\\"/g;
+                        # `\b` after `pane` so we match both `pane\n`
+                        # (bare) and `pane command=…` (suffixed).
+                        $line =~ s/^(\s+pane)\b/$1 cwd="$safe"/;
+                        $injected++;
+                    } else {
+                        $skipped++;
+                    }
                 }
                 $idx++;
             }
             print $line;
+            $cur_depth += () = $line =~ /\{/g;
+            $cur_depth -= () = $line =~ /\}/g;
+            if ($in_top_tab && $cur_depth == 1 && $line =~ /^\Q$tab_indent\E\}\s*$/) {
+                $in_top_tab = 0;
+            }
         }
         print STDERR "injected=$injected skipped=$skipped panes_seen=$idx\n";
     ' "$layout" 2>>"$LOG"
@@ -235,6 +260,154 @@ for layout in "$SESSION_INFO_DIR"/*/session-layout.kdl; do
             print $out_fh @out;
             close $out_fh;
             print STDERR "zjstatus_blocks_restored=$replaced\n";
+        ' 2>>"$LOG"
+
+        # 6. Inject default_tab_template into the saved layout so every tab
+        #    gets wrapped with zjstatus on resurrect — even tabs whose runtime
+        #    state lost the zjstatus pane (e.g. plugin pane removed mid-
+        #    session, command panes from held processes that bypass templates).
+        #    default_tab_template lives only in default.kdl; zellij'\''s
+        #    save-session never emits it. Without it, resurrection applies
+        #    each tab'\''s explicit panes verbatim and any tab missing
+        #    zjstatus in its serialized form stays missing.
+        DEFAULT_KDL="$DEFAULT_KDL" LAYOUT="$layout" perl -e '
+            use strict;
+            # Extract default_tab_template block from default.kdl.
+            open my $fh, "<", $ENV{DEFAULT_KDL} or die $!;
+            my @template_lines;
+            my ($in_block, $depth) = (0, 0);
+            while (my $line = <$fh>) {
+                if (!$in_block) {
+                    if ($line =~ /^(\s*)default_tab_template\s*\{/) {
+                        @template_lines = ($line);
+                        $in_block = 1;
+                        $depth = 1;
+                    }
+                    next;
+                }
+                push @template_lines, $line;
+                $depth += () = $line =~ /\{/g;
+                $depth -= () = $line =~ /\}/g;
+                last if $depth <= 0;
+            }
+            close $fh;
+            exit 0 unless @template_lines;
+
+            open my $in, "<", $ENV{LAYOUT} or die $!;
+            my @lines = <$in>;
+            close $in;
+
+            # Skip if the saved layout already has a default_tab_template.
+            if (grep { /^\s*default_tab_template\s*\{/ } @lines) {
+                print STDERR "default_tab_template already present, skipping inject\n";
+                exit 0;
+            }
+
+            # Find indent of layout body (first non-blank line after `layout {`).
+            my $body_indent = "    ";
+            for my $l (@lines) {
+                next if $l =~ /^\s*layout\s*\{/;
+                if ($l =~ /^(\s+)\S/) { $body_indent = $1; last; }
+            }
+
+            # Re-indent template lines to match layout body.
+            my $template_indent = ($template_lines[0] =~ /^(\s*)/) ? $1 : "";
+            my @reindented;
+            for my $tl (@template_lines) {
+                my $stripped = $tl;
+                $stripped =~ s/^\Q$template_indent\E//;
+                push @reindented, ($stripped =~ /^\s*$/) ? $stripped : ($body_indent . $stripped);
+            }
+
+            # Insert template after `layout {` (and any top-level `cwd "..."` line).
+            my @out;
+            my $inserted = 0;
+            my $past_layout_open = 0;
+            for my $line (@lines) {
+                push @out, $line;
+                if (!$inserted) {
+                    if (!$past_layout_open && $line =~ /^\s*layout\s*\{/) {
+                        $past_layout_open = 1;
+                        next;
+                    }
+                    if ($past_layout_open) {
+                        # Skip `cwd "..."` lines to keep them above the template.
+                        next if $line =~ /^\s*cwd\s+"/;
+                        # We are about to emit the first non-cwd body line — go
+                        # back one step: insert template before this line.
+                        my $last = pop @out;
+                        push @out, @reindented;
+                        push @out, $last;
+                        $inserted = 1;
+                    }
+                }
+            }
+            unless ($inserted) {
+                # Edge case: layout body is empty. Append before the final `}`.
+                my $closing_idx;
+                for (my $i = $#out; $i >= 0; $i--) {
+                    if ($out[$i] =~ /^\s*\}\s*$/) { $closing_idx = $i; last; }
+                }
+                if (defined $closing_idx) {
+                    splice @out, $closing_idx, 0, @reindented;
+                    $inserted = 1;
+                }
+            }
+
+            # Strip inline zjstatus pane blocks from top-level tabs to avoid
+            # double-rendering: the template now provides one and any inline
+            # block would stack a second `pane size=1` next to it.
+            my @stripped;
+            my $cur_depth = 0;
+            my $in_top_tab = 0;
+            my $tab_indent = "";
+            my $i = 0;
+            my $removed = 0;
+            while ($i < @out) {
+                my $line = $out[$i];
+                # Track top-level tab entry/exit. Capture indent and check
+                # `{` end in one regex — two separate `=~` matches reset $1
+                # via the second non-capturing match, which would leave
+                # $tab_indent empty and prevent the EXIT below from firing.
+                if ($cur_depth == 1 && $line =~ /^(\s+)tab\b.*\{\s*$/) {
+                    $in_top_tab = 1;
+                    $tab_indent = $1;
+                }
+                # Detect inline zjstatus inside a top-level tab.
+                if ($in_top_tab && $line =~ /^\s+pane size=1 borderless=true \{\s*$/) {
+                    my $pane_start = $i;
+                    my $pane_depth = 1;
+                    my @buf = ($line);
+                    my $j = $i + 1;
+                    while ($j < @out && $pane_depth > 0) {
+                        push @buf, $out[$j];
+                        $pane_depth += () = $out[$j] =~ /\{/g;
+                        $pane_depth -= () = $out[$j] =~ /\}/g;
+                        $j++;
+                    }
+                    my $is_zjstatus = grep {
+                        /plugin location="(?:zjstatus|file:[^"]*zjstatus\.wasm)"/
+                    } @buf;
+                    if ($is_zjstatus) {
+                        $removed++;
+                        $i = $j;
+                        next;
+                    }
+                }
+                push @stripped, $line;
+                $cur_depth += () = $line =~ /\{/g;
+                $cur_depth -= () = $line =~ /\}/g;
+                # Exit top-level tab when its closing `}` is processed.
+                if ($in_top_tab && $cur_depth == 1 && $line =~ /^\Q$tab_indent\E\}\s*$/) {
+                    $in_top_tab = 0;
+                }
+                $i++;
+            }
+
+            open my $out_fh, ">", $ENV{LAYOUT} or die $!;
+            print $out_fh @stripped;
+            close $out_fh;
+            print STDERR "default_tab_template_injected=$inserted inline_zjstatus_stripped=$removed\n";
         ' 2>>"$LOG"
     fi
 done
