@@ -11,6 +11,9 @@ docs
 {{/* 旧リポジトリから移植する際に紛れ込むゴミ */}}
 .config/alacritty/backup
 
+{{/* autostart は OS/インストーラが書き換える領域。chezmoi 管理対象外 */}}
+.config/autostart
+
 {{- if ne .chezmoi.os "darwin" }}
 .config/karabiner
 .config/Brewfile
@@ -18,7 +21,6 @@ Brewfile
 {{- end }}
 
 {{- if ne .chezmoi.os "linux" }}
-.config/autostart
 .config/chrome-flags.conf
 .config/dolphinrc
 .config/environment.d
