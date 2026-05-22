@@ -116,7 +116,7 @@ toolBarFont=UDEV Gothic 35NFLG,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
 Theme=Papirus-Dark
 
 [KDE]
-AnimationDurationFactor=0.125
+AnimationDurationFactor=0.7071067811865475
 LookAndFeelPackage=org.kde.breezedark.desktop
 ShowDeleteCommand=false
 contrast=4
@@ -139,6 +139,13 @@ Sort hidden files last=false
 Sort reversed=false
 Speedbar Width=140
 View Style=DetailTree
+
+[KScreen]
+ScreenScaleFactors=HDMI-A-1=1;DP-1=1;
+XwaylandClientsScale=false
+
+[KShortcutsDialog Settings]
+Dialog Size=600,480
 
 [PreviewSettings]
 EnableRemoteFolderThumbnail=false

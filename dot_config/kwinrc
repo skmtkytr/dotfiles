@@ -1,6 +1,6 @@
 [Desktops]
 Id_1=cf175004-271d-4b41-a865-5d049513c4d0
-Id_2=5bc05506-9452-4b6a-a009-a64f63e67821
+Id_2=62a0d3a0-5c10-4466-8b68-460f8266d156
 Number=2
 Rows=1
 
@@ -42,13 +42,25 @@ OrderMinimizedMode=1
 padding=4
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
+[Tiling][5bc05506-9452-4b6a-a009-a64f63e67821][397843cf-42e2-4e22-a464-55a6ec2e02f8]
+padding=4
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
 [Tiling][5bc05506-9452-4b6a-a009-a64f63e67821][a32d25ad-85cb-42ca-b75e-ecba8ef263e2]
 padding=4
-tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3333},{"width":0.3334},{"width":0.3333}]}
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3333},{"width":0.3334},{"width":0.33330000000000004}]}
 
 [Tiling][5bc05506-9452-4b6a-a009-a64f63e67821][cb605621-e201-4239-bb73-903a3995d78d]
 padding=4
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3333},{"width":0.3334},{"width":0.3333}]}
+
+[Tiling][62a0d3a0-5c10-4466-8b68-460f8266d156][19a764e8-eb1c-4b24-923a-6d0efdec3fed]
+padding=4
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][62a0d3a0-5c10-4466-8b68-460f8266d156][a32d25ad-85cb-42ca-b75e-ecba8ef263e2]
+padding=4
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][7a334011-7c72-4ef0-a37a-3cd4fdf13da8][a32d25ad-85cb-42ca-b75e-ecba8ef263e2]
 padding=4
@@ -60,11 +72,15 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3333},{"width":0.3334}
 
 [Tiling][cf175004-271d-4b41-a865-5d049513c4d0][19a764e8-eb1c-4b24-923a-6d0efdec3fed]
 padding=1
-tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3124999999999974},{"width":0.3818359375000045},{"layoutDirection":"vertical","tiles":[{"height":0.5},{"height":0.5}],"width":0.3056640624999981}]}
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3232421875},{"width":0.38066406250000007},{"layoutDirection":"vertical","tiles":[{"height":0.5},{"height":0.5}],"width":0.29609374999999993}]}
+
+[Tiling][cf175004-271d-4b41-a865-5d049513c4d0][397843cf-42e2-4e22-a464-55a6ec2e02f8]
+padding=4
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Tiling][cf175004-271d-4b41-a865-5d049513c4d0][a32d25ad-85cb-42ca-b75e-ecba8ef263e2]
 padding=4
-tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3333},{"width":0.3334},{"width":0.3333}]}
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.3333},{"width":0.3334},{"width":0.33330000000000004}]}
 
 [Tiling][cf175004-271d-4b41-a865-5d049513c4d0][cb605621-e201-4239-bb73-903a3995d78d]
 padding=1
@@ -76,9 +92,6 @@ InputMethod[$e]=/usr/share/applications/org.fcitx.Fcitx5.desktop
 [Windows]
 FocusStealingPreventionLevel=1
 NextFocusPrefersMouse=false
-
-[Xwayland]
-Scale=1
 
 [org.kde.kdecoration2]
 library=org.kde.kwin.aurorae.v2

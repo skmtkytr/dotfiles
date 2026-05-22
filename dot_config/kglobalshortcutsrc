@@ -9,6 +9,14 @@ Switch to Last-Used Keyboard Layout=Meta+Alt+L,Meta+Alt+L,Switch to Last-Used Ke
 Switch to Next Keyboard Layout=Meta+Alt+K,Meta+Alt+K,Switch to Next Keyboard Layout
 _k_friendly_name=Keyboard Layout Switcher
 
+[claude]
+6F43899B18AF170D7499F5DEEC31EFD8-Ctrl+Alt+Space=,Ctrl+Alt+Space,Claude shortcut: Ctrl+Alt+Space
+_k_friendly_name=Claude
+
+[com.anthropic.claude-desktop]
+6F43899B18AF170D7499F5DEEC31EFD8-Ctrl+Alt+Space=,Ctrl+Alt+Space,Claude shortcut: Ctrl+Alt+Space
+_k_friendly_name=Claude
+
 [kaccess]
 Toggle Screen Reader On and Off=Meta+Alt+S,Meta+Alt+S,Toggle Screen Reader On and Off
 _k_friendly_name=Accessibility
@@ -224,6 +232,8 @@ stopmedia=Media Stop,Media Stop,Stop media playback
 
 [org.chromium.Chromium]
 124BFB9086B31FA384DEA329EE44E4CE-=,none,Electron shortcut\s
+3891B537EB332025793CA0A8DD684520-Ctrl+0=,none,Electron shortcut Ctrl+0
+51B1F0A6F403ECEA70D1B3F4506D166E-Ctrl+Space=,none,Electron shortcut Ctrl+Space
 6F43899B18AF170D7499F5DEEC31EFD8-Ctrl+Alt+Space=,none,Electron shortcut Ctrl+Alt+Space
 D3C85B0A3AFC329D72AC920596D2B6B0-=,none,Electron shortcut\s
 _k_friendly_name=org.chromium.Chromium
