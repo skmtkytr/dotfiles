@@ -26,6 +26,15 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -90,6 +99,11 @@
     "type": "command",
     "command": "npx -y @owloops/claude-powerline@latest"
   },
+  "enabledPlugins": {
+    "discord@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
+  },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
       "source": {
@@ -99,7 +113,6 @@
     }
   },
   "skipDangerousModePermissionPrompt": true,
-  "enabledPlugins": {
-    "discord@claude-plugins-official": true
-  }
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true
 }

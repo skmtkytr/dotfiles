@@ -41,3 +41,5 @@ dotfiles は chezmoi で管理。コンテナ内では `~/.local/share/chezmoi` 
 ## 環境固有の注意
 
 - **1Password transient failure**: `chezmoi apply` や `git commit` で "Could not connect to socket" が出たらまず同じコマンドをリトライ。環境の問題ではなく 1Password 側の一時的な IPC 競合。リトライで通常解決する。
+
+@RTK.md
