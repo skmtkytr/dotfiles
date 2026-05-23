@@ -68,6 +68,10 @@ for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
+-- Spell: include "cjk" so CJK character ranges (kanji/hiragana/katakana)
+-- are not flagged as misspellings. ASCII typo detection still works.
+vim.opt.spelllang = { "en", "cjk" }
+
 vim.highlight.priorities.semantic_tokens = 95 -- Or any number lower than 100, treesitter's priority level
 
 vim.g.editorconfig = true
