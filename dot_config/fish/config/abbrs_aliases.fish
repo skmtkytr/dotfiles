@@ -124,5 +124,10 @@ abbr -a --set-cursor qgh gh copilot suggest -t gh \"%\"
 abbr -a ghcr 'gh cr'
 abbr -a gh-fork-sync "gh repo list --limit 200 --fork --json nameWithOwner --jq '.[].nameWithOwner' | xargs -n1 gh repo sync"
 
+# zk (zettelkasten)
+abbr -a zn 'zk new'
+abbr -a zl 'zk edit --interactive'
+abbr -a zg 'zk list --interactive'
+
 alias unset='set --erase'
 abbr -a n -f _na

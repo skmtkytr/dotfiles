@@ -50,4 +50,51 @@ return {
       require("holon").setup(opts)
     end,
   },
+  {
+    "zk-org/zk-nvim",
+    ft = "markdown",
+    cmd = { "ZkNew", "ZkNotes", "ZkTags", "ZkBacklinks", "ZkLinks", "ZkIndex" },
+    keys = {
+      {
+        "<leader>zkn",
+        function()
+          require("zk.commands").get("ZkNew")({ title = vim.fn.input("Title: ") })
+        end,
+        desc = "zk: New note",
+      },
+      {
+        "<leader>zko",
+        function()
+          require("zk.commands").get("ZkNotes")({ sort = { "modified" } })
+        end,
+        desc = "zk: Open note",
+      },
+      { "<leader>zkt", "<Cmd>ZkTags<CR>", desc = "zk: Tags" },
+      {
+        "<leader>zkf",
+        function()
+          require("zk.commands").get("ZkNotes")({ sort = { "modified" }, match = { vim.fn.input("Search: ") } })
+        end,
+        desc = "zk: Search",
+      },
+      { "<leader>zkb", "<Cmd>ZkBacklinks<CR>", desc = "zk: Backlinks" },
+      { "<leader>zkl", "<Cmd>ZkLinks<CR>", desc = "zk: Links" },
+      { "<leader>zki", ":'<,'>ZkInsertLinkAtSelection<CR>", mode = "v", desc = "zk: Insert link from selection" },
+    },
+    config = function()
+      require("zk").setup({
+        picker = "select",
+        lsp = {
+          config = {
+            cmd = { "zk", "lsp" },
+            name = "zk",
+          },
+          auto_attach = {
+            enabled = true,
+            filetypes = { "markdown" },
+          },
+        },
+      })
+    end,
+  },
 }

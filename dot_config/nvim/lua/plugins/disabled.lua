@@ -17,4 +17,6 @@ return {
   { "goropikari/local-devcontainer.nvim", enabled = false, optional = true },
   { "gamoutatsumi/dps-ghosttext.vim", enabled = false, optional = true },
   { "ruicsh/termite.nvim", enabled = false, optional = true },
+  { "renerocksai/telekasten.nvim", enabled = false, optional = true },
+  { "sunbluesome/holon.nvim", enabled = false, optional = true },
 }
