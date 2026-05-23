@@ -97,4 +97,24 @@ return {
       })
     end,
   },
+  -- marksman: general-purpose markdown LSP. Provides documentSymbol
+  -- (outline), heading navigation, and link diagnostics for markdown files
+  -- outside the zk vault. Coexists with `zk lsp` (different concerns).
+  {
+    "mason-org/mason.nvim",
+    opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
+      if type(opts.ensure_installed) == "table" then
+        table.insert(opts.ensure_installed, "marksman")
+      end
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        marksman = {},
+      },
+    },
+  },
 }
