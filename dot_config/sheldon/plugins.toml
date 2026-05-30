@@ -1,14 +1,34 @@
-# sheldon plugin manifest (zsh). `sheldon source` is eval'd from .zshrc.
+# sheldon plugin manifest (zsh). `sheldon source` is eval'd from .zshrc and
+# drives the whole load order:
+#   fpath → compinit → completion sources (carapace) → fzf → fzf-tab (fuzzy UI)
+#   → abbr/autopair → autosuggestions → fast-syntax-highlighting (last).
+# Order matters: fzf-tab must follow compinit/fzf and precede widget-wrapping
+# plugins; fast-syntax-highlighting must be last so it wraps every widget.
 shell = "zsh"
 
-# Extra completions (fpath only) — must be present before compinit.
+# 1. Extra completions into fpath — must precede compinit.
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
 apply = ["fpath"]
 
-# fish-like grey autosuggestions from history + completion.
-[plugins.zsh-autosuggestions]
-github = "zsh-users/zsh-autosuggestions"
+# 2. compinit — right after fpath is populated, before anything uses compdef.
+[plugins.compinit]
+inline = 'autoload -Uz compinit; () { local d=${XDG_CACHE_HOME:-$HOME/.cache}/zsh; [[ -d $d ]] || mkdir -p $d; compinit -d $d/zcompdump }'
+
+# 3. carapace — multi-shell completion source. Before fzf-tab so its completions
+#    are available to the fuzzy picker.
+[plugins.carapace]
+inline = 'if (( $+commands[carapace] )); then export CARAPACE_BRIDGES=zsh,fish,bash; source <(carapace _carapace zsh); fi'
+
+# 4. fzf shell integration (^T/^R key-bindings + completion). Loaded before
+#    fzf-tab so fzf-tab wins the ^I (TAB) binding.
+[plugins.fzf]
+inline = '(( $+commands[fzf] )) && source <(fzf --zsh)'
+
+# 5. fzf-tab — replaces the completion menu with an fzf fuzzy picker. Must come
+#    after compinit/fzf and before the widget-wrapping plugins below.
+[plugins.fzf-tab]
+github = "Aloxaf/fzf-tab"
 
 # fish-style abbreviations (`abbr`). Requires zsh-job-queue.
 [plugins.zsh-job-queue]
@@ -20,6 +40,10 @@ github = "olets/zsh-abbr"
 # auto-close brackets/quotes.
 [plugins.zsh-autopair]
 github = "hlissner/zsh-autopair"
+
+# fish-like grey autosuggestions from history + completion.
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
 
 # Command-line syntax highlighting. Loaded last so it wraps all widgets.
 [plugins.fast-syntax-highlighting]

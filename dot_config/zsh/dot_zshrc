@@ -15,31 +15,29 @@ setopt INTERACTIVE_COMMENTS NO_BEEP EXTENDED_GLOB
 # --- mise (before tools it provides) -----------------------------------------
 (( $+commands[mise] )) && eval "$(mise activate zsh)"
 
-# --- plugins (sheldon: completions fpath, autosuggest, abbr, autopair, fsh) ---
+# --- plugins -----------------------------------------------------------------
+# sheldon drives the full completion load order (see plugins.toml):
+#   fpath → compinit → carapace → fzf → fzf-tab → abbr/autopair → autosuggest
+#   → fast-syntax-highlighting. compinit/carapace/fzf run *inside* this eval.
 (( $+commands[sheldon] )) && eval "$(sheldon source)"
 
-# --- completion system -------------------------------------------------------
-ZCOMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
-mkdir -p "${ZCOMPDUMP:h}"
-autoload -Uz compinit
-compinit -d "$ZCOMPDUMP"
-
-zstyle ':completion:*' menu select
+# --- completion styling (compinit already ran inside sheldon, above) ----------
+zstyle ':completion:*' menu no                              # fzf-tab replaces the menu
+# fish-like fallback: when no completion is defined for a command, parse its
+# `--help` output (_gnu_generic). It only runs after _complete yields nothing,
+# so carapace/native completions stay preferred. Covers e.g. `claude --<TAB>`.
+zstyle ':completion:*' completer _complete _gnu_generic
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # case-insensitive
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:descriptions' format '%F{244}%d%f'
+# fzf-tab tuning: fuzzy picker honors $FZF_DEFAULT_OPTS; dir completions preview.
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always -- $realpath 2>/dev/null'
 
-# --- carapace (after compinit) -----------------------------------------------
-if (( $+commands[carapace] )); then
-  export CARAPACE_BRIDGES='zsh,fish,bash'
-  source <(carapace _carapace zsh)
-fi
-
-# --- prompt / navigation / fuzzy ---------------------------------------------
+# --- prompt / navigation -----------------------------------------------------
 (( $+commands[starship] )) && eval "$(starship init zsh)"
 (( $+commands[zoxide] ))   && eval "$(zoxide init --cmd cd zsh)"
-(( $+commands[fzf] ))      && source <(fzf --zsh)
 
 # --- vi mode -----------------------------------------------------------------
 bindkey -v
