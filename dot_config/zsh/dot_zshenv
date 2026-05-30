@@ -1,0 +1,64 @@
+# $ZDOTDIR/.zshenv — environment for every zsh (incl. non-interactive).
+# Mirrors the fish config/env.fish so both shells behave the same.
+
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+# --- PATH (deduped, highest priority first) ----------------------------------
+# mise shims first so starship/zoxide/etc resolve; `mise activate` in .zshrc
+# layers the full per-directory env on top for interactive shells.
+typeset -U path PATH
+path=(
+  $HOME/.local/share/mise/shims
+  $HOME/.local/bin
+  $XDG_DATA_HOME/cargo/bin
+  $XDG_DATA_HOME/go/bin
+  /usr/local/bin
+  $path
+)
+# macOS (Homebrew) — only dirs that exist are added
+for d in /opt/homebrew/bin /opt/homebrew/sbin /opt/homebrew/opt/llvm/bin; do
+  [[ -d $d ]] && path=($d $path)
+done
+
+# --- XDG overrides for tools -------------------------------------------------
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export LESSHISTFILE="$XDG_STATE_HOME/less/history"
+export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
+export PYTHON_HISTORY="$XDG_STATE_HOME/python/history"
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME/aws/credentials"
+export GOPATH="$XDG_DATA_HOME/go"
+export GOCACHE="$XDG_CACHE_HOME/go-build"
+export GEM_HOME="$XDG_DATA_HOME/gem"
+export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
+export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
+export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
+export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
+export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
+
+# --- cargo env (preserves the line from the previous ~/.zshenv) ---------------
+[[ -r "$CARGO_HOME/env" ]] && source "$CARGO_HOME/env"
+
+# --- zk (zettelkasten) -------------------------------------------------------
+export ZK_NOTEBOOK_DIR="$HOME/.ghq/github.com/skmtkytr/zettel"
+
+# --- ni (package manager runner) ---------------------------------------------
+export NA_PACKAGE_MANAGER_LIST="bun deno pnpm npm yarn mise"
+
+# --- editor ------------------------------------------------------------------
+if (( $+commands[nvim] )); then
+  export EDITOR=nvim GIT_EDITOR=nvim VISUAL=nvim
+  export MANPAGER="nvim -c ASMANPAGER -"
+fi
+
+# --- SSH (1Password agent) ---------------------------------------------------
+# Host only; containers set SSH_AUTH_SOCK via their own socat bridge.
+if [[ ! -f /.dockerenv && -z ${container-} ]]; then
+  export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"
+fi

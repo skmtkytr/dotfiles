@@ -1,0 +1,26 @@
+# sheldon plugin manifest (zsh). `sheldon source` is eval'd from .zshrc.
+shell = "zsh"
+
+# Extra completions (fpath only) — must be present before compinit.
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+apply = ["fpath"]
+
+# fish-like grey autosuggestions from history + completion.
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+# fish-style abbreviations (`abbr`). Requires zsh-job-queue.
+[plugins.zsh-job-queue]
+github = "olets/zsh-job-queue"
+
+[plugins.zsh-abbr]
+github = "olets/zsh-abbr"
+
+# auto-close brackets/quotes.
+[plugins.zsh-autopair]
+github = "hlissner/zsh-autopair"
+
+# Command-line syntax highlighting. Loaded last so it wraps all widgets.
+[plugins.fast-syntax-highlighting]
+github = "zdharma-continuum/fast-syntax-highlighting"

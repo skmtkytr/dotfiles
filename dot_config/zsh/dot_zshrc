@@ -1,0 +1,71 @@
+# $ZDOTDIR/.zshrc — interactive zsh. PoC mirroring the fish setup.
+
+# --- history -----------------------------------------------------------------
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+HISTSIZE=200000
+SAVEHIST=200000
+mkdir -p "${HISTFILE:h}"
+setopt EXTENDED_HISTORY SHARE_HISTORY INC_APPEND_HISTORY
+setopt HIST_IGNORE_DUPS HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
+
+# --- shell options (fish-like feel) ------------------------------------------
+setopt AUTO_CD AUTO_PUSHD PUSHD_IGNORE_DUPS PUSHD_SILENT
+setopt INTERACTIVE_COMMENTS NO_BEEP EXTENDED_GLOB
+
+# --- mise (before tools it provides) -----------------------------------------
+(( $+commands[mise] )) && eval "$(mise activate zsh)"
+
+# --- plugins (sheldon: completions fpath, autosuggest, abbr, autopair, fsh) ---
+(( $+commands[sheldon] )) && eval "$(sheldon source)"
+
+# --- completion system -------------------------------------------------------
+ZCOMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump"
+mkdir -p "${ZCOMPDUMP:h}"
+autoload -Uz compinit
+compinit -d "$ZCOMPDUMP"
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # case-insensitive
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format '%F{244}%d%f'
+
+# --- carapace (after compinit) -----------------------------------------------
+if (( $+commands[carapace] )); then
+  export CARAPACE_BRIDGES='zsh,fish,bash'
+  source <(carapace _carapace zsh)
+fi
+
+# --- prompt / navigation / fuzzy ---------------------------------------------
+(( $+commands[starship] )) && eval "$(starship init zsh)"
+(( $+commands[zoxide] ))   && eval "$(zoxide init --cmd cd zsh)"
+(( $+commands[fzf] ))      && source <(fzf --zsh)
+
+# --- vi mode -----------------------------------------------------------------
+bindkey -v
+export KEYTIMEOUT=1
+bindkey -M viins '^F' autosuggest-accept      # accept grey suggestion
+bindkey -M viins '^P' up-line-or-search
+bindkey -M viins '^N' down-line-or-search
+
+# --- autosuggestion tuning ---------------------------------------------------
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+# --- ghq + fzf repository jump (Ctrl-G), ported from fish-ghq -----------------
+ghq-fzf-cd() {
+  (( $+commands[ghq] && $+commands[fzf] )) || { zle reset-prompt; return }
+  local dir
+  dir=$(ghq list --full-path | fzf --query="$BUFFER" ${=GHQ_SELECTOR_OPTS})
+  if [[ -n $dir ]]; then
+    BUFFER="cd ${(q)dir}"
+    zle accept-line
+  else
+    zle reset-prompt   # cancelled: just redraw, keep what was typed
+  fi
+}
+zle -N ghq-fzf-cd
+bindkey '^G' ghq-fzf-cd
+bindkey -M viins '^G' ghq-fzf-cd
+
+# --- aliases & abbreviations -------------------------------------------------
+[[ -r "$ZDOTDIR/aliases.zsh" ]] && source "$ZDOTDIR/aliases.zsh"
