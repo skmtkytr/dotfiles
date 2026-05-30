@@ -25,6 +25,21 @@ set -g FISH_CACHE_DIR $XDG_CACHE_HOME/fish
 set -gp fish_function_path $FISH_CONFIG_DIR/user_functions
 set -gp fish_complete_path $FISH_CONFIG_DIR/user_completions
 
+# This fish build's embedded __fish_build_paths.fish misconfigures
+# __extra_completionsdir (points it at vendor_completions.d instead of the
+# bundled completions dir), so $__fish_data_dir/completions — the ~1000
+# completions shipped with fish (zstd, systemctl, git, ...) — is missing from
+# fish_complete_path. Re-insert it, ahead of generated_completions so the rich
+# bundled completions win over any man-generated fallback.
+if not contains -- $__fish_data_dir/completions $fish_complete_path
+    if set -l i (contains -i -- $__fish_cache_dir/generated_completions $fish_complete_path)
+        set -g fish_complete_path $fish_complete_path[1..(math $i - 1)] \
+            $__fish_data_dir/completions $fish_complete_path[$i..-1]
+    else
+        set -ga fish_complete_path $__fish_data_dir/completions
+    end
+end
+
 # source config/*.fish (env.fish, fzf.fish, abbrs_aliases.fish, etc.)
 for file in $FISH_CONFIG_DIR/config/*.fish
     source $file &
