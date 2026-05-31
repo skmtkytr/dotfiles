@@ -14,6 +14,7 @@ alias sudo='sudo '                                  # keep aliases after sudo
 command -v pbcopy >/dev/null 2>&1 || alias pbcopy='xclip -selection clipboard'
 
 # --- editor / misc -----------------------------------------------------------
+abbr -S o=open
 abbr -S v=nvim
 abbr -S nv=nvim
 abbr -S clr=clear
