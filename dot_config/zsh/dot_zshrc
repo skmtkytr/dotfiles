@@ -46,6 +46,12 @@ bindkey -M viins '^F' autosuggest-accept      # accept grey suggestion
 bindkey -M viins '^P' up-line-or-search
 bindkey -M viins '^N' down-line-or-search
 
+# Ctrl+Alt+F: fzf file/dir search, insert path at cursor (fish patrickf1 muscle
+# memory — _fzf_search_directory). fzf-file-widget is defined by `fzf --zsh`
+# (loaded via sheldon above) and otherwise only bound to ^T.
+bindkey '^[^F' fzf-file-widget
+bindkey -M viins '^[^F' fzf-file-widget
+
 # --- autosuggestion tuning ---------------------------------------------------
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
