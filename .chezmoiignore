@@ -1,0 +1,4 @@
+# Files intentionally left unmanaged (host-owned, churny, or auto-generated)
+.config/mimeapps.list
+.config/nvim/lazyvim.json
+.config/lazydocker/config.yml
