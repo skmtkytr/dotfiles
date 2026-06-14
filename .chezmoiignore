@@ -2,3 +2,10 @@
 .config/mimeapps.list
 .config/nvim/lazyvim.json
 .config/lazydocker/config.yml
+
+# zellij resurrection WIP: kept in source as a base for the zsh rewrite,
+# but not applied (the fish cwd hook is dead under zsh). Drop these entries
+# to re-enable once a zsh version exists.
+.config/zellij/scripts/save-sessions.sh
+.config/systemd/user/zellij-save-session.service
+.config/fish/conf.d/zellij-pane-cwd.fish
