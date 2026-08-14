@@ -24,11 +24,7 @@
 	safecrlf = true
 	editor = "nvim "
 	pager = delta
-{{- if or (eq .chezmoi.os "darwin") (stat "/opt/1Password/op-ssh-sign") }}
-	fsmonitor = true
-{{- else }}
 	fsmonitor = false
-{{- end }}
 	untrackedcache = true
 
 [interactive]
@@ -112,3 +108,6 @@
 
 [protocol]
 	version = 2
+
+[includeIf "gitdir:~/.ghq/"]
+	path = ~/.config/git/config-ghq

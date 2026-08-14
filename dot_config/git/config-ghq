@@ -1,0 +1,11 @@
+# Applied only to repos under ~/.ghq (see includeIf in config.tmpl).
+#
+# fsmonitor is a big-repo feature: it speeds up `git status` in large working
+# trees (keeps nvim gitsigns/statusline snappy). It is intentionally kept OUT of
+# the global config so the ~120 nvim plugin repos under ~/.local/share/nvim/lazy
+# never spawn fsmonitor daemons. Those tiny repos gain nothing from fsmonitor but
+# each leaves a `.git/fsmonitor--daemon.ipc` socket; after a git upgrade the old
+# daemons die and the stale sockets make every git op fail with
+# "fsmonitor_ipc__send_query: unspecified error" (which broke Lazy updates).
+[core]
+	fsmonitor = true
